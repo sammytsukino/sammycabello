@@ -1,0 +1,63 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: LocomotiveNew;
+  src: url('./assets/LocomotiveNew_n0o5vm.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-portfolio-bg: #ebebeb;
+  --color-portfolio-lime: #4ef967;
+  --color-portfolio-pink: #ff5fc6;
+
+  --font-editorial:
+    LocomotiveNew, ui-serif, Georgia, 'Times New Roman', serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-portfolio-bg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  ::selection {
+    background-color: rgb(153 153 153 / 0.35);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--color-portfolio-bg);
+  }
+
+  #root {
+    min-height: 100dvh;
+    background-color: var(--color-portfolio-bg);
+  }
+}
+
+@supports (view-transition-name: none) {
+  ::view-transition-group(hero),
+  ::view-transition-group(post-hero) {
+    animation-duration: 600ms;
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-new(*),
+  ::view-transition-old(*) {
+    animation: none !important;
+  }
+}
