@@ -41,7 +41,11 @@ const FOOTER_PINNED_GLYPHS = [
   },
 ]
 
-const FOOTER_HOVER_EXCLUDE = new Set(FOOTER_PINNED_GLYPHS.map((g) => g.index))
+const FOOTER_LOCKED_LOCOMOTIVE_INDICES = new Set([0])
+const FOOTER_HOVER_EXCLUDE = new Set([
+  ...FOOTER_PINNED_GLYPHS.map((g) => g.index),
+  ...FOOTER_LOCKED_LOCOMOTIVE_INDICES,
+])
 
 function footerPinAt(char, index) {
   for (const g of FOOTER_PINNED_GLYPHS) {
@@ -178,8 +182,10 @@ export default function NameDisplay({ variant = 'default' }) {
         {NAME.split('').map((char, i) => {
           const ss = alternateMap[i]
           const pin = isFooter ? footerPinAt(char, i) : null
+          const footerLockedLocomotive =
+            isFooter && FOOTER_LOCKED_LOCOMOTIVE_INDICES.has(i)
           const footerFixed = !!pin
-          const isAlternate = !!ss && !footerFixed
+          const isAlternate = !!ss && !footerFixed && !footerLockedLocomotive
 
           const pinnedStyle = pin
             ? {

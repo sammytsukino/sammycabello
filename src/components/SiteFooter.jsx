@@ -7,6 +7,11 @@ const HANDLE = 'sammytsukino'
 
 const SOCIAL_COLUMN_COUNT = 3
 
+const FOOTER_NAME_SHIFT = {
+  x: '-2rem',
+  y: '2rem',
+}
+
 export default function SiteFooter() {
   return (
     <footer
@@ -47,10 +52,22 @@ export default function SiteFooter() {
       </div>
 
       <div
-        className="relative mt-[clamp(2rem,min(12vw),4rem)] min-h-[clamp(220px,min(52vh),640px)] w-full min-w-0 pb-[clamp(0.25rem,min(3vw),1rem)]"
+        className="relative isolate mt-[clamp(2rem,min(12vw),4rem)] w-full min-w-0 overflow-hidden"
+        style={{
+          ['--sf-name-shift-x']: FOOTER_NAME_SHIFT.x,
+          ['--sf-name-shift-y']: FOOTER_NAME_SHIFT.y,
+          minHeight:
+            'max(0px, calc(clamp(220px, min(52vh, 640px), 640px) - var(--sf-name-shift-y)))',
+        }}
       >
-<div className="absolute bottom-0 left-0 translate-y-3 -translate-x-5 pl-[clamp(1.25rem,5vw,3.5rem)]">
-<NameDisplay variant="footer" />
+        <div
+          className="absolute left-0 pl-[clamp(1.25rem,5vw,3.5rem)]"
+          style={{
+            bottom: 'calc(0px - var(--sf-name-shift-y, 0px))',
+            transform: 'translateX(var(--sf-name-shift-x, 0px))',
+          }}
+        >
+          <NameDisplay variant="footer" />
         </div>
       </div>
     </footer>

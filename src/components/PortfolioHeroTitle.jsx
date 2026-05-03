@@ -4,7 +4,7 @@ export function PortfolioHeroTitle() {
       <h1
         className="font-editorial relative isolate z-0 box-border inline-block max-w-none min-w-0 whitespace-nowrap text-center font-normal tracking-tight uppercase text-black"
         style={{
-          fontSize: 'clamp(2rem, 12vw, 20vw)',
+          fontSize: 'clamp(2rem, 7vw, 20vw)',
 
 
           lineHeight: 0.92,
