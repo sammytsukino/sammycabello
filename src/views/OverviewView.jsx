@@ -19,7 +19,7 @@ const GRID_ITEMS_BY_ID = new Map(GRID_ITEMS.map((item) => [item.id, item]))
 
 export function OverviewView() {
   return (
-    <main className="min-h-svh w-full overflow-x-hidden bg-portfolio-lime text-black md:h-svh md:overflow-hidden">
+    <main className="min-h-svh w-full overflow-x-hidden bg-portfolio-bg text-black md:h-svh md:overflow-hidden">
       <section className="flex h-[5vh] min-h-11 items-center border-b border-black/35 px-3 sm:px-6 md:px-10">
         <div className="relative h-9 w-[11.9rem] flex-none overflow-visible sm:w-[12rem] md:h-6 md:w-[24rem]">
           <div className="absolute left-0 top-1/2 origin-left -translate-y-1/2 scale-[0.64] sm:scale-[0.46] md:scale-[0.56]">

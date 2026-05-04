@@ -6,6 +6,7 @@ const NAME = 'SammyCabello'
 const CONFIRMED_STYLISTIC_SETS = ['ss01', 'ss02', 'ss03', 'ss04', 'ss05']
 const STYLE_VARIANTS = [null, ...CONFIRMED_STYLISTIC_SETS]
 const ALTERNATE_COLORS = ['#4EF967', '#FF5FC6']
+const HOVER_CURSOR_DINGBAT = String.fromCodePoint(0x2729)
 let colorIndex = 0
 
 function nextColor() {
@@ -79,8 +80,15 @@ function randomSS() {
   return STYLE_VARIANTS[Math.floor(Math.random() * STYLE_VARIANTS.length)]
 }
 
+function fixedDingbatCursor() {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="100%" height="100%" fill="transparent"/><text x="16" y="22" text-anchor="middle" font-size="22" font-family="serif">${HOVER_CURSOR_DINGBAT}</text></svg>`
+  const encodedSvg = encodeURIComponent(svg)
+  return `url("data:image/svg+xml,${encodedSvg}") 16 16, pointer`
+}
+
 export default function NameDisplay({ variant = 'default' }) {
   const [alternateMap, setAlternateMap] = useState({})
+  const [cursorStyle, setCursorStyle] = useState('pointer')
   const isFooter = variant === 'footer'
   const isNavbar = variant === 'navbar'
 
@@ -97,10 +105,12 @@ export default function NameDisplay({ variant = 'default' }) {
       map[idx] = { ss: randomSS(), color: nextColor() }
     }
     setAlternateMap(map)
+    setCursorStyle(fixedDingbatCursor())
   }, [isFooter])
 
   const handleMouseLeave = useCallback(() => {
     setAlternateMap({})
+    setCursorStyle('pointer')
   }, [])
 
   const rootClassName = [
@@ -131,6 +141,8 @@ export default function NameDisplay({ variant = 'default' }) {
           justify-content: center;
           align-items: center;
           line-height: 1;
+          cursor: pointer;
+          user-select: none;
         }
 
         .name-text--footer {
@@ -191,6 +203,7 @@ export default function NameDisplay({ variant = 'default' }) {
         className={rootClassName}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        style={{ cursor: cursorStyle }}
       >
         {NAME.split('').map((char, i) => {
           const ss = alternateMap[i]
