@@ -82,6 +82,7 @@ function randomSS() {
 export default function NameDisplay({ variant = 'default' }) {
   const [alternateMap, setAlternateMap] = useState({})
   const isFooter = variant === 'footer'
+  const isNavbar = variant === 'navbar'
 
   const handleMouseEnter = useCallback(() => {
     const footerExclude = isFooter ? FOOTER_HOVER_EXCLUDE : null
@@ -102,7 +103,11 @@ export default function NameDisplay({ variant = 'default' }) {
     setAlternateMap({})
   }, [])
 
-  const rootClassName = ['name-text', isFooter ? 'name-text--footer' : '']
+  const rootClassName = [
+    'name-text',
+    isFooter ? 'name-text--footer' : '',
+    isNavbar ? 'name-text--navbar' : '',
+  ]
     .filter(Boolean)
     .join(' ')
 
@@ -133,6 +138,14 @@ export default function NameDisplay({ variant = 'default' }) {
           align-items: baseline;
           line-height: 0.82;
           white-space: nowrap;
+        }
+
+        .name-text--navbar {
+          align-items: baseline;
+        }
+
+        .name-text--navbar .char {
+          font-size: clamp(1.65rem, 5vw, 3.25rem);
         }
 
         .char {
