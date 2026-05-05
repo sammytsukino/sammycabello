@@ -1,19 +1,21 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import locomotiveFontUrl from '../assets/LocomotiveNew_n0o5vm.ttf?url'
 
-const NAME = 'SammyCabello'
+const DEFAULT_NAME = 'SammyCabello'
 const CONFIRMED_STYLISTIC_SETS = ['ss01', 'ss02', 'ss03', 'ss04', 'ss05']
 const STYLE_VARIANTS = [null, ...CONFIRMED_STYLISTIC_SETS]
 const ALTERNATE_COLORS = ['#4EF967', '#FF5FC6']
-const HOVER_CURSOR_DINGBAT = String.fromCodePoint(0x2729)
-let colorIndex = 0
 
-function nextColor() {
-  const color = ALTERNATE_COLORS[colorIndex % 2]
-  colorIndex++
-  return color
+/** @param {'alternate'|'green'|'pink'} accent */
+function accentColorAt(accent, alternatingIndex) {
+  if (accent === 'green') return ALTERNATE_COLORS[0]
+  if (accent === 'pink') return ALTERNATE_COLORS[1]
+  return ALTERNATE_COLORS[alternatingIndex % ALTERNATE_COLORS.length]
 }
+
+const HOVER_CURSOR_DINGBAT = String.fromCodePoint(0x2729)
+const AUTO_DEFAULT_INTERVAL_MS = 500
 
 const FOOTER_PINNED_GLYPHS = [
   {
@@ -86,32 +88,151 @@ function fixedDingbatCursor() {
   return `url("data:image/svg+xml,${encodedSvg}") 16 16, pointer`
 }
 
-export default function NameDisplay({ variant = 'default' }) {
+export default function NameDisplay({
+  variant = 'default',
+  trigger = 'hover',
+  autoIntervalMs = AUTO_DEFAULT_INTERVAL_MS,
+  text = DEFAULT_NAME,
+  accent = 'alternate',
+}) {
+  const resolvedAccent =
+    accent === 'green' || accent === 'pink' ? accent : 'alternate'
+
   const [alternateMap, setAlternateMap] = useState({})
   const [cursorStyle, setCursorStyle] = useState('pointer')
+  const [prevText, setPrevText] = useState(text)
+  const [prevAccent, setPrevAccent] = useState(resolvedAccent)
+  const autoOrderRef = useRef([])
+  const lastAutoIndexRef = useRef(null)
+
+  if (text !== prevText || resolvedAccent !== prevAccent) {
+    setPrevText(text)
+    setPrevAccent(resolvedAccent)
+    setAlternateMap({})
+  }
+
   const isFooter = variant === 'footer'
   const isNavbar = variant === 'navbar'
+  const isAuto = trigger === 'auto'
+  const footerSammyExtras = isFooter && text === DEFAULT_NAME
+
+  const eligibleIndices = useMemo(() => {
+    const indices = []
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === ' ') continue
+      if (footerSammyExtras && FOOTER_HOVER_EXCLUDE.has(i)) continue
+      indices.push(i)
+    }
+    return indices
+  }, [footerSammyExtras, text])
 
   const handleMouseEnter = useCallback(() => {
-    const footerExclude = isFooter ? FOOTER_HOVER_EXCLUDE : null
+    if (isAuto) return
+    const footerExclude = footerSammyExtras ? FOOTER_HOVER_EXCLUDE : null
 
     const selected = pickNonAdjacentLetters(
-      NAME,
+      text,
       isFooter ? 2 : 3,
       footerExclude,
     )
+    const ordered = [...selected].sort((a, b) => a - b)
     const map = {}
-    for (const idx of selected) {
-      map[idx] = { ss: randomSS(), color: nextColor() }
-    }
+    ordered.forEach((idx, pos) => {
+      map[idx] = {
+        ss: randomSS(),
+        color: accentColorAt(resolvedAccent, pos),
+      }
+    })
     setAlternateMap(map)
     setCursorStyle(fixedDingbatCursor())
-  }, [isFooter])
+  }, [footerSammyExtras, isAuto, isFooter, resolvedAccent, text])
 
   const handleMouseLeave = useCallback(() => {
+    if (isAuto) return
     setAlternateMap({})
     setCursorStyle('pointer')
-  }, [])
+  }, [isAuto])
+
+  useEffect(() => {
+    if (!isAuto) return
+    if (eligibleIndices.length === 0) return
+
+    autoOrderRef.current = []
+    lastAutoIndexRef.current = null
+
+    const maxActive = isFooter ? 2 : 3
+    const intervalId = window.setInterval(() => {
+      setAlternateMap((prev) => {
+        const activeIndices = Object.keys(prev).map((k) => Number(k))
+        const withoutLast = eligibleIndices.filter(
+          (i) => i !== lastAutoIndexRef.current,
+        )
+        const candidatePool = withoutLast.length > 0 ? withoutLast : eligibleIndices
+        const inactivePool = candidatePool.filter((i) => !activeIndices.includes(i))
+        const sourcePool = inactivePool.length > 0 ? inactivePool : candidatePool
+        const idx = sourcePool[Math.floor(Math.random() * sourcePool.length)]
+
+        const next = { ...prev }
+        const alreadyActive = Object.prototype.hasOwnProperty.call(next, idx)
+        next[idx] = alreadyActive
+          ? { ...next[idx], ss: randomSS() }
+          : { ss: randomSS(), color: accentColorAt(resolvedAccent, 0) }
+
+        autoOrderRef.current = [...autoOrderRef.current.filter((k) => k !== idx), idx]
+        while (autoOrderRef.current.length > maxActive) {
+          const oldest = autoOrderRef.current.shift()
+          if (oldest == null) break
+          delete next[oldest]
+        }
+        const allowedKeys = new Set(
+          autoOrderRef.current.slice(-maxActive).map((key) => String(key)),
+        )
+        for (const key of Object.keys(next)) {
+          if (!allowedKeys.has(key)) {
+            delete next[key]
+          }
+        }
+
+        const orderedActive = autoOrderRef.current.slice(-maxActive)
+        const sortedByCharIndex = [...orderedActive].sort((a, b) => a - b)
+        const withAlternatingColors = {}
+        for (let p = 0; p < sortedByCharIndex.length; p++) {
+          const k = sortedByCharIndex[p]
+          const entry = next[k]
+          if (!entry) continue
+          withAlternatingColors[k] = {
+            ss: entry.ss,
+            color: accentColorAt(resolvedAccent, p),
+          }
+        }
+
+        lastAutoIndexRef.current = idx
+        return withAlternatingColors
+      })
+    }, autoIntervalMs)
+
+    return () => {
+      window.clearInterval(intervalId)
+    }
+  }, [
+    autoIntervalMs,
+    eligibleIndices,
+    isAuto,
+    isFooter,
+    resolvedAccent,
+    text,
+  ])
+
+  useEffect(() => {
+    autoOrderRef.current = []
+    lastAutoIndexRef.current = null
+  }, [text, resolvedAccent])
+
+  useEffect(() => {
+    if (isAuto) return
+    autoOrderRef.current = []
+    lastAutoIndexRef.current = null
+  }, [isAuto])
 
   const rootClassName = [
     'name-text',
@@ -205,11 +326,12 @@ export default function NameDisplay({ variant = 'default' }) {
         onMouseLeave={handleMouseLeave}
         style={{ cursor: cursorStyle }}
       >
-        {NAME.split('').map((char, i) => {
+        {text.split('').map((char, i) => {
           const ss = alternateMap[i]
-          const pin = isFooter ? footerPinAt(char, i) : null
+          const pin =
+            footerSammyExtras ? footerPinAt(char, i) : null
           const footerLockedLocomotive =
-            isFooter && FOOTER_LOCKED_LOCOMOTIVE_INDICES.has(i)
+            footerSammyExtras && FOOTER_LOCKED_LOCOMOTIVE_INDICES.has(i)
           const footerFixed = !!pin
           const isAlternate = !!ss && !footerFixed && !footerLockedLocomotive
 
@@ -224,7 +346,8 @@ export default function NameDisplay({ variant = 'default' }) {
             ? {
                 fontFeatureSettings:
                   ss.ss != null ? `"${ss.ss}" 1` : 'normal',
-                color: alternateMap[i].color,
+                color: ss.color,
+                WebkitTextFillColor: ss.color,
               }
             : undefined
 

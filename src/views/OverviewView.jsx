@@ -23,7 +23,7 @@ export function OverviewView() {
       <section className="flex h-[5vh] min-h-11 items-center border-b border-black/35 px-3 sm:px-6 md:px-10">
         <div className="relative h-9 w-[11.9rem] flex-none overflow-visible sm:w-[12rem] md:h-6 md:w-[24rem]">
           <div className="absolute left-0 top-1/2 origin-left -translate-y-1/2 scale-[0.64] sm:scale-[0.46] md:scale-[0.56]">
-            <NameDisplay variant="navbar" />
+            <NameDisplay trigger="auto" autoIntervalMs={800} />
           </div>
         </div>
         <div className="ml-2 hidden text-[0.56rem] uppercase tracking-[0.12em] sm:block md:ml-4 md:text-[0.65rem] md:tracking-[0.14em]">
