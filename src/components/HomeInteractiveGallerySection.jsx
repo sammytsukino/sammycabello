@@ -1,6 +1,5 @@
 import {
   HOME_GALLERY_ITEMS,
-  paletteToRgbCss,
 } from '../data/homeGalleryItems.js'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -15,10 +14,6 @@ import {
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
-function gradientLayersFromPalette(pal) {
-  const [a, b, c, d] = paletteToRgbCss(pal)
-  return `radial-gradient(ellipse 110% 90% at 18% 25%, ${a} 0%, transparent 52%), radial-gradient(ellipse 95% 75% at 88% 78%, ${c} 0%, transparent 55%), linear-gradient(158deg, ${b}, ${d})`
-}
 
 function clamp(n, a, b) {
   return Math.max(a, Math.min(b, n))
@@ -41,13 +36,11 @@ export function HomeInteractiveGallerySection() {
   const openFlipPendingRef = useRef(false)
   const focusOpenAnimKillRef = useRef(null)
 
-  const [centeredIdx, setCenteredIdx] = useState(0)
   const [focusedIdx, setFocusedIdx] = useState(-1)
   const [focusImgReady, setFocusImgReady] = useState(false)
   const [focusOpenGen, setFocusOpenGen] = useState(0)
 
   const focusActive = focusedIdx >= 0
-  const bgDriveIdx = focusActive ? focusedIdx : centeredIdx
 
   const getMaxScrollX = useCallback(() => {
     const track = trackRef.current
@@ -82,35 +75,6 @@ export function HomeInteractiveGallerySection() {
     [getMaxScrollX],
   )
 
-  const updatePosterTransformsRef = useRef(() => {})
-
-  useLayoutEffect(() => {
-    updatePosterTransformsRef.current = () => {
-      const wrap = wrapRef.current
-      if (!wrap) return
-
-      const rect = wrap.getBoundingClientRect()
-      const cx = rect.left + rect.width / 2
-      let closest = 0
-      let minD = Infinity
-
-      slideRefs.current.forEach((slide, i) => {
-        if (!slide) return
-        const poster = slide.querySelector('[data-gallery-poster]')
-        if (!(poster instanceof HTMLElement)) return
-        poster.style.transform = ''
-        const r = poster.getBoundingClientRect()
-        const mid = (r.left + r.right) / 2
-        const distAbs = Math.abs(mid - cx)
-        if (distAbs < minD) {
-          minD = distAbs
-          closest = i
-        }
-      })
-
-      setCenteredIdx((prev) => (prev === closest ? prev : closest))
-    }
-  }, [])
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -149,7 +113,6 @@ export function HomeInteractiveGallerySection() {
           scrub,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onUpdate: () => updatePosterTransformsRef.current(),
         },
       })
 
@@ -196,7 +159,6 @@ export function HomeInteractiveGallerySection() {
   useEffect(() => {
     const onResize = () => {
       ScrollTrigger.refresh()
-      updatePosterTransformsRef.current()
     }
     window.addEventListener('resize', onResize, { passive: true })
     return () => window.removeEventListener('resize', onResize)
@@ -360,20 +322,9 @@ export function HomeInteractiveGallerySection() {
         id="home-gallery"
         ref={pinRef}
         aria-label="Galería interactiva"
-        className="relative isolate w-full overflow-hidden bg-[#0a0908]"
+        className="relative isolate w-full overflow-hidden bg-portfolio-lime"
       >
-        <div className="pointer-events-none absolute inset-0 z-0">
-          {HOME_GALLERY_ITEMS.map((item, i) => (
-            <div
-              key={item.slug}
-              className="absolute inset-0 transition-opacity duration-[880ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-              style={{
-                opacity: i === bgDriveIdx ? 1 : 0,
-                backgroundImage: gradientLayersFromPalette(item.pal),
-              }}
-            />
-          ))}
-        </div>
+
 
         <div
           ref={wrapRef}

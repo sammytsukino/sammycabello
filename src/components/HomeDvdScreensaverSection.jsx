@@ -1,5 +1,5 @@
 import { useDvdScreensaver } from 'react-dvd-screensaver'
-import { forwardRef, useRef } from 'react'
+import { forwardRef, useRef, useState, useCallback } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { HOME_DVD_SCREENSAVER_IMAGES } from '../data/homeDvdScreensaverImages.js'
 import { HOME_DVD_SCREENSAVER_LINKS } from '../data/homeDvdScreensaverLinks.js'
@@ -8,6 +8,7 @@ import NameDisplay from './NameDisplay.jsx'
 
 const SPEEDS_TEXT = [2, 2.35, 2.7]
 const SPEEDS_IMAGE = [1.1, 1.45, 1.8, 2.05]
+const MAX_VISIBLE_IMAGES = 4
 
 const DvdPortfolioLink = forwardRef(function DvdPortfolioLink(
   { item, className, style, children },
@@ -47,8 +48,17 @@ const DvdPortfolioLink = forwardRef(function DvdPortfolioLink(
   )
 })
 
-function BouncingDvdImage({ src, alt, speed, containerRef }) {
-  const { elementRef } = useDvdScreensaver({ speed, containerRef })
+function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef }) {
+  const impactRef = useRef(onImpact)
+  impactRef.current = onImpact
+
+  const { elementRef } = useDvdScreensaver({
+    speed,
+    containerRef,
+    impactCallback: () => impactRef.current(),
+  })
+
+  const currentImg = HOME_DVD_SCREENSAVER_IMAGES[currentImgIdx]
 
   return (
     <div
@@ -57,8 +67,8 @@ function BouncingDvdImage({ src, alt, speed, containerRef }) {
       className="pointer-events-none z-0 select-none opacity-100"
     >
       <img
-        src={src}
-        alt={alt}
+        src={currentImg.src}
+        alt={currentImg.alt}
         draggable={false}
         className="block h-auto w-[clamp(88px,18vw,400px)] max-w-[400px] object-cover"
       />
@@ -94,6 +104,30 @@ export function HomeDvdScreensaverSection() {
 
   const boundsRef = useRef(null)
 
+  const [activeIndices, setActiveIndices] = useState(() =>
+    Array.from({ length: Math.min(MAX_VISIBLE_IMAGES, HOME_DVD_SCREENSAVER_IMAGES.length) }).map((_, i) => i)
+  )
+
+  const handleImpact = useCallback((slotIndex) => {
+    setActiveIndices((prev) => {
+      const newIndices = [...prev]
+      const currentIdx = newIndices[slotIndex]
+      
+      let nextIdx = (currentIdx + 1) % HOME_DVD_SCREENSAVER_IMAGES.length
+      
+      if (HOME_DVD_SCREENSAVER_IMAGES.length > MAX_VISIBLE_IMAGES) {
+        let attempts = 0
+        while (newIndices.includes(nextIdx) && attempts < HOME_DVD_SCREENSAVER_IMAGES.length) {
+          nextIdx = (nextIdx + 1) % HOME_DVD_SCREENSAVER_IMAGES.length
+          attempts++
+        }
+      }
+
+      newIndices[slotIndex] = nextIdx
+      return newIndices
+    })
+  }, [])
+
   return (
     <section
       id="home-dvd-screensaver"
@@ -105,11 +139,11 @@ export function HomeDvdScreensaverSection() {
         className="pointer-events-none absolute inset-0"
         aria-hidden
       />
-      {HOME_DVD_SCREENSAVER_IMAGES.map((img, i) => (
+      {activeIndices.map((imgIdx, i) => (
         <BouncingDvdImage
-          key={img.src}
-          src={img.src}
-          alt={img.alt}
+          key={`dvd-img-${i}`}
+          currentImgIdx={imgIdx}
+          onImpact={() => handleImpact(i)}
           speed={SPEEDS_IMAGE[i] ?? SPEEDS_IMAGE[0]}
           containerRef={boundsRef}
         />
