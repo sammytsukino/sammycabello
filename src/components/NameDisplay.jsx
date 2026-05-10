@@ -234,10 +234,13 @@ export default function NameDisplay({
     lastAutoIndexRef.current = null
   }, [isAuto])
 
+  const isScreensaver = variant === 'screensaver'
+
   const rootClassName = [
     'name-text',
     isFooter ? 'name-text--footer' : '',
     isNavbar ? 'name-text--navbar' : '',
+    isScreensaver ? 'name-text--screensaver' : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -279,6 +282,20 @@ export default function NameDisplay({
 
         .name-text--navbar .char {
           font-size: clamp(1.65rem, 5vw, 3.25rem);
+        }
+
+        .name-text--screensaver {
+          display: inline-flex;
+          align-items: center;
+          line-height: 1;
+        }
+
+        .name-text--screensaver .char {
+          font-size: clamp(6rem, 12vw, 10rem);
+          font-weight: normal;
+          color: #000000;
+          line-height: 1;
+          letter-spacing: 0.04em;
         }
 
         .char {
