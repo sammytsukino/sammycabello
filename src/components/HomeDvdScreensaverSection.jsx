@@ -1,5 +1,5 @@
-import { useDvdScreensaver } from 'react-dvd-screensaver'
-import { forwardRef, useRef, useState, useCallback } from 'react'
+import { useDvdScreensaver } from '../hooks/useDvdScreensaver.js'
+import { forwardRef, useRef, useState, useCallback, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { HOME_DVD_SCREENSAVER_IMAGES } from '../data/homeDvdScreensaverImages.js'
 import { HOME_DVD_SCREENSAVER_LINKS } from '../data/homeDvdScreensaverLinks.js'
@@ -9,6 +9,20 @@ import NameDisplay from './NameDisplay.jsx'
 const SPEEDS_TEXT = [2, 2.35, 2.7]
 const SPEEDS_IMAGE = [1.1, 1.45, 1.8, 2.05]
 const MAX_VISIBLE_IMAGES = 4
+
+const TEXT_POSITIONS = [
+  { x: 0, y: 0 },
+  { x: 1, y: 0 },
+  { x: 0, y: 1 },
+  { x: 1, y: 1 },
+]
+
+const IMAGE_POSITIONS = [
+  { x: 0.5, y: 0 },
+  { x: 0.5, y: 1 },
+  { x: 0, y: 0.5 },
+  { x: 1, y: 0.5 },
+]
 
 const DvdPortfolioLink = forwardRef(function DvdPortfolioLink(
   { item, className, style, children },
@@ -48,13 +62,16 @@ const DvdPortfolioLink = forwardRef(function DvdPortfolioLink(
   )
 })
 
-function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef }) {
+function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef, initialX, initialY, paused }) {
   const impactRef = useRef(onImpact)
   impactRef.current = onImpact
 
   const { elementRef } = useDvdScreensaver({
     speed,
     containerRef,
+    initialX,
+    initialY,
+    paused,
     impactCallback: () => impactRef.current(),
   })
 
@@ -76,11 +93,14 @@ function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef }) {
   )
 }
 
-function BouncingScreensaverLink({ item, speed, containerRef }) {
+function BouncingScreensaverLink({ item, speed, containerRef, initialX, initialY, paused }) {
   const { elementRef } = useDvdScreensaver({
     speed,
     freezeOnHover: true,
     containerRef,
+    initialX,
+    initialY,
+    paused,
   })
 
   return (
@@ -101,8 +121,18 @@ function BouncingScreensaverLink({ item, speed, containerRef }) {
 }
 
 export function HomeDvdScreensaverSection() {
-
   const boundsRef = useRef(null)
+  const sectionRef = useRef(null)
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.1 }
+    )
+    if (sectionRef.current) observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   const [activeIndices, setActiveIndices] = useState(() =>
     Array.from({ length: Math.min(MAX_VISIBLE_IMAGES, HOME_DVD_SCREENSAVER_IMAGES.length) }).map((_, i) => i)
@@ -131,6 +161,7 @@ export function HomeDvdScreensaverSection() {
   return (
     <section
       id="home-dvd-screensaver"
+      ref={sectionRef}
       aria-label="Enlaces del portfolio"
       className="relative isolate h-[100svh] w-full overflow-hidden bg-portfolio-bg"
     >
@@ -139,23 +170,35 @@ export function HomeDvdScreensaverSection() {
         className="pointer-events-none absolute inset-0"
         aria-hidden
       />
-      {activeIndices.map((imgIdx, i) => (
-        <BouncingDvdImage
-          key={`dvd-img-${i}`}
-          currentImgIdx={imgIdx}
-          onImpact={() => handleImpact(i)}
-          speed={SPEEDS_IMAGE[i] ?? SPEEDS_IMAGE[0]}
-          containerRef={boundsRef}
-        />
-      ))}
-      {HOME_DVD_SCREENSAVER_LINKS.map((item, i) => (
-        <BouncingScreensaverLink
-          key={item.sectionId ?? item.to}
-          item={item}
-          speed={SPEEDS_TEXT[i] ?? SPEEDS_TEXT[0]}
-          containerRef={boundsRef}
-        />
-      ))}
+      {activeIndices.map((imgIdx, i) => {
+        const pos = IMAGE_POSITIONS[i % IMAGE_POSITIONS.length]
+        return (
+          <BouncingDvdImage
+            key={`dvd-img-${i}`}
+            currentImgIdx={imgIdx}
+            onImpact={() => handleImpact(i)}
+            speed={SPEEDS_IMAGE[i] ?? SPEEDS_IMAGE[0]}
+            containerRef={boundsRef}
+            initialX={pos.x}
+            initialY={pos.y}
+            paused={!inView}
+          />
+        )
+      })}
+      {HOME_DVD_SCREENSAVER_LINKS.map((item, i) => {
+        const pos = TEXT_POSITIONS[i % TEXT_POSITIONS.length]
+        return (
+          <BouncingScreensaverLink
+            key={item.sectionId ?? item.to}
+            item={item}
+            speed={SPEEDS_TEXT[i] ?? SPEEDS_TEXT[0]}
+            containerRef={boundsRef}
+            initialX={pos.x}
+            initialY={pos.y}
+            paused={!inView}
+          />
+        )
+      })}
     </section>
   )
 }
