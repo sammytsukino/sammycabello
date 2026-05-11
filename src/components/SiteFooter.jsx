@@ -1,11 +1,9 @@
 import NameDisplay from './NameDisplay.jsx'
 
-const LINKEDIN_URL =
-  'https://www.linkedin.com/in/sammycabello/'
+
 const MAIL = 'sammy.cabello.g@gmail.com'
 const HANDLE = 'sammytsukino'
 
-const SOCIAL_COLUMN_COUNT = 3
 
 const FOOTER_NAME_SHIFT = {
   x: '-2rem',
@@ -41,11 +39,7 @@ export default function SiteFooter() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-x-14 gap-y-10 sm:grid-cols-3 sm:justify-items-stretch md:justify-items-start">
-            {Array.from({ length: SOCIAL_COLUMN_COUNT }).map((_, col) => (
-              <SocialColumn key={col} />
-            ))}
-          </div>
+
         </div>
 
         <p className="sr-only">Pie de página: contacto {MAIL}, marca Sammy.</p>
@@ -74,29 +68,6 @@ export default function SiteFooter() {
   )
 }
 
-function SocialColumn() {
-  return (
-    <div className="min-w-0 font-editorial">
-      <p className="m-0 text-[clamp(0.65rem,0.85vw,0.75rem)] uppercase tracking-[0.28em] text-neutral-800">
-        Social
-      </p>
-      <nav className="mt-5 flex flex-col gap-7 border-t border-neutral-950 pt-[1rem] text-[clamp(0.8rem,0.95vw,0.9375rem)] leading-snug lowercase tracking-normal">
-        <FooterLink href={LINKEDIN_URL} label="linkedin.com/sammycabello" />
-        <FooterLink href={LINKEDIN_URL} label="linkedin.com/sammycabello" />
-      </nav>
-    </div>
-  )
-}
 
-function FooterLink({ href, label }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer noopener"
-      className="break-all text-inherit underline decoration-neutral-950/30 underline-offset-[3px] transition-colors hover:decoration-neutral-950"
-    >
-      {label}
-    </a>
-  )
-}
+
+

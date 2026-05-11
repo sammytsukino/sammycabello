@@ -322,7 +322,7 @@ export function HomeInteractiveGallerySection() {
         id="home-gallery"
         ref={pinRef}
         aria-label="Galería interactiva"
-        className="relative isolate w-full overflow-hidden bg-portfolio-lime"
+        className="relative isolate w-full overflow-hidden bg-portfolio-bg"
       >
 
 

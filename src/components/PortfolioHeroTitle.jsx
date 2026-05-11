@@ -13,16 +13,6 @@ export function PortfolioHeroTitle() {
         }}
       >
         <span className="relative z-[1] whitespace-nowrap">Portfolio 2026</span>
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute right-0 z-20 bg-portfolio-lime"
-          style={{
-            top: '50%',
-            width: '2ch',
-            height: '0.3em',
-            transform: 'translateY(-100%)',
-          }}
-        />
       </h1>
     </div>
   )
