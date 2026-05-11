@@ -1,5 +1,12 @@
 import { useDvdScreensaver } from '../hooks/useDvdScreensaver.js'
-import { forwardRef, useRef, useState, useCallback, useEffect } from 'react'
+import {
+  forwardRef,
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+  useSyncExternalStore,
+} from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { HOME_DVD_SCREENSAVER_IMAGES } from '../data/homeDvdScreensaverImages.js'
 import { HOME_DVD_SCREENSAVER_LINKS } from '../data/homeDvdScreensaverLinks.js'
@@ -23,6 +30,18 @@ const IMAGE_POSITIONS = [
   { x: 0, y: 0.5 },
   { x: 1, y: 0.5 },
 ]
+
+function useLgUp() {
+  return useSyncExternalStore(
+    (onStoreChange) => {
+      const mq = window.matchMedia('(min-width: 64rem)')
+      mq.addEventListener('change', onStoreChange)
+      return () => mq.removeEventListener('change', onStoreChange)
+    },
+    () => window.matchMedia('(min-width: 64rem)').matches,
+    () => false,
+  )
+}
 
 const DvdPortfolioLink = forwardRef(function DvdPortfolioLink(
   { item, className, style, children, onPointerEnter, onPointerLeave },
@@ -73,7 +92,9 @@ const DvdPortfolioLink = forwardRef(function DvdPortfolioLink(
 
 function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef, initialX, initialY, paused }) {
   const impactRef = useRef(onImpact)
-  impactRef.current = onImpact
+  useEffect(() => {
+    impactRef.current = onImpact
+  }, [onImpact])
 
   const { elementRef } = useDvdScreensaver({
     speed,
@@ -96,7 +117,11 @@ function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef, initia
         src={currentImg.src}
         alt={currentImg.alt}
         draggable={false}
-        className="block h-auto w-[clamp(88px,18vw,400px)] max-w-[400px] object-cover"
+        className={
+          `block h-auto object-cover ` +
+          `w-[clamp(176px,min(74vw,50vh),704px)] max-w-[min(60vw,400px)] ` +
+          `lg:w-[clamp(220px,min(92vw,62vh),880px)] lg:max-w-[min(96vw,880px)]`
+        }
       />
     </div>
   )
@@ -141,7 +166,7 @@ function BouncingScreensaverLink({
         position: 'absolute',
         top: 0,
         left: 0,
-        opacity: pausedByGroup ? 0.1 : 1,
+        opacity: pausedByGroup ? 0.2 : 1,
         transition: 'opacity 0.2s ease',
       }}
       className={
@@ -159,6 +184,40 @@ function BouncingScreensaverLink({
   )
 }
 
+function DvdStaticLinksColumn({ items }) {
+  return (
+    <nav
+      className="pointer-events-none absolute inset-0 z-[35] flex flex-col items-center justify-center px-site-x py-[max(1rem,env(safe-area-inset-bottom))]"
+      aria-label="Enlaces del portfolio"
+    >
+      <ul className="pointer-events-auto m-0 flex list-none flex-col items-center gap-[clamp(2rem,7svh,4rem)] p-0">
+        {items.map((item) => {
+          const key = item.sectionId ?? item.to
+          return (
+            <li key={key} className="flex w-full max-w-[min(100%,42rem)] justify-center">
+              <DvdPortfolioLink
+                item={item}
+                className={
+                  `text-inherit no-underline transition-opacity duration-200 ` +
+                  `hover:opacity-[0.88] ` +
+                  `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950/35`
+                }
+              >
+                <NameDisplay
+                  variant="screensaverColumn"
+                  text={item.label}
+                  trigger="hover"
+                  accent="alternate"
+                />
+              </DvdPortfolioLink>
+            </li>
+          )
+        })}
+      </ul>
+    </nav>
+  )
+}
+
 function DvdCursorPill({ children }) {
   return (
     <span
@@ -166,7 +225,8 @@ function DvdCursorPill({ children }) {
         `origin-top-left box-border inline-flex w-max max-w-[min(92vw,calc(100vw-2rem))] ` +
         `items-center justify-center rounded-full border-2 border-solid border-black ` +
         `bg-portfolio-bg px-[clamp(0.4rem,0.95vw,0.65rem)] py-[clamp(0.48rem,1.2vw,0.78rem)] ` +
-        `text-center font-sans text-[clamp(0.88rem,2.5vw,1.2rem)] font-medium ` +
+        `text-center font-sans text-[clamp(0.72rem,3.2vw,1.05rem)] font-medium ` +
+        `sm:text-[clamp(0.88rem,2.5vw,1.2rem)] ` +
         `leading-tight tracking-normal text-black text-balance`
       }
     >
@@ -176,6 +236,7 @@ function DvdCursorPill({ children }) {
 }
 
 export function HomeDvdScreensaverSection() {
+  const lgUp = useLgUp()
   const boundsRef = useRef(null)
   const sectionRef = useRef(null)
   const [inView, setInView] = useState(false)
@@ -245,6 +306,10 @@ export function HomeDvdScreensaverSection() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!lgUp) setFrozenLinkKey(null)
+  }, [lgUp])
+
   const handleImpact = useCallback((slotIndex) => {
     setActiveIndices((prev) => {
       const newIndices = [...prev]
@@ -274,7 +339,7 @@ export function HomeDvdScreensaverSection() {
       onMouseLeave={handleSectionMouseLeave}
       className="relative isolate h-[100svh] w-full bg-portfolio-bg"
     >
-      {finePointer && cursorPt != null ? (
+      {lgUp && finePointer && cursorPt != null ? (
         <div
           className="pointer-events-none absolute z-[60] select-none"
           style={{
@@ -307,25 +372,28 @@ export function HomeDvdScreensaverSection() {
           />
         )
       })}
-      {HOME_DVD_SCREENSAVER_LINKS.map((item, i) => {
-        const pos = TEXT_POSITIONS[i % TEXT_POSITIONS.length]
-        const linkKey = item.sectionId ?? item.to
-        return (
-          <BouncingScreensaverLink
-            key={linkKey}
-            item={item}
-            speed={SPEEDS_TEXT[i] ?? SPEEDS_TEXT[0]}
-            containerRef={boundsRef}
-            initialX={pos.x}
-            initialY={pos.y}
-            paused={!inView}
-            linkKey={linkKey}
-            frozenLinkKey={frozenLinkKey}
-            onLinkPointerEnter={() => setFrozenLinkKeyImmediate(linkKey)}
-            onLinkPointerLeave={clearFrozenLinkSoon}
-          />
-        )
-      })}
+      {lgUp
+        ? HOME_DVD_SCREENSAVER_LINKS.map((item, i) => {
+            const pos = TEXT_POSITIONS[i % TEXT_POSITIONS.length]
+            const linkKey = item.sectionId ?? item.to
+            return (
+              <BouncingScreensaverLink
+                key={linkKey}
+                item={item}
+                speed={SPEEDS_TEXT[i] ?? SPEEDS_TEXT[0]}
+                containerRef={boundsRef}
+                initialX={pos.x}
+                initialY={pos.y}
+                paused={!inView}
+                linkKey={linkKey}
+                frozenLinkKey={frozenLinkKey}
+                onLinkPointerEnter={() => setFrozenLinkKeyImmediate(linkKey)}
+                onLinkPointerLeave={clearFrozenLinkSoon}
+              />
+            )
+          })
+        : null}
+      {!lgUp ? <DvdStaticLinksColumn items={HOME_DVD_SCREENSAVER_LINKS} /> : null}
     </section>
   )
 }

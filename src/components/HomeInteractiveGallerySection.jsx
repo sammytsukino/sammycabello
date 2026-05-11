@@ -21,7 +21,9 @@ function clamp(n, a, b) {
 
 const ST_ID = 'home-gallery-horizontal'
 const GALLERY_SLIDE_FRAME_CLASS =
-  'relative flex h-[clamp(340px,min(74svh,82vh),860px)] w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] max-w-[min(94vw,calc(min(74svh,82vh)*0.85))] shrink-0 items-center justify-center overflow-hidden p-0'
+  'relative flex h-[min(52svh,440px)] w-[min(90vw,320px)] max-w-[94vw] shrink-0 items-center justify-center overflow-hidden p-0 ' +
+  'sm:h-[min(58svh,520px)] sm:w-[min(88vw,380px)] ' +
+  'lg:h-[clamp(340px,min(74svh,82vh),860px)] lg:w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] lg:max-w-[min(94vw,calc(min(74svh,82vh)*0.85))]'
 
 const DEFAULT_GALLERY_INTRO_TEXT = 'a taste of my work →'
 const DEFAULT_GALLERY_OUTRO_TEXT = 'hungry for more? ↴'
@@ -30,8 +32,9 @@ function GalleryTextPill({ children, className = '' }) {
     <span
       className={
         `box-border inline-flex max-w-[min(100%,calc(100%-0.5rem))] items-center justify-center ` +
-        `px-[clamp(1rem,3.2vw,1.75rem)] py-[clamp(0.5rem,1.25vw,0.8rem)] ` +
-        `text-center font-editorial text-[clamp(6.05rem,10.6vw,7.65rem)] font-medium lowercase ` +
+        `px-[clamp(0.75rem,3vw,1.75rem)] py-[clamp(0.45rem,1.2vw,0.8rem)] ` +
+        `text-center font-editorial text-[clamp(2rem,9.5vw,3.75rem)] font-medium lowercase ` +
+        `sm:text-[clamp(2.75rem,8.5vw,5.5rem)] lg:text-[clamp(6.05rem,10.6vw,7.65rem)] ` +
         `leading-[1.08] tracking-normal text-black [text-wrap:balance] ` +
         className
       }
@@ -419,7 +422,7 @@ export function HomeInteractiveGallerySection({
         >
           <div
             ref={trackRef}
-            className="flex shrink-0 cursor-default items-center gap-10 pl-[clamp(2rem,12vw,24vw)] pr-[clamp(1.25rem,12vw,18vw)] will-change-transform"
+            className="flex shrink-0 cursor-default items-center gap-6 pl-[clamp(1rem,7vw,14vw)] pr-[clamp(0.75rem,6vw,12vw)] will-change-transform sm:gap-8 sm:pl-[clamp(1.25rem,9vw,18vw)] sm:pr-[clamp(1rem,8vw,14vw)] lg:gap-10 lg:pl-[clamp(2rem,12vw,24vw)] lg:pr-[clamp(1.25rem,12vw,18vw)]"
           >
             <div
               ref={(el) => {
@@ -457,7 +460,14 @@ export function HomeInteractiveGallerySection({
                   >
                     <div
                       data-gallery-poster
-                      className="relative h-[clamp(340px,min(74svh,82vh),860px)] w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] max-w-[min(94vw,calc(min(74svh,82vh)*0.85))] cursor-pointer overflow-hidden shadow-[inset_0_0_0_0.5px_rgba(240,237,228,0.1)] after:pointer-events-none after:absolute after:inset-0 after:border after:border-solid after:border-[rgba(240,237,228,0.1)] after:transition-colors after:duration-300 hover:after:border-[rgba(240,237,228,0.35)]"
+                      className={
+                        'relative cursor-pointer overflow-hidden shadow-[inset_0_0_0_0.5px_rgba(240,237,228,0.1)] ' +
+                        'after:pointer-events-none after:absolute after:inset-0 after:border after:border-solid after:border-[rgba(240,237,228,0.1)] ' +
+                        'after:transition-colors after:duration-300 hover:after:border-[rgba(240,237,228,0.35)] ' +
+                        'h-[min(52svh,440px)] w-[min(90vw,320px)] max-w-[94vw] ' +
+                        'sm:h-[min(58svh,520px)] sm:w-[min(88vw,380px)] ' +
+                        'lg:h-[clamp(340px,min(74svh,82vh),860px)] lg:w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] lg:max-w-[min(94vw,calc(min(74svh,82vh)*0.85))]'
+                      }
                     >
                       <img
                         data-gallery-slide-img
@@ -503,7 +513,7 @@ export function HomeInteractiveGallerySection({
       >
         {focusActive ? (
           <>
-            <div className="pointer-events-none fixed inset-x-0 top-[4.75rem] z-[230] flex justify-end px-8 md:right-0 md:top-[5.5rem] md:px-10">
+            <div className="pointer-events-none fixed inset-x-0 top-[4.75rem] z-[230] flex justify-end px-6 sm:px-8 lg:right-0 lg:top-[5.5rem] lg:px-10">
               <button
                 type="button"
                 aria-label="Cerrar"
@@ -529,10 +539,10 @@ export function HomeInteractiveGallerySection({
               </button>
             </div>
 
-            <div className="pointer-events-none fixed inset-x-0 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-[230] flex justify-end px-8 md:bottom-10 md:px-10">
+            <div className="pointer-events-none fixed inset-x-0 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-[230] flex justify-end px-6 sm:px-8 lg:bottom-10 lg:px-10">
               <button
                 type="button"
-                className="pointer-events-auto max-w-[calc(100vw-4rem)] cursor-pointer border border-[rgba(240,237,228,0.25)] px-5 py-3 text-center font-mono text-[10px] uppercase leading-tight tracking-[0.16em] text-[#f0ede4] transition-colors hover:bg-[rgba(240,237,228,0.08)] md:max-w-[min(20rem,calc(100vw-5rem))]"
+                className="pointer-events-auto max-w-[calc(100vw-3rem)] cursor-pointer border border-[rgba(240,237,228,0.25)] px-4 py-2.5 text-center font-mono text-[9px] uppercase leading-tight tracking-[0.16em] text-[#f0ede4] transition-colors hover:bg-[rgba(240,237,228,0.08)] sm:px-5 sm:py-3 sm:text-[10px] lg:max-w-[min(20rem,calc(100vw-5rem))]"
                 onClick={(e) => {
                   e.stopPropagation()
                   goToPieceInGallery()

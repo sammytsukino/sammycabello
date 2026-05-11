@@ -16,7 +16,7 @@ function HeroContinuarControl() {
 
 export function HomeHeroSection() {
   return (
-    <div className="relative flex h-[calc(100svh-50px)] min-h-[calc(100svh-50px)] w-full shrink-0 flex-col bg-portfolio-bg [view-transition-name:hero]">
+    <div className="relative flex h-[calc(100svh-50px)] min-h-[calc(100svh-50px)] w-full shrink-0 flex-col bg-portfolio-bg px-site-x [view-transition-name:hero]">
       <div className="flex min-h-[min(14vw,18vh)] w-full shrink-0 items-center justify-center overflow-visible py-[clamp(0.75vw,2vw,1rem)]">
         <NameDisplay/>
       </div>

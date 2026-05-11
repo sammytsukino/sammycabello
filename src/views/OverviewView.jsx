@@ -20,7 +20,7 @@ const GRID_ITEMS_BY_ID = new Map(GRID_ITEMS.map((item) => [item.id, item]))
 export function OverviewView() {
   return (
     <main className="min-h-svh w-full overflow-x-hidden bg-portfolio-bg text-black md:h-svh md:overflow-hidden">
-      <section className="flex h-[5vh] min-h-11 items-center border-b border-black/35 px-3 sm:px-6 md:px-10">
+      <section className="flex h-[5vh] min-h-11 items-center border-b border-black/35 px-site-x lg:px-10">
         <div className="relative h-9 w-[11.9rem] flex-none overflow-visible sm:w-[12rem] md:h-6 md:w-[24rem]">
           <div className="absolute left-0 top-1/2 origin-left -translate-y-1/2 scale-[0.64] sm:scale-[0.46] md:scale-[0.56]">
             <NameDisplay trigger="auto" autoIntervalMs={800} />
@@ -42,7 +42,7 @@ export function OverviewView() {
         <div className="ml-3 text-[0.72rem] sm:ml-5 md:ml-8 md:text-[0.9rem]">04</div>
       </section>
 
-      <section className="min-h-[108vh] px-3 pb-4 pt-3 sm:px-6 md:h-[75vh] md:min-h-0 md:px-10">
+      <section className="min-h-[108vh] px-site-x pb-4 pt-3 md:h-[75vh] md:min-h-0 lg:px-10">
         <div className="grid grid-cols-3 grid-rows-[repeat(10,minmax(6.2rem,auto))] gap-x-2 gap-y-4 sm:gap-x-3 sm:gap-y-6 md:h-full md:grid-cols-10 md:grid-rows-3 md:gap-y-8">
           {Array.from({ length: 30 }, (_, idx) => {
             const slotId = idx + 1
@@ -70,7 +70,7 @@ export function OverviewView() {
         </div>
       </section>
 
-      <footer className="flex h-[20vh] min-h-24 items-end justify-center px-4 pb-3 sm:px-6 md:px-10 md:pb-6">
+      <footer className="flex h-[20vh] min-h-24 items-end justify-center px-site-x pb-3 lg:px-10 lg:pb-6">
         <p className="max-w-[24ch] text-center font-editorial text-[clamp(1.4rem,7.2vw,3rem)] uppercase leading-[0.95] tracking-[0.02em] md:max-w-none md:whitespace-nowrap md:text-[4.3rem]">
           "This is a placeholder for the footer text."
         </p>

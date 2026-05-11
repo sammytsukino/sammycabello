@@ -16,9 +16,9 @@ export default function SiteFooter() {
       className="w-full min-w-0 shrink-0 border-t border-neutral-950/25 bg-portfolio-bg text-black"
       aria-label="Pie de página"
     >
-      <div className="mx-auto w-full max-w-[90rem] px-[clamp(1.25rem,5vw,3.5rem)] pb-[clamp(1.75rem,min(8vw),3.5rem)] pt-[clamp(2.75rem,min(10vw),6rem)]">
-        <div className="grid gap-14 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:items-start md:gap-20 xl:gap-28">
-          <div className="font-editorial text-[clamp(0.875rem,1.05vw,1rem)] leading-[1.45] tracking-[0.01em]">
+      <div className="mx-auto w-full max-w-[90rem] px-site-x pb-[clamp(1.75rem,min(8vw),3.5rem)] pt-[clamp(2.25rem,min(8vw),6rem)] lg:px-[clamp(1.25rem,5vw,3.5rem)] lg:pt-[clamp(2.75rem,min(10vw),6rem)]">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-start lg:gap-20 xl:gap-28">
+          <div className="font-editorial text-[clamp(0.9rem,calc(0.35rem+2.2vw),1rem)] leading-[1.45] tracking-[0.01em] lg:text-[clamp(0.875rem,1.05vw,1rem)]">
             <p className="m-0">
               <a
                 href={`https://instagram.com/${HANDLE.replace('@', '')}`}
@@ -55,7 +55,7 @@ export default function SiteFooter() {
         }}
       >
         <div
-          className="absolute left-0 pl-[clamp(1.25rem,5vw,3.5rem)]"
+          className="absolute left-0 pl-site-x lg:pl-[clamp(1.25rem,5vw,3.5rem)]"
           style={{
             bottom: 'calc(0px - var(--sf-name-shift-y, 0px))',
             transform: 'translateX(var(--sf-name-shift-x, 0px))',

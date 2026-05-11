@@ -24,7 +24,7 @@ export function HomeContactSection() {
     <section
       id="home-contact"
       aria-labelledby="home-contact-heading"
-      className="relative isolate overflow-hidden bg-portfolio-lime px-[clamp(1rem,4vw,2rem)] py-[clamp(4.5rem,14vh,8.5rem)]"
+      className="relative isolate overflow-hidden bg-portfolio-lime px-site-x py-site-y-loose max-lg:py-site-y-tight"
     >
       <div
         aria-hidden
@@ -34,12 +34,10 @@ export function HomeContactSection() {
       </div>
 
       <div className="relative mx-auto w-full max-w-[90rem]">
-
-
-        <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between md:gap-8">
+        <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
           <h2
             id="home-contact-heading"
-            className="m-0 max-w-[15ch] font-editorial text-[clamp(2.25rem,6.5vw,4.75rem)] font-normal leading-[0.95] tracking-[-0.02em] text-black"
+            className="m-0 max-w-[min(100%,15ch)] font-editorial text-[clamp(1.85rem,calc(5.5vw+0.25rem),4.75rem)] font-normal leading-[0.95] tracking-[-0.02em] text-black lg:max-w-[15ch] lg:text-[clamp(2.25rem,6.5vw,4.75rem)]"
           >
             Escribe algo
             <span className="font-mono text-[0.35em] align-super tracking-normal">
@@ -53,10 +51,10 @@ export function HomeContactSection() {
 
         <form
           onSubmit={handleSubmit}
-          className="mt-[clamp(2.5rem,6vh,3.75rem)] max-w-[min(100%,42rem)] p-[clamp(1.25rem,3.5vw,2rem)]backdrop-blur-[2px] md:-rotate-[0.2deg]"
+          className="mt-[clamp(2.5rem,6vh,3.75rem)] max-w-[min(100%,42rem)] p-[clamp(1.25rem,3.5vw,2rem)] backdrop-blur-[2px] lg:-rotate-[0.2deg]"
         >
           <div className="grid gap-[clamp(1.25rem,3vh,1.75rem)]">
-            <div className="grid gap-2 md:grid-cols-[1fr_1.1fr] md:gap-x-6">
+            <div className="grid gap-2 lg:grid-cols-[1fr_1.1fr] lg:gap-x-6">
               <div className="grid gap-1.5">
                 <label
                   htmlFor="home-contact-name"
@@ -70,10 +68,10 @@ export function HomeContactSection() {
                   type="text"
                   autoComplete="name"
                   placeholder="tu nombre o alias"
-                  className="w-full border-2 border-black bg-white/90 px-3 py-2.5 font-editorial text-[clamp(1rem,1.2vw,1.15rem)] text-black placeholder:text-black/35 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20"
+                  className="w-full border-2 border-black bg-white/90 px-3 py-2.5 font-editorial text-[clamp(1rem,2.8vw,1.15rem)] text-black placeholder:text-black/35 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20"
                 />
               </div>
-              <div className="grid gap-1.5 md:mt-3">
+              <div className="grid gap-1.5 lg:mt-3">
                 <label
                   htmlFor="home-contact-email"
                   className="font-mono text-[10px] uppercase tracking-[0.22em] text-black/80"
@@ -87,7 +85,7 @@ export function HomeContactSection() {
                   required
                   autoComplete="email"
                   placeholder="para poder responderte"
-                  className="w-full border-2 border-black bg-white/90 px-3 py-2.5 font-editorial text-[clamp(1rem,1.2vw,1.15rem)] text-black placeholder:text-black/35 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20"
+                  className="w-full border-2 border-black bg-white/90 px-3 py-2.5 font-editorial text-[clamp(1rem,2.8vw,1.15rem)] text-black placeholder:text-black/35 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20"
                 />
               </div>
             </div>
@@ -105,11 +103,11 @@ export function HomeContactSection() {
                 required
                 rows={5}
                 placeholder="Ideas, fechas, presupuesto, moodboard, chisme tipográfico…"
-                className="min-h-[9rem] w-full resize-y border-2 border-black bg-white/90 px-3 py-2.5 font-editorial text-[clamp(1rem,1.2vw,1.15rem)] leading-relaxed text-black placeholder:text-black/35 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20"
+                className="min-h-[9rem] w-full resize-y border-2 border-black bg-white/90 px-3 py-2.5 font-editorial text-[clamp(1rem,2.8vw,1.15rem)] leading-relaxed text-black placeholder:text-black/35 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/20"
               />
             </div>
 
-            <div className="flex flex-col items-start gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+            <div className="flex flex-col items-start gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between sm:gap-6 lg:gap-8">
               <button
                 type="submit"
                 className="border-2 border-black bg-black px-8 py-3 font-mono text-[10px] lowercase tracking-[0.24em] text-portfolio-lime transition-colors hover:bg-transparent hover:text-black"

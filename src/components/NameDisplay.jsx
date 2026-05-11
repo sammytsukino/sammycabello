@@ -113,6 +113,7 @@ export default function NameDisplay({
   const isFooter = variant === 'footer'
   const isNavbar = variant === 'navbar'
   const isScreensaver = variant === 'screensaver'
+  const isScreensaverColumn = variant === 'screensaverColumn'
   const isAuto = trigger === 'auto'
   const footerSammyExtras = isFooter && text === DEFAULT_NAME
 
@@ -144,8 +145,18 @@ export default function NameDisplay({
       }
     })
     setAlternateMap(map)
-    setCursorStyle(isScreensaver ? 'pointer' : fixedDingbatCursor())
-  }, [footerSammyExtras, isAuto, isFooter, isScreensaver, resolvedAccent, text])
+    setCursorStyle(
+      isScreensaver || isScreensaverColumn ? 'pointer' : fixedDingbatCursor(),
+    )
+  }, [
+    footerSammyExtras,
+    isAuto,
+    isFooter,
+    isScreensaver,
+    isScreensaverColumn,
+    resolvedAccent,
+    text,
+  ])
 
   const handleMouseLeave = useCallback(() => {
     if (isAuto) return
@@ -239,6 +250,7 @@ export default function NameDisplay({
     isFooter ? 'name-text--footer' : '',
     isNavbar ? 'name-text--navbar' : '',
     isScreensaver ? 'name-text--screensaver' : '',
+    isScreensaverColumn ? 'name-text--screensaver-column' : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -289,11 +301,38 @@ export default function NameDisplay({
         }
 
         .name-text--screensaver .char {
-          font-size: clamp(6rem, 12vw, 10rem);
+          font-size: clamp(1.65rem, 7.5vw, 3.5rem);
           font-weight: normal;
           color: #000000;
           line-height: 1;
           letter-spacing: 0.04em;
+        }
+
+        @media (min-width: 64rem) {
+          .name-text--screensaver .char {
+            font-size: clamp(6rem, 12vw, 10rem);
+          }
+        }
+
+        .name-text--screensaver-column {
+          display: inline-flex;
+          align-items: center;
+          line-height: 1;
+        }
+
+        .name-text--screensaver-column .char {
+          font-family: EditorialNew, ui-serif, Georgia, 'Times New Roman', serif;
+          font-size: clamp(2.5rem, 10vw, 4.75rem);
+          font-weight: normal;
+          color: #000000;
+          line-height: 1;
+          letter-spacing: 0.04em;
+        }
+
+        @media (min-width: 64rem) {
+          .name-text--screensaver-column .char {
+            font-size: clamp(4.25rem, 6.5vw, 8.5rem);
+          }
         }
 
         .char {

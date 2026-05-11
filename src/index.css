@@ -9,6 +9,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: EditorialNew;
+  src: url('./assets/EditorialNew-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-portfolio-bg: #ebebeb;
   --color-portfolio-lime: #4ef967;
@@ -21,6 +29,20 @@
 
   --font-editorial:
     LocomotiveNew, ui-serif, Georgia, 'Times New Roman', serif;
+
+  --font-editorial-new:
+    EditorialNew, ui-serif, Georgia, 'Times New Roman', serif;
+
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+
+  --spacing-site-x: clamp(1rem, 4.5vw, 2.5rem);
+  --spacing-site-y-tight: clamp(2.5rem, 7svh, 4.25rem);
+  --spacing-site-y-loose: clamp(3.25rem, 11svh, 8.5rem);
 }
 
 @layer base {
