@@ -13,6 +13,12 @@ function accentColorAt(accent, alternatingIndex) {
   return ALTERNATE_COLORS[alternatingIndex % ALTERNATE_COLORS.length]
 }
 
+
+function hoverGlyphColor(isHero, accent, alternatingIndex) {
+  if (isHero) return '#000000'
+  return accentColorAt(accent, alternatingIndex)
+}
+
 const HOVER_CURSOR_DINGBAT = String.fromCodePoint(0x2729)
 const AUTO_DEFAULT_INTERVAL_MS = 500
 
@@ -112,6 +118,7 @@ export default function NameDisplay({
 
   const isFooter = variant === 'footer'
   const isNavbar = variant === 'navbar'
+  const isHero = variant === 'hero'
   const isScreensaver = variant === 'screensaver'
   const isScreensaverColumn = variant === 'screensaverColumn'
   const isAuto = trigger === 'auto'
@@ -141,7 +148,7 @@ export default function NameDisplay({
     ordered.forEach((idx, pos) => {
       map[idx] = {
         ss: randomSS(),
-        color: accentColorAt(resolvedAccent, pos),
+        color: hoverGlyphColor(isHero, resolvedAccent, pos),
       }
     })
     setAlternateMap(map)
@@ -152,6 +159,7 @@ export default function NameDisplay({
     footerSammyExtras,
     isAuto,
     isFooter,
+    isHero,
     isScreensaver,
     isScreensaverColumn,
     resolvedAccent,
@@ -187,7 +195,10 @@ export default function NameDisplay({
         const alreadyActive = Object.prototype.hasOwnProperty.call(next, idx)
         next[idx] = alreadyActive
           ? { ...next[idx], ss: randomSS() }
-          : { ss: randomSS(), color: accentColorAt(resolvedAccent, 0) }
+          : {
+              ss: randomSS(),
+              color: hoverGlyphColor(isHero, resolvedAccent, 0),
+            }
 
         autoOrderRef.current = [...autoOrderRef.current.filter((k) => k !== idx), idx]
         while (autoOrderRef.current.length > maxActive) {
@@ -213,7 +224,7 @@ export default function NameDisplay({
           if (!entry) continue
           withAlternatingColors[k] = {
             ss: entry.ss,
-            color: accentColorAt(resolvedAccent, p),
+            color: hoverGlyphColor(isHero, resolvedAccent, p),
           }
         }
 
@@ -230,6 +241,7 @@ export default function NameDisplay({
     eligibleIndices,
     isAuto,
     isFooter,
+    isHero,
     resolvedAccent,
     text,
   ])
@@ -251,6 +263,7 @@ export default function NameDisplay({
     isNavbar ? 'name-text--navbar' : '',
     isScreensaver ? 'name-text--screensaver' : '',
     isScreensaverColumn ? 'name-text--screensaver-column' : '',
+    isHero ? 'name-text--hero' : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -292,6 +305,10 @@ export default function NameDisplay({
 
         .name-text--navbar .char {
           font-size: clamp(1.65rem, 5vw, 3.25rem);
+        }
+
+        .name-text--hero .char {
+          color: #000000;
         }
 
         .name-text--screensaver {

@@ -4,6 +4,7 @@ import { HomeContactSection } from '../components/HomeContactSection.jsx'
 import { HomeDvdScreensaverSection } from '../components/HomeDvdScreensaverSection.jsx'
 import { HomeInteractiveGallerySection } from '../components/HomeInteractiveGallerySection.jsx'
 import { HomeHeroSection } from '../components/HomeHeroSection.jsx'
+import { HomePageScrollBackdrop } from '../components/HomePageScrollBackdrop.jsx'
 import { PostHeroSection } from '../components/PostHeroSection.jsx'
 import { scrollToIdWithTransition } from '../lib/scrollWithViewTransition.js'
 
@@ -19,12 +20,15 @@ export function HomeView() {
   }, [pathname, hash])
 
   return (
-    <main className="min-h-svh min-w-0 bg-portfolio-bg">
-      <HomeHeroSection />
-      <PostHeroSection />
-      <HomeInteractiveGallerySection />
-      <HomeDvdScreensaverSection />
-      <HomeContactSection />
-    </main>
+    <>
+      <HomePageScrollBackdrop />
+      <main className="relative z-10 min-h-svh min-w-0 bg-transparent">
+        <HomeHeroSection />
+        <PostHeroSection />
+        <HomeInteractiveGallerySection />
+        <HomeDvdScreensaverSection />
+        <HomeContactSection />
+      </main>
+    </>
   )
 }

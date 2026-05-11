@@ -1,6 +1,6 @@
 const WORK_TILES = [
   { accent: 'bg-portfolio-lime', caption: 'Proyecto destacado 1' },
-  { accent: 'bg-portfolio-pink', caption: 'Proyecto destacado 2' },
+  { accent: 'bg-portfolio-lime', caption: 'Proyecto destacado 2' },
   { accent: 'bg-portfolio-lime', caption: 'Proyecto destacado 3' },
 ]
 

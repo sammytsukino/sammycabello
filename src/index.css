@@ -48,6 +48,7 @@
 @layer base {
   :root {
     font-family: var(--font-sans);
+    --page-background-color-transition-time: 0.8s;
   }
 
   html {

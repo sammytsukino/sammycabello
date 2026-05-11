@@ -3,7 +3,7 @@ export function PostHeroSection() {
     <section
       id="post-hero"
       aria-label="Contenido principal"
-      className="relative min-h-0 bg-portfolio-pink px-site-x py-site-y-tight [view-transition-name:post-hero] lg:min-h-[min(120vh,1400px)] lg:py-site-y-loose"
+      className="relative min-h-0 bg-transparent px-site-x py-site-y-tight [view-transition-name:post-hero] lg:min-h-[min(120vh,1400px)] lg:py-site-y-loose"
     >
       <div className="mx-auto flex min-h-0 w-full max-w-[120rem] flex-col items-center justify-center gap-[clamp(2rem,5svh,5rem)] lg:min-h-[calc(120vh-clamp(8rem,28vh,16rem))]">
         <p className="m-0 max-w-[100rem] text-center font-editorial text-[clamp(1.7rem,calc(4.5vw+0.35rem),5rem)] leading-[1.12] tracking-[-0.01em] text-black lg:text-[clamp(3rem,4vw,5rem)] lg:leading-[1.1]">

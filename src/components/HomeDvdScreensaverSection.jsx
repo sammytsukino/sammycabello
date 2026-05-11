@@ -337,7 +337,7 @@ export function HomeDvdScreensaverSection() {
       aria-label="Enlaces del portfolio"
       onMouseMove={handleSectionMouseMove}
       onMouseLeave={handleSectionMouseLeave}
-      className="relative isolate h-[100svh] w-full bg-portfolio-bg"
+      className="relative isolate h-[100svh] w-full bg-transparent"
     >
       {lgUp && finePointer && cursorPt != null ? (
         <div

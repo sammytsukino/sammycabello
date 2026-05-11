@@ -24,11 +24,11 @@ export function HomeContactSection() {
     <section
       id="home-contact"
       aria-labelledby="home-contact-heading"
-      className="relative isolate overflow-hidden bg-portfolio-lime px-site-x py-site-y-loose max-lg:py-site-y-tight"
+      className="relative isolate overflow-hidden bg-transparent px-site-x py-site-y-loose max-lg:py-site-y-tight"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-[8%] top-[12%] select-none font-editorial text-[clamp(4rem,18vw,14rem)] font-normal leading-none text-black/[0.07]"
+        className="pointer-events-none absolute -right-[8%] top-[12%] z-0 select-none font-editorial text-[clamp(4rem,18vw,14rem)] font-normal leading-none text-black/[0.07]"
       >
         ✶
       </div>
