@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 @font-face {
@@ -13,11 +14,20 @@
   --color-portfolio-lime: #4ef967;
   --color-portfolio-pink: #ff5fc6;
 
+  --font-sans:
+    'Google Sans', ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', 'Liberation Sans', sans-serif;
+
   --font-editorial:
     LocomotiveNew, ui-serif, Georgia, 'Times New Roman', serif;
 }
 
 @layer base {
+  :root {
+    font-family: var(--font-sans);
+  }
+
   html {
     scroll-behavior: smooth;
     background-color: var(--color-portfolio-bg);
@@ -44,7 +54,6 @@
     background-color: var(--color-portfolio-bg);
   }
 
-  /* Botones con radio máximo (pills) — coherencia en el portfolio */
   button {
     border-radius: 9999px;
   }

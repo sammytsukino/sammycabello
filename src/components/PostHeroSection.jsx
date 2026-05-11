@@ -25,7 +25,8 @@ export function PostHeroSection() {
             className="mx-auto aspect-4/3 w-full max-w-[2000px] bg-black"
           />
 
-          <p className="m-0 text-right font-editorial text-[clamp(1.15rem,1.7vw,1.95rem)] leading-[1.15] text-black md:text-right break-words">
+<p className="m-0 text-right font-editorial text-[clamp(2rem,2.7vw,3rem)] leading-[1.15] text-black md:text-right break-words">
+
             Yet simple, clean and effective.
           </p>
         </div>

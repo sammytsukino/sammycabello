@@ -7,7 +7,6 @@ const CONFIRMED_STYLISTIC_SETS = ['ss01', 'ss02', 'ss03', 'ss04', 'ss05']
 const STYLE_VARIANTS = [null, ...CONFIRMED_STYLISTIC_SETS]
 const ALTERNATE_COLORS = ['#4EF967', '#FF5FC6']
 
-/** @param {'alternate'|'green'|'pink'} accent */
 function accentColorAt(accent, alternatingIndex) {
   if (accent === 'green') return ALTERNATE_COLORS[0]
   if (accent === 'pink') return ALTERNATE_COLORS[1]
@@ -113,6 +112,7 @@ export default function NameDisplay({
 
   const isFooter = variant === 'footer'
   const isNavbar = variant === 'navbar'
+  const isScreensaver = variant === 'screensaver'
   const isAuto = trigger === 'auto'
   const footerSammyExtras = isFooter && text === DEFAULT_NAME
 
@@ -144,8 +144,8 @@ export default function NameDisplay({
       }
     })
     setAlternateMap(map)
-    setCursorStyle(fixedDingbatCursor())
-  }, [footerSammyExtras, isAuto, isFooter, resolvedAccent, text])
+    setCursorStyle(isScreensaver ? 'pointer' : fixedDingbatCursor())
+  }, [footerSammyExtras, isAuto, isFooter, isScreensaver, resolvedAccent, text])
 
   const handleMouseLeave = useCallback(() => {
     if (isAuto) return
@@ -233,8 +233,6 @@ export default function NameDisplay({
     autoOrderRef.current = []
     lastAutoIndexRef.current = null
   }, [isAuto])
-
-  const isScreensaver = variant === 'screensaver'
 
   const rootClassName = [
     'name-text',

@@ -20,12 +20,39 @@ function clamp(n, a, b) {
 }
 
 const ST_ID = 'home-gallery-horizontal'
+const GALLERY_SLIDE_FRAME_CLASS =
+  'relative flex h-[clamp(340px,min(74svh,82vh),860px)] w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] max-w-[min(94vw,calc(min(74svh,82vh)*0.85))] shrink-0 items-center justify-center overflow-hidden p-0'
 
-export function HomeInteractiveGallerySection() {
+const DEFAULT_GALLERY_INTRO_TEXT = 'a taste of my work →'
+const DEFAULT_GALLERY_OUTRO_TEXT = 'hungry for more? ↴'
+function GalleryTextPill({ children, className = '' }) {
+  return (
+    <span
+      className={
+        `box-border inline-flex max-w-[min(100%,calc(100%-0.5rem))] items-center justify-center ` +
+        `px-[clamp(1rem,3.2vw,1.75rem)] py-[clamp(0.5rem,1.25vw,0.8rem)] ` +
+        `text-center font-editorial text-[clamp(6.05rem,10.6vw,7.65rem)] font-medium lowercase ` +
+        `leading-[1.08] tracking-normal text-black [text-wrap:balance] ` +
+        className
+      }
+    >
+      {children}
+    </span>
+  )
+}
+const LAST_GALLERY_SLIDE_IDX = HOME_GALLERY_ITEMS.length + 1
+
+export function HomeInteractiveGallerySection({
+  introContent,
+  outroContent,
+  introPillClassName = '',
+  outroPillClassName = '',
+} = {}) {
   const pinRef = useRef(null)
   const wrapRef = useRef(null)
   const trackRef = useRef(null)
   const slideRefs = useRef([])
+  const galleryMotionScrollPxRef = useRef(1)
   const focusLayerRef = useRef(null)
   const focusPosterRef = useRef(null)
   const focusImgRef = useRef(null)
@@ -49,9 +76,9 @@ export function HomeInteractiveGallerySection() {
     return Math.max(0, track.scrollWidth - wrap.clientWidth)
   }, [])
 
-  const offsetToCenterCard = useCallback(
-    (idx) => {
-      const slide = slideRefs.current[idx]
+  const offsetToCenterSlide = useCallback(
+    (slideIdx) => {
+      const slide = slideRefs.current[slideIdx]
       const wrap = wrapRef.current
       if (!slide || !wrap) return 0
       const max = getMaxScrollX()
@@ -65,14 +92,12 @@ export function HomeInteractiveGallerySection() {
     (targetX) => {
       const st = ScrollTrigger.getById(ST_ID)
       if (!st?.start || st.end == null) return
-      const max = getMaxScrollX()
-      const safeMax = Math.max(max, 1)
-      const clamped = clamp(targetX, 0, max)
-      const p = clamped / safeMax
-      const y = st.start + p * (st.end - st.start)
+      const motion = Math.max(galleryMotionScrollPxRef.current, 1)
+      const clamped = clamp(targetX, 0, motion)
+      const y = st.start + clamped
       window.scrollTo({ top: y, behavior: 'smooth' })
     },
-    [getMaxScrollX],
+    [],
   )
 
 
@@ -99,16 +124,77 @@ export function HomeInteractiveGallerySection() {
       gsap.set(track, { clearProps: 'transform' })
       gsap.set(track, { x: 0 })
 
-      const maxDist = () => getMaxScrollX()
+      let motionScrollPx = 1
 
-      const tween = gsap.to(track, {
-        x: () => -maxDist(),
+      const measureCenterErrorPx = () => {
+        const wr = wrap.getBoundingClientRect()
+        const slide = slideRefs.current[LAST_GALLERY_SLIDE_IDX]
+        if (!slide) return 0
+        const sr = slide.getBoundingClientRect()
+        return sr.left + sr.width / 2 - (wr.left + wr.width / 2)
+      }
+
+      const computePinnedScrollMetrics = () => {
+        track.style.paddingRight = ''
+        gsap.set(track, { x: 0 })
+        void track.offsetWidth
+
+        const wrapW = wrap.clientWidth
+        const slide = slideRefs.current[LAST_GALLERY_SLIDE_IDX]
+        let max = Math.max(0, track.scrollWidth - wrapW)
+
+        if (!slide) {
+          motionScrollPx = Math.max(max, 1)
+          galleryMotionScrollPxRef.current = motionScrollPx
+          return motionScrollPx
+        }
+
+        let motion = Math.max(0, measureCenterErrorPx())
+
+        for (let i = 0; i < 10; i++) {
+          let padExtra = Math.max(0, Math.ceil(motion - max))
+          if (padExtra > 0) {
+            const prev = Number.parseFloat(track.style.paddingRight) || 0
+            track.style.paddingRight = `${prev + padExtra}px`
+            void track.offsetWidth
+            max = Math.max(0, track.scrollWidth - wrapW)
+          }
+
+          gsap.set(track, { x: -motion })
+          void track.offsetWidth
+
+          const err = measureCenterErrorPx()
+          if (Math.abs(err) < 0.6) break
+          motion += err
+          if (motion < 0) motion = 0
+        }
+
+        gsap.set(track, { x: 0 })
+        void track.offsetWidth
+
+        motionScrollPx = Math.max(Math.ceil(motion), 1)
+        galleryMotionScrollPxRef.current = motionScrollPx
+        return motionScrollPx
+      }
+
+      computePinnedScrollMetrics()
+
+      let tween = gsap.to(track, {
+        x: -motionScrollPx,
         ease: 'none',
         scrollTrigger: {
           id: ST_ID,
           trigger: pin,
           start: 'top top',
-          end: () => `+=${Math.max(maxDist(), 1)}`,
+          onRefresh(self) {
+            computePinnedScrollMetrics()
+            const anim = self.animation ?? tween
+            if (anim?.vars) {
+              anim.vars.x = -motionScrollPx
+              anim.invalidate()
+            }
+          },
+          end: () => `+=${motionScrollPx}`,
           pin: true,
           scrub,
           anticipatePin: 1,
@@ -117,6 +203,7 @@ export function HomeInteractiveGallerySection() {
       })
 
       return () => {
+        track.style.paddingRight = ''
         tween.scrollTrigger?.kill()
         tween.kill()
       }
@@ -296,12 +383,12 @@ export function HomeInteractiveGallerySection() {
 
   const goToPieceInGallery = useCallback(() => {
     if (focusedIdx < 0) return
-    scrollGalleryToOffsetX(offsetToCenterCard(focusedIdx))
+    scrollGalleryToOffsetX(offsetToCenterSlide(focusedIdx + 1))
     closeFocus()
   }, [
     closeFocus,
     focusedIdx,
-    offsetToCenterCard,
+    offsetToCenterSlide,
     scrollGalleryToOffsetX,
   ])
 
@@ -332,42 +419,71 @@ export function HomeInteractiveGallerySection() {
         >
           <div
             ref={trackRef}
-            className="flex shrink-0 cursor-default items-center gap-10 px-[clamp(1.25rem,12vw,18vw)] will-change-transform"
+            className="flex shrink-0 cursor-default items-center gap-10 pl-[clamp(2rem,12vw,24vw)] pr-[clamp(1.25rem,12vw,18vw)] will-change-transform"
           >
-            {HOME_GALLERY_ITEMS.map((item, idx) => (
-              <div
-                key={item.slug}
-                ref={(el) => {
-                  slideRefs.current[idx] = el
-                }}
-                className="shrink-0"
-              >
-                <button
-                  type="button"
-                  aria-label={`Ampliar pieza ${idx + 1}`}
-                  disabled={focusActive}
-                  className="block cursor-pointer border-0 bg-transparent p-0 outline-none ring-0 disabled:pointer-events-none disabled:cursor-default"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    openFocus(idx)
-                  }}
-                  onDragStart={(e) => e.preventDefault()}
-                >
-                  <div
-                    data-gallery-poster
-                    className="relative h-[clamp(340px,min(74svh,82vh),860px)] w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] max-w-[min(94vw,calc(min(74svh,82vh)*0.85))] cursor-pointer overflow-hidden shadow-[inset_0_0_0_0.5px_rgba(240,237,228,0.1)] after:pointer-events-none after:absolute after:inset-0 after:border after:border-solid after:border-[rgba(240,237,228,0.1)] after:transition-colors after:duration-300 hover:after:border-[rgba(240,237,228,0.35)]"
-                  >
-                    <img
-                      data-gallery-slide-img
-                      src={item.src}
-                      alt=""
-                      draggable={false}
-                      className="size-full object-cover [filter:saturate(0.9)_contrast(1.02)]"
-                    />
-                  </div>
-                </button>
+            <div
+              ref={(el) => {
+                slideRefs.current[0] = el
+              }}
+              className={GALLERY_SLIDE_FRAME_CLASS}
+            >
+              <div className="flex w-full justify-center px-0 py-0">
+                <GalleryTextPill className={introPillClassName}>
+                  {introContent ?? DEFAULT_GALLERY_INTRO_TEXT}
+                </GalleryTextPill>
               </div>
-            ))}
+            </div>
+
+            {HOME_GALLERY_ITEMS.map((item, galleryIdx) => {
+              const slideIdx = galleryIdx + 1
+              return (
+                <div
+                  key={item.slug}
+                  ref={(el) => {
+                    slideRefs.current[slideIdx] = el
+                  }}
+                  className="shrink-0"
+                >
+                  <button
+                    type="button"
+                    aria-label={`Ampliar pieza ${galleryIdx + 1}`}
+                    disabled={focusActive}
+                    className="block cursor-pointer border-0 bg-transparent p-0 outline-none ring-0 disabled:pointer-events-none disabled:cursor-default"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      openFocus(galleryIdx)
+                    }}
+                    onDragStart={(e) => e.preventDefault()}
+                  >
+                    <div
+                      data-gallery-poster
+                      className="relative h-[clamp(340px,min(74svh,82vh),860px)] w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] max-w-[min(94vw,calc(min(74svh,82vh)*0.85))] cursor-pointer overflow-hidden shadow-[inset_0_0_0_0.5px_rgba(240,237,228,0.1)] after:pointer-events-none after:absolute after:inset-0 after:border after:border-solid after:border-[rgba(240,237,228,0.1)] after:transition-colors after:duration-300 hover:after:border-[rgba(240,237,228,0.35)]"
+                    >
+                      <img
+                        data-gallery-slide-img
+                        src={item.src}
+                        alt=""
+                        draggable={false}
+                        className="size-full object-cover [filter:saturate(0.9)_contrast(1.02)]"
+                      />
+                    </div>
+                  </button>
+                </div>
+              )
+            })}
+
+            <div
+              ref={(el) => {
+                slideRefs.current[HOME_GALLERY_ITEMS.length + 1] = el
+              }}
+              className={GALLERY_SLIDE_FRAME_CLASS}
+            >
+              <div className="flex w-full justify-center px-0 py-0">
+                <GalleryTextPill className={outroPillClassName}>
+                  {outroContent ?? DEFAULT_GALLERY_OUTRO_TEXT}
+                </GalleryTextPill>
+              </div>
+            </div>
           </div>
         </div>
       </section>

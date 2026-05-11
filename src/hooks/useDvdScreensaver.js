@@ -108,15 +108,12 @@ export function useDvdScreensaver(options) {
       if (container) {
         const maxX = Math.max(0, container.clientWidth - element.clientWidth);
         const maxY = Math.max(0, container.clientHeight - element.clientHeight);
-        
-        // Add support for initialX and initialY (0 to 1)
         const initX = optionsRef.current?.initialX ?? Math.random();
         const initY = optionsRef.current?.initialY ?? Math.random();
-        
+
         animationState.current.positionX = initX * maxX;
         animationState.current.positionY = initY * maxY;
-        
-        // Initial set to avoid flash at 0,0
+
         element.style.transform = `translate3d(${animationState.current.positionX}px, ${animationState.current.positionY}px, 0)`;
       }
       element.addEventListener("mouseover", setActive);
