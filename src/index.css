@@ -55,6 +55,12 @@
     background-color: var(--color-portfolio-bg);
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    html.lenis {
+      scroll-behavior: auto;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;

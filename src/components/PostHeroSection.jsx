@@ -26,7 +26,7 @@ export function PostHeroSection() {
           />
 
           <p className="m-0 text-center font-editorial text-[clamp(1.35rem,calc(3.2vw+0.25rem),3rem)] leading-[1.15] text-black break-words lg:text-right">
-            Yet simple, clean and effective.
+            Yet effective, simple and clean.
           </p>
         </div>
       </div>
