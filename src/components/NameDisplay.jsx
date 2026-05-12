@@ -478,6 +478,28 @@ export default function NameDisplay({
           font-size: clamp(1.65rem, 5vw, 3.25rem);
         }
 
+        @media (min-width: 48rem) and (max-width: 63.99rem) {
+          .name-text--navbar .char {
+            font-size: clamp(1.38rem, 4.1vw, 2.6rem);
+          }
+
+          .name-text--hero .char {
+            font-size: clamp(0.98rem, 1.95vw, 2.35rem);
+          }
+
+          .name-text--hero-headline .char {
+            font-size: clamp(0.72rem, min(2.05vw + 0.1rem, 3.4svh), 1.82rem);
+          }
+
+          .name-text--screensaver .char {
+            font-size: clamp(1.38rem, 5.15vw, 2.65rem);
+          }
+
+          .name-text--screensaver-column .char {
+            font-size: clamp(2rem, 7.35vw, 3.35rem);
+          }
+        }
+
         .name-text--hero .char {
           color: #000000;
         }
@@ -493,14 +515,15 @@ export default function NameDisplay({
 
         .name-text--hero-headline .hero-headline-line {
           display: inline-flex;
-          flex-wrap: wrap;
+          flex-wrap: nowrap;
           justify-content: center;
           align-items: baseline;
+          max-width: 100%;
         }
 
         .name-text--hero-headline .char {
           color: #000000;
-          font-size: clamp(1.35rem, min(3.85vw, 6.25svh), 3.15rem);
+          font-size: clamp(0.82rem, min(2.65vw + 0.2rem, 4.5svh), 2.35rem);
           letter-spacing: -0.02em;
           line-height: 0.92;
         }
@@ -570,7 +593,7 @@ export default function NameDisplay({
 
         .name-text--footer .char {
           flex: none;
-          font-size: clamp(5rem, min(42vw, 46vh), 36rem);
+          font-size: clamp(4.25rem, min(38vw, 44vh), 36rem);
           line-height: 0.82;
         }
 

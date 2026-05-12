@@ -120,6 +120,7 @@ function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef, initia
         className={
           `block h-auto object-cover ` +
           `w-[clamp(176px,min(74vw,50vh),704px)] max-w-[min(60vw,400px)] ` +
+          `md:w-[clamp(158px,min(66vw,44vh),560px)] md:max-w-[min(54vw,340px)] ` +
           `lg:w-[clamp(220px,min(92vw,62vh),880px)] lg:max-w-[min(96vw,880px)]`
         }
       />
@@ -226,7 +227,9 @@ function DvdCursorPill({ children }) {
         `items-center justify-center rounded-full border-2 border-solid border-black ` +
         `bg-portfolio-bg px-[clamp(0.4rem,0.95vw,0.65rem)] py-[clamp(0.48rem,1.2vw,0.78rem)] ` +
         `text-center font-sans text-[clamp(0.72rem,3.2vw,1.05rem)] font-medium ` +
-        `sm:text-[clamp(0.88rem,2.5vw,1.2rem)] ` +
+        `sm:text-[clamp(0.82rem,2.75vw,1.1rem)] ` +
+        `md:text-[clamp(0.7rem,2.05vw,0.92rem)] ` +
+        `lg:text-[clamp(0.88rem,2.5vw,1.2rem)] ` +
         `leading-tight tracking-normal text-black text-balance`
       }
     >
@@ -337,7 +340,7 @@ export function HomeDvdScreensaverSection() {
       aria-label="Enlaces del portfolio"
       onMouseMove={handleSectionMouseMove}
       onMouseLeave={handleSectionMouseLeave}
-      className="relative isolate h-[100svh] w-full bg-transparent"
+      className="relative isolate h-[60svh] w-full bg-transparent lg:h-[100svh]"
     >
       {lgUp && finePointer && cursorPt != null ? (
         <div

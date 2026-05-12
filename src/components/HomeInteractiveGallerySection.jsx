@@ -19,10 +19,17 @@ function clamp(n, a, b) {
   return Math.max(a, Math.min(b, n))
 }
 
+/** Móvil/tablet: menos scroll vertical durante el pin (misma animación X, menos “hueco”). */
+function galleryPinScrollDistanceScale() {
+  if (typeof window === 'undefined') return 1
+  return window.matchMedia('(max-width: 63.99rem)').matches ? 0.5 : 1
+}
+
 const ST_ID = 'home-gallery-horizontal'
 const GALLERY_SLIDE_FRAME_CLASS =
   'relative flex h-[min(52svh,440px)] w-[min(90vw,320px)] max-w-[94vw] shrink-0 items-center justify-center overflow-hidden p-0 ' +
   'sm:h-[min(58svh,520px)] sm:w-[min(88vw,380px)] ' +
+  'md:h-[min(50svh,400px)] md:w-[min(86vw,340px)] ' +
   'lg:h-[clamp(340px,min(74svh,82vh),860px)] lg:w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] lg:max-w-[min(94vw,calc(min(74svh,82vh)*0.85))]'
 
 const DEFAULT_GALLERY_INTRO_TEXT = 'a taste of my work →'
@@ -34,7 +41,8 @@ function GalleryTextPill({ children, className = '' }) {
         `box-border inline-flex max-w-[min(100%,calc(100%-0.5rem))] items-center justify-center ` +
         `px-[clamp(0.75rem,3vw,1.75rem)] py-[clamp(0.45rem,1.2vw,0.8rem)] ` +
         `text-center font-editorial text-[clamp(2rem,9.5vw,3.75rem)] font-medium lowercase ` +
-        `sm:text-[clamp(2.75rem,8.5vw,5.5rem)] lg:text-[clamp(6.05rem,10.6vw,7.65rem)] ` +
+        `sm:text-[clamp(2.75rem,8.5vw,5.5rem)] md:text-[clamp(2.2rem,6.75vw,4.15rem)] ` +
+        `lg:text-[clamp(6.05rem,10.6vw,7.65rem)] ` +
         `leading-[1.08] tracking-normal text-black [text-wrap:balance] ` +
         className
       }
@@ -94,10 +102,12 @@ export function HomeInteractiveGallerySection({
   const scrollGalleryToOffsetX = useCallback(
     (targetX) => {
       const st = ScrollTrigger.getById(ST_ID)
-      if (!st?.start || st.end == null) return
+      if (st == null || st.start == null || st.end == null) return
       const motion = Math.max(galleryMotionScrollPxRef.current, 1)
       const clamped = clamp(targetX, 0, motion)
-      const y = st.start + clamped
+      const span = st.end - st.start
+      if (!(span > 0)) return
+      const y = st.start + (clamped / motion) * span
       window.scrollTo({ top: y, behavior: 'smooth' })
     },
     [],
@@ -105,12 +115,15 @@ export function HomeInteractiveGallerySection({
 
 
   useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const apply = () => {
-      ScrollTrigger.refresh()
+    const refresh = () => ScrollTrigger.refresh()
+    const mqRm = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const mqBp = window.matchMedia('(max-width: 63.99rem)')
+    mqRm.addEventListener('change', refresh)
+    mqBp.addEventListener('change', refresh)
+    return () => {
+      mqRm.removeEventListener('change', refresh)
+      mqBp.removeEventListener('change', refresh)
     }
-    mq.addEventListener('change', apply)
-    return () => mq.removeEventListener('change', apply)
   }, [])
 
   useGSAP(
@@ -197,7 +210,11 @@ export function HomeInteractiveGallerySection({
               anim.invalidate()
             }
           },
-          end: () => `+=${motionScrollPx}`,
+          end: () =>
+            `+=${Math.max(
+              1,
+              Math.ceil(motionScrollPx * galleryPinScrollDistanceScale()),
+            )}`,
           pin: true,
           scrub,
           anticipatePin: 1,
@@ -418,7 +435,7 @@ export function HomeInteractiveGallerySection({
 
         <div
           ref={wrapRef}
-          className="relative z-[1] flex h-[100svh] w-full items-center overflow-hidden"
+          className="relative z-[1] flex h-[60svh] w-full items-end overflow-hidden lg:h-[100svh] lg:items-center"
         >
           <div
             ref={trackRef}

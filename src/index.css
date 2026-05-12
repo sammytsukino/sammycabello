@@ -31,7 +31,7 @@
     LocomotiveNew, ui-serif, Georgia, 'Times New Roman', serif;
 
   --font-editorial-new:
-    EditorialNew, ui-serif, Georgia, 'Times New Roman', serif;
+  LocomotiveNew, ui-serif, Georgia, 'Times New Roman', serif;
 
   --breakpoint-sm: 40rem;
   --breakpoint-md: 48rem;
