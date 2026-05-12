@@ -17,6 +17,7 @@ function HeroContinuarControl() {
 export function HomeHeroSection() {
   return (
     <div
+      id="home-hero"
       className={
         `relative flex h-[calc(100svh-50px)] min-h-[calc(100svh-50px)] w-full shrink-0 flex-col ` +
         `bg-transparent px-site-x [view-transition-name:hero]`

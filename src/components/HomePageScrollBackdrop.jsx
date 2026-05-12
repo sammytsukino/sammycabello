@@ -1,19 +1,48 @@
 import { useEffect, useState } from 'react'
 
-/**
- * Capa fija bajo el contenido del home: rosa al inicio → portfolio-bg al hacer scroll.
- * Las secciones del home van con fondo transparente para que se vea esta transición.
- */
+
+const HERO_SCROLL_RATIO = 0.5
+
+const HYSTERESIS_PX = 65
+
+function heroGrayThresholdY() {
+  const el = document.getElementById('home-hero')
+  if (!el) return 8
+  const top = el.getBoundingClientRect().top + window.scrollY
+  return top + el.offsetHeight * HERO_SCROLL_RATIO
+}
+
+
 export function HomePageScrollBackdrop() {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 8)
+    const update = () => {
+      const y = window.scrollY
+      const t = heroGrayThresholdY()
+      setScrolled((prev) => {
+        if (y >= t) return true
+        if (y <= t - HYSTERESIS_PX) return false
+        return prev
+      })
     }
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update, { passive: true })
+
+    const hero = document.getElementById('home-hero')
+    let ro = null
+    if (hero && typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(update)
+      ro.observe(hero)
+    }
+
+    return () => {
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+      ro?.disconnect()
+    }
   }, [])
 
   return (
