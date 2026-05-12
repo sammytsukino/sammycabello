@@ -7,10 +7,45 @@ gsap.registerPlugin(ScrollTrigger)
 let lenisInstance = null
 let tickerFn = null
 
-/**
- * Smooth scroll global (Lenis) + sincronía con GSAP ScrollTrigger.
- * No se inicializa si el usuario tiene prefers-reduced-motion: reduce.
- */
+export function getLenis() {
+  return lenisInstance
+}
+
+const LENIS_GESTURE_DURATION_S = 1.35
+const lenisGestureEase = (t) => Math.min(1, 1.001 - 2 ** (-10 * t))
+
+const lenisGestureOpts = {
+  duration: LENIS_GESTURE_DURATION_S,
+  easing: lenisGestureEase,
+}
+
+export function scrollToPageTop() {
+  if (lenisInstance) {
+    lenisInstance.scrollTo(0, lenisGestureOpts)
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
+
+export function scrollToPageSectionById(id) {
+  if (typeof document === 'undefined') return
+  const el = document.getElementById(id)
+  if (!el) return
+
+  if (lenisInstance) {
+    lenisInstance.scrollTo(el, lenisGestureOpts)
+    return
+  }
+
+  const instant =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  el.scrollIntoView({
+    behavior: instant ? 'instant' : 'smooth',
+    block: 'start',
+  })
+}
+
 export function initLenis() {
   if (typeof window === 'undefined' || lenisInstance) return
 

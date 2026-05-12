@@ -1,61 +1,96 @@
 import NameDisplay from './NameDisplay.jsx'
 
-
 const MAIL = 'sammy.cabello.g@gmail.com'
-const HANDLE = 'sammytsukino'
-
+const LINKEDIN_HREF = 'https://www.linkedin.com/in/sammycabello'
+const LINKEDIN_LABEL = 'linkedin.com/sammycabello'
+const GITHUB_HREF = 'https://github.com/sammytsukino'
+const GITHUB_LABEL = 'github.com/sammytsukino'
 
 const FOOTER_NAME_SHIFT = {
   x: '-2rem',
   y: '2rem',
 }
 
+const linkClass =
+  `text-inherit underline decoration-neutral-950/30 underline-offset-[5px] ` +
+  `transition-colors hover:decoration-neutral-950`
+
 export default function SiteFooter() {
   return (
     <footer
-      className="w-full min-w-0 shrink-0 border-t border-neutral-950/25 bg-portfolio-bg text-black"
+      className={
+        `relative z-20 mt-[clamp(4rem,14svh,10rem)] flex min-h-[100svh] w-full ` +
+        `min-w-0 shrink-0 flex-col bg-portfolio-bg text-black`
+      }
       aria-label="Pie de página"
     >
-      <div className="mx-auto w-full max-w-[90rem] px-site-x pb-[clamp(1.75rem,min(8vw),3.5rem)] pt-[clamp(2.25rem,min(8vw),6rem)] lg:px-[clamp(1.25rem,5vw,3.5rem)] lg:pt-[clamp(2.75rem,min(10vw),6rem)]">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-start lg:gap-20 xl:gap-28">
-          <div className="font-editorial text-[clamp(0.9rem,calc(0.35rem+2.2vw),1rem)] leading-[1.45] tracking-[0.01em] lg:text-[clamp(0.875rem,1.05vw,1rem)]">
-            <p className="m-0">
-              <a
-                href={`https://instagram.com/${HANDLE.replace('@', '')}`}
-                target="_blank"
-                rel="noreferrer"
-                className="text-inherit underline decoration-neutral-950/35 underline-offset-4 hover:decoration-neutral-950"
-              >
-                {HANDLE}
-              </a>
-            </p>
-            <p className="m-0 mt-2">
-              <a
-                href={`mailto:${MAIL}`}
-                className="break-all text-inherit underline decoration-neutral-950/35 underline-offset-4 hover:decoration-neutral-950"
-              >
-                {MAIL}
-              </a>
-            </p>
-          </div>
+      <div
+        id="footer-contact"
+        className={
+          `mx-auto w-full max-w-[90rem] shrink-0 scroll-mt-[var(--hero-frame-inset)] ` +
+          `px-[var(--hero-frame-inset)] pb-[clamp(2rem,min(8vw),3.5rem)] ` +
+          `pt-[clamp(4rem,min(24svh,14rem),18rem)] text-black`
+        }
+      >
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:items-end lg:gap-x-[clamp(2rem,8vw,5rem)]">
+          <p
+            className={
+              `m-0 max-w-[min(100%,22ch)] font-editorial font-normal leading-[1.08] ` +
+              `tracking-[-0.02em] text-black ` +
+              `text-[clamp(1.65rem,4vw,3.35rem)]`
+            }
+          >
+            Craving a chat? Let’s cook something up together{' '}
+            <span className="text-portfolio-lime" aria-hidden>
+              ✉
+            </span>
+          </p>
 
-
+          <nav className="font-editorial" aria-label="Contacto y redes">
+            <ul className="m-0 flex list-none flex-col gap-y-3 p-0 text-right text-black text-[clamp(0.8rem,1.85vw,1rem)] leading-snug tracking-[0.01em] lg:items-end">
+              <li>
+                <a href={`mailto:${MAIL}`} className={linkClass}>
+                  {MAIL}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={LINKEDIN_HREF}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={linkClass}
+                >
+                  {LINKEDIN_LABEL}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={GITHUB_HREF}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={linkClass}
+                >
+                  {GITHUB_LABEL}
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
 
-        <p className="sr-only">Pie de página: contacto {MAIL}, marca Sammy.</p>
+        <p className="sr-only">
+          Pie de página: {MAIL}, {LINKEDIN_LABEL}, {GITHUB_LABEL}.
+        </p>
       </div>
 
       <div
-        className="relative isolate mt-[clamp(2rem,min(12vw),4rem)] w-full min-w-0 overflow-hidden"
+        className="relative isolate flex min-h-0 min-w-0 flex-1 overflow-hidden"
         style={{
           ['--sf-name-shift-x']: FOOTER_NAME_SHIFT.x,
           ['--sf-name-shift-y']: FOOTER_NAME_SHIFT.y,
-          minHeight:
-            'max(0px, calc(clamp(220px, min(52vh, 640px), 640px) - var(--sf-name-shift-y)))',
         }}
       >
         <div
-          className="absolute left-0 pl-site-x lg:pl-[clamp(1.25rem,5vw,3.5rem)]"
+          className="absolute left-0 pl-[var(--hero-frame-inset)]"
           style={{
             bottom: 'calc(0px - var(--sf-name-shift-y, 0px))',
             transform: 'translateX(var(--sf-name-shift-x, 0px))',
@@ -67,7 +102,3 @@ export default function SiteFooter() {
     </footer>
   )
 }
-
-
-
-

@@ -87,6 +87,85 @@ function randomSS() {
   return STYLE_VARIANTS[Math.floor(Math.random() * STYLE_VARIANTS.length)]
 }
 
+function isHeadlineLetterChar(c) {
+  return /[A-Za-z0-9]/.test(c)
+}
+
+function heroHeadlinePinnedIndices(text) {
+  const lines = text.split('\n')
+  let offset = 0
+  const pinned = []
+  for (let li = 0; li < lines.length; li++) {
+    const line = lines[li]
+    const letters = []
+    for (let j = 0; j < line.length; j++) {
+      if (isHeadlineLetterChar(line[j])) letters.push(offset + j)
+    }
+    if (letters.length > 0) {
+      pinned.push(letters[Math.floor(letters.length / 2)])
+    }
+    offset += line.length + 1
+  }
+  return pinned.slice(0, 2)
+}
+
+function globalIndexToHeadlineLine(text, gIdx) {
+  const parts = text.split('\n')
+  let o = 0
+  for (let li = 0; li < parts.length; li++) {
+    const len = parts[li].length
+    if (gIdx >= o && gIdx < o + len) return li
+    o += len + 1
+  }
+  return -1
+}
+
+function eligibleRotatingOnHeadlineLine(text, lineIdx, pinnedSet) {
+  const lines = text.split('\n')
+  const line = lines[lineIdx]
+  if (!line) return []
+  const offset = lines
+    .slice(0, lineIdx)
+    .reduce((acc, l) => acc + l.length + 1, 0)
+  const out = []
+  for (let j = 0; j < line.length; j++) {
+    const c = line[j]
+    if (c === ' ' || c === '\n' || !isHeadlineLetterChar(c)) continue
+    const g = offset + j
+    if (pinnedSet.has(g)) continue
+    out.push(g)
+  }
+  return out
+}
+
+function buildHeroHeadlineAutoBundle(text) {
+  const pinnedList = heroHeadlinePinnedIndices(text)
+  const pins = {}
+  pinnedList.forEach((idx, p) => {
+    pins[idx] = {
+      ss: STYLE_VARIANTS[(idx + p * 3) % STYLE_VARIANTS.length],
+    }
+  })
+  const pinnedSet = new Set(pinnedList)
+  const lines = text.split('\n')
+  const t0 = 1 + (lines[0]?.replace(/[^A-Za-z0-9]/g, '').length ?? 0) % 2
+  const t1 = 1 + (lines[1]?.replace(/[^A-Za-z0-9]/g, '').length ?? 0) % 2
+  const targets = { 0: t0, 1: t1 }
+  const initialRotate = {}
+  for (const lineIdx of [0, 1]) {
+    const pool = eligibleRotatingOnHeadlineLine(text, lineIdx, pinnedSet)
+    const n = targets[lineIdx]
+    for (let k = 0; k < Math.min(n, pool.length); k++) {
+      const idx = pool[k]
+      initialRotate[idx] = {
+        ss: STYLE_VARIANTS[(idx + k * 5 + 7) % STYLE_VARIANTS.length],
+        color: '#000000',
+      }
+    }
+  }
+  return { pins, targets, initialRotate }
+}
+
 function fixedDingbatCursor() {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="100%" height="100%" fill="transparent"/><text x="16" y="22" text-anchor="middle" font-size="22" font-family="serif">${HOVER_CURSOR_DINGBAT}</text></svg>`
   const encodedSvg = encodeURIComponent(svg)
@@ -119,20 +198,38 @@ export default function NameDisplay({
   const isFooter = variant === 'footer'
   const isNavbar = variant === 'navbar'
   const isHero = variant === 'hero'
+  const isHeroHeadline = variant === 'heroHeadline'
   const isScreensaver = variant === 'screensaver'
   const isScreensaverColumn = variant === 'screensaverColumn'
   const isAuto = trigger === 'auto'
   const footerSammyExtras = isFooter && text === DEFAULT_NAME
+  const heroBlackGlyph = isHero || isHeroHeadline
 
   const eligibleIndices = useMemo(() => {
     const indices = []
     for (let i = 0; i < text.length; i++) {
-      if (text[i] === ' ') continue
+      if (text[i] === ' ' || text[i] === '\n') continue
       if (footerSammyExtras && FOOTER_HOVER_EXCLUDE.has(i)) continue
       indices.push(i)
     }
     return indices
   }, [footerSammyExtras, text])
+
+  const heroHeadlineLines = useMemo(() => {
+    if (!isHeroHeadline) return null
+    const parts = text.split('\n')
+    let start = 0
+    return parts.map((line) => {
+      const row = { line, start }
+      start += line.length + 1
+      return row
+    })
+  }, [isHeroHeadline, text])
+
+  const headlineAutoBundle = useMemo(() => {
+    if (!isHeroHeadline || !isAuto) return null
+    return buildHeroHeadlineAutoBundle(text)
+  }, [isHeroHeadline, isAuto, text])
 
   const handleMouseEnter = useCallback(() => {
     if (isAuto) return
@@ -148,7 +245,7 @@ export default function NameDisplay({
     ordered.forEach((idx, pos) => {
       map[idx] = {
         ss: randomSS(),
-        color: hoverGlyphColor(isHero, resolvedAccent, pos),
+        color: hoverGlyphColor(heroBlackGlyph, resolvedAccent, pos),
       }
     })
     setAlternateMap(map)
@@ -159,7 +256,7 @@ export default function NameDisplay({
     footerSammyExtras,
     isAuto,
     isFooter,
-    isHero,
+    heroBlackGlyph,
     isScreensaver,
     isScreensaverColumn,
     resolvedAccent,
@@ -173,7 +270,7 @@ export default function NameDisplay({
   }, [isAuto])
 
   useEffect(() => {
-    if (!isAuto) return
+    if (!isAuto || isHeroHeadline) return
     if (eligibleIndices.length === 0) return
 
     autoOrderRef.current = []
@@ -197,7 +294,7 @@ export default function NameDisplay({
           ? { ...next[idx], ss: randomSS() }
           : {
               ss: randomSS(),
-              color: hoverGlyphColor(isHero, resolvedAccent, 0),
+              color: hoverGlyphColor(heroBlackGlyph, resolvedAccent, 0),
             }
 
         autoOrderRef.current = [...autoOrderRef.current.filter((k) => k !== idx), idx]
@@ -224,7 +321,7 @@ export default function NameDisplay({
           if (!entry) continue
           withAlternatingColors[k] = {
             ss: entry.ss,
-            color: hoverGlyphColor(isHero, resolvedAccent, p),
+            color: hoverGlyphColor(heroBlackGlyph, resolvedAccent, p),
           }
         }
 
@@ -241,10 +338,83 @@ export default function NameDisplay({
     eligibleIndices,
     isAuto,
     isFooter,
-    isHero,
+    heroBlackGlyph,
+    isHeroHeadline,
     resolvedAccent,
     text,
   ])
+
+  useEffect(() => {
+    if (!isAuto || !isHeroHeadline || !headlineAutoBundle) return
+
+    const pinnedSet = new Set(
+      Object.keys(headlineAutoBundle.pins).map((k) => Number(k)),
+    )
+    const { targets } = headlineAutoBundle
+
+    const initId = window.setTimeout(() => {
+      setAlternateMap(headlineAutoBundle.initialRotate)
+      autoOrderRef.current = Object.keys(headlineAutoBundle.initialRotate).map(
+        Number,
+      )
+      lastAutoIndexRef.current =
+        autoOrderRef.current[autoOrderRef.current.length - 1] ?? null
+    }, 0)
+
+    const intervalId = window.setInterval(() => {
+      setAlternateMap((prev) => {
+        const next = { ...prev }
+        const keysOnLine = (ln) =>
+          Object.keys(next)
+            .map(Number)
+            .filter((idx) => globalIndexToHeadlineLine(text, idx) === ln)
+
+        const linePick = Math.random() < 0.5 ? 0 : 1
+        const pool = eligibleRotatingOnHeadlineLine(text, linePick, pinnedSet)
+        const cur = keysOnLine(linePick)
+        const target = targets[linePick]
+
+        if (cur.length < target) {
+          const avail = pool.filter((i) => next[i] == null)
+          if (avail.length > 0) {
+            const idx = avail[Math.floor(Math.random() * avail.length)]
+            next[idx] = { ss: randomSS(), color: '#000000' }
+          }
+        } else if (cur.length > 0) {
+          const idx = cur[Math.floor(Math.random() * cur.length)]
+          if (Math.random() < 0.55) {
+            next[idx] = { ...next[idx], ss: randomSS() }
+          } else {
+            delete next[idx]
+            const avail = pool.filter((i) => next[i] == null)
+            if (avail.length > 0) {
+              const ni = avail[Math.floor(Math.random() * avail.length)]
+              next[ni] = { ss: randomSS(), color: '#000000' }
+            }
+          }
+        }
+
+        for (const ln of [0, 1]) {
+          const cap = targets[ln]
+          let lineKeys = keysOnLine(ln)
+          while (lineKeys.length > cap) {
+            const drop = lineKeys[Math.floor(Math.random() * lineKeys.length)]
+            delete next[drop]
+            lineKeys = Object.keys(next)
+              .map(Number)
+              .filter((idx) => globalIndexToHeadlineLine(text, idx) === ln)
+          }
+        }
+
+        return next
+      })
+    }, autoIntervalMs)
+
+    return () => {
+      window.clearTimeout(initId)
+      window.clearInterval(intervalId)
+    }
+  }, [autoIntervalMs, isAuto, isHeroHeadline, text, headlineAutoBundle])
 
   useEffect(() => {
     autoOrderRef.current = []
@@ -264,6 +434,7 @@ export default function NameDisplay({
     isScreensaver ? 'name-text--screensaver' : '',
     isScreensaverColumn ? 'name-text--screensaver-column' : '',
     isHero ? 'name-text--hero' : '',
+    isHeroHeadline ? 'name-text--hero-headline' : '',
   ]
     .filter(Boolean)
     .join(' ')
@@ -309,6 +480,41 @@ export default function NameDisplay({
 
         .name-text--hero .char {
           color: #000000;
+        }
+
+        .name-text--hero-headline {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          line-height: 0.92;
+        }
+
+        .name-text--hero-headline .hero-headline-line {
+          display: inline-flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: baseline;
+        }
+
+        .name-text--hero-headline .char {
+          color: #000000;
+          font-size: clamp(1.35rem, min(3.85vw, 6.25svh), 3.15rem);
+          letter-spacing: -0.02em;
+          line-height: 0.92;
+        }
+
+        @media (min-width: 64rem) {
+          .name-text--hero-headline .char {
+            font-size: clamp(2.1rem, 6.75vw, 6.25rem);
+          }
+        }
+
+        @media (min-width: 80rem) {
+          .name-text--hero-headline .char {
+            font-size: clamp(2.5rem, 7.25vw, 7.5rem);
+          }
         }
 
         .name-text--screensaver {
@@ -387,6 +593,62 @@ export default function NameDisplay({
         }
   `
 
+  const renderGlyphAt = (char, i) => {
+    const pin = footerSammyExtras ? footerPinAt(char, i) : null
+    const footerLockedLocomotive =
+      footerSammyExtras && FOOTER_LOCKED_LOCOMOTIVE_INDICES.has(i)
+    const footerFixed = !!pin
+    const headlinePin =
+      isHeroHeadline && isAuto && headlineAutoBundle?.pins?.[i]
+    const headlineFixed = !!headlinePin
+    const rotatingEntry =
+      !footerFixed && !headlineFixed ? alternateMap[i] : undefined
+    const isAlternateGlyph =
+      footerFixed ||
+      headlineFixed ||
+      (!!rotatingEntry && !footerLockedLocomotive)
+
+    const pinnedStyle = pin
+      ? {
+          ['--nft-color']: pin.color,
+          ['--nft-feat']: `"${pin.ss}" 1`,
+        }
+      : undefined
+
+    const inlineStyle = headlineFixed
+      ? {
+          fontFeatureSettings:
+            headlinePin.ss != null ? `"${headlinePin.ss}" 1` : 'normal',
+          color: '#000000',
+          WebkitTextFillColor: '#000000',
+        }
+      : rotatingEntry && !footerLockedLocomotive
+        ? {
+            fontFeatureSettings:
+              rotatingEntry.ss != null ? `"${rotatingEntry.ss}" 1` : 'normal',
+            color: rotatingEntry.color,
+            WebkitTextFillColor: rotatingEntry.color,
+          }
+        : undefined
+
+    return (
+      <span
+        key={i}
+        className={[
+          'char',
+          char === ' ' ? 'space' : '',
+          footerFixed ? 'name-footer-pinned' : '',
+          isAlternateGlyph ? 'alternate' : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        style={pinnedStyle ?? inlineStyle}
+      >
+        {char === ' ' ? '\u00A0' : char}
+      </span>
+    )
+  }
+
   return (
     <>
       <style>{styleBlock}</style>
@@ -395,50 +657,15 @@ export default function NameDisplay({
         className={rootClassName}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={{ cursor: cursorStyle }}
+        style={{ cursor: isHeroHeadline ? 'default' : cursorStyle }}
       >
-        {text.split('').map((char, i) => {
-          const ss = alternateMap[i]
-          const pin =
-            footerSammyExtras ? footerPinAt(char, i) : null
-          const footerLockedLocomotive =
-            footerSammyExtras && FOOTER_LOCKED_LOCOMOTIVE_INDICES.has(i)
-          const footerFixed = !!pin
-          const isAlternate = !!ss && !footerFixed && !footerLockedLocomotive
-
-          const pinnedStyle = pin
-            ? {
-                ['--nft-color']: pin.color,
-                ['--nft-feat']: `"${pin.ss}" 1`,
-              }
-            : undefined
-
-          const inlineStyle = isAlternate
-            ? {
-                fontFeatureSettings:
-                  ss.ss != null ? `"${ss.ss}" 1` : 'normal',
-                color: ss.color,
-                WebkitTextFillColor: ss.color,
-              }
-            : undefined
-
-          return (
-            <span
-              key={i}
-              className={[
-                'char',
-                char === ' ' ? 'space' : '',
-                footerFixed ? 'name-footer-pinned' : '',
-                footerFixed || isAlternate ? 'alternate' : '',
-              ]
-                .filter(Boolean)
-                .join(' ')}
-              style={pinnedStyle ?? inlineStyle}
-            >
-              {char === ' ' ? '\u00A0' : char}
-            </span>
-          )
-        })}
+        {isHeroHeadline && heroHeadlineLines
+          ? heroHeadlineLines.map(({ line, start }, li) => (
+              <div key={li} className="hero-headline-line">
+                {line.split('').map((char, j) => renderGlyphAt(char, start + j))}
+              </div>
+            ))
+          : text.split('').map((char, i) => renderGlyphAt(char, i))}
       </div>
     </>
   )

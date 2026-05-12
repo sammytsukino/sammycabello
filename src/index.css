@@ -49,6 +49,7 @@
   :root {
     font-family: var(--font-sans);
     --page-background-color-transition-time: 0.8s;
+    --hero-frame-inset: clamp(1.1rem, 4.5vw, 2.65rem);
   }
 
   html {
