@@ -8,10 +8,16 @@ import {
   useSyncExternalStore,
 } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { HOME_DVD_SCREENSAVER_IMAGES } from '../data/homeDvdScreensaverImages.js'
 import { HOME_DVD_SCREENSAVER_LINKS } from '../data/homeDvdScreensaverLinks.js'
 import { scrollToIdWithTransition } from '../lib/scrollWithViewTransition.js'
 import NameDisplay from './NameDisplay.jsx'
+import { PortfolioPill } from './PortfolioPill.jsx'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const SPEEDS_TEXT = [0.5, 0.85, 1.2, 1.55]
 const SPEEDS_IMAGE = [1.1, 1.45, 1.8, 2.05]
@@ -80,6 +86,7 @@ const DvdPortfolioLink = forwardRef(function DvdPortfolioLink(
     <Link
       ref={ref}
       to={item.to}
+      viewTransition
       className={className}
       style={style}
       onPointerEnter={onPointerEnter}
@@ -119,9 +126,9 @@ function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef, initia
         draggable={false}
         className={
           `block h-auto object-cover ` +
-          `w-[clamp(176px,min(74vw,50vh),704px)] max-w-[min(60vw,400px)] ` +
-          `md:w-[clamp(158px,min(66vw,44vh),560px)] md:max-w-[min(54vw,340px)] ` +
-          `lg:w-[clamp(220px,min(92vw,62vh),880px)] lg:max-w-[min(96vw,880px)]`
+          `w-[clamp(140px,min(55vw,38vh),500px)] max-w-[min(50vw,320px)] ` +
+          `md:w-[clamp(130px,min(50vw,36vh),440px)] md:max-w-[min(44vw,280px)] ` +
+          `lg:w-[clamp(180px,min(70vw,50vh),680px)] lg:max-w-[min(72vw,680px)]`
         }
       />
     </div>
@@ -219,25 +226,6 @@ function DvdStaticLinksColumn({ items }) {
   )
 }
 
-function DvdCursorPill({ children }) {
-  return (
-    <span
-      className={
-        `origin-top-left box-border inline-flex w-max max-w-[min(92vw,calc(100vw-2rem))] ` +
-        `items-center justify-center rounded-full border-2 border-solid border-black ` +
-        `bg-portfolio-bg px-[clamp(0.4rem,0.95vw,0.65rem)] py-[clamp(0.48rem,1.2vw,0.78rem)] ` +
-        `text-center font-sans text-[clamp(0.72rem,3.2vw,1.05rem)] font-medium ` +
-        `sm:text-[clamp(0.82rem,2.75vw,1.1rem)] ` +
-        `md:text-[clamp(0.7rem,2.05vw,0.92rem)] ` +
-        `lg:text-[clamp(0.88rem,2.5vw,1.2rem)] ` +
-        `leading-tight tracking-normal text-black text-balance`
-      }
-    >
-      {children}
-    </span>
-  )
-}
-
 export function HomeDvdScreensaverSection() {
   const lgUp = useLgUp()
   const boundsRef = useRef(null)
@@ -245,6 +233,45 @@ export function HomeDvdScreensaverSection() {
   const [inView, setInView] = useState(false)
   const [cursorPt, setCursorPt] = useState(null)
   const [finePointer, setFinePointer] = useState(false)
+
+  useGSAP(() => {
+    if (!sectionRef.current) return
+    if (!window.matchMedia('(min-width: 64rem)').matches) return
+
+    const st = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top top',
+      end: 'bottom bottom',
+      pin: true,
+      anticipatePin: 1,
+      onEnter: () =>
+        gsap.to(sectionRef.current, {
+          scale: 0.98,
+          duration: 0.8,
+          ease: 'power2.out',
+        }),
+      onLeaveBack: () =>
+        gsap.to(sectionRef.current, {
+          scale: 1,
+          duration: 0.8,
+          ease: 'power2.out',
+        }),
+      onLeave: () =>
+        gsap.to(sectionRef.current, {
+          scale: 1,
+          duration: 0.8,
+          ease: 'power2.out',
+        }),
+      onEnterBack: () =>
+        gsap.to(sectionRef.current, {
+          scale: 0.98,
+          duration: 0.8,
+          ease: 'power2.out',
+        }),
+    })
+
+    return () => st.kill()
+  }, { scope: sectionRef })
 
   useEffect(() => {
     const mq = window.matchMedia('(pointer: fine)')
@@ -352,7 +379,7 @@ export function HomeDvdScreensaverSection() {
           }}
           aria-hidden
         >
-          <DvdCursorPill>GRAB A BITE FROM TODAY'S MENU</DvdCursorPill>
+          <PortfolioPill>GRAB A BITE FROM TODAY&apos;S MENU</PortfolioPill>
         </div>
       ) : null}
       <div

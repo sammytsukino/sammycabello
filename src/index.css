@@ -41,8 +41,8 @@
 
 
   --spacing-site-x: clamp(1rem, 4.5vw, 2.5rem);
-  --spacing-site-y-tight: clamp(2.5rem, 7svh, 4.25rem);
-  --spacing-site-y-loose: clamp(3.25rem, 11svh, 8.5rem);
+  --spacing-site-y-tight: clamp(1.5rem, 5svh, 4.25rem);
+  --spacing-site-y-loose: clamp(2rem, 8svh, 8.5rem);
 }
 
 @layer base {
@@ -53,6 +53,7 @@
   }
 
   html {
+    font-size: clamp(0.875rem, 0.8rem + 0.26vw, 1.125rem);
     scroll-behavior: smooth;
     background-color: var(--color-portfolio-bg);
   }

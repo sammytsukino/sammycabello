@@ -1,46 +1,98 @@
-import { useEffect, useState } from 'react'
-
+import { useEffect, useRef } from 'react'
+import { useHomeHeroFlavor } from '../context/HomeHeroFlavorContext.jsx'
+import {
+  heroFlavorTransitionClass,
+} from '../lib/homeHeroFlavor.js'
+import { getLenis } from '../lib/initLenis.js'
 
 const HERO_SCROLL_RATIO = 0.5
+const COLOR_BLEND_RANGE_PX = 140
+const PINK_VAR = 'var(--color-portfolio-pink)'
+const GREEN_VAR = 'var(--color-portfolio-lime)'
 
-const HYSTERESIS_PX = 65
-
-function heroGrayThresholdY() {
-  const el = document.getElementById('home-hero')
-  if (!el) return 8
-  const top = el.getBoundingClientRect().top + window.scrollY
-  return top + el.offsetHeight * HERO_SCROLL_RATIO
+function clamp01(n) {
+  return Math.max(0, Math.min(1, n))
 }
 
+function measureHeroGrayThreshold() {
+  const hero = document.getElementById('home-hero')
+  if (!hero) return 8
+  return hero.offsetTop + hero.offsetHeight * HERO_SCROLL_RATIO
+}
+
+function getScrollY() {
+  const lenis = getLenis()
+  return lenis ? lenis.scroll : window.scrollY
+}
+
+function computeGrayMix(scrollY, threshold) {
+  const blendStart = threshold - COLOR_BLEND_RANGE_PX
+  return clamp01((scrollY - blendStart) / COLOR_BLEND_RANGE_PX)
+}
+
+function mixToBackground(mix, heroColorVar) {
+  const heroPct = (1 - mix) * 100
+  return `color-mix(in srgb, ${heroColorVar} ${heroPct}%, var(--color-portfolio-bg))`
+}
 
 export function HomePageScrollBackdrop() {
-  const [scrolled, setScrolled] = useState(false)
+  const { flavor } = useHomeHeroFlavor()
+  const pinkLayerRef = useRef(null)
+  const greenLayerRef = useRef(null)
+  const thresholdRef = useRef(0)
 
   useEffect(() => {
-    const update = () => {
-      const y = window.scrollY
-      const t = heroGrayThresholdY()
-      setScrolled((prev) => {
-        if (y >= t) return true
-        if (y <= t - HYSTERESIS_PX) return false
-        return prev
-      })
+    const refreshThreshold = () => {
+      thresholdRef.current = measureHeroGrayThreshold()
     }
 
-    update()
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update, { passive: true })
+    const applyScrollColors = () => {
+      const mix = computeGrayMix(getScrollY(), thresholdRef.current)
+      const reducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+      const snapped = reducedMotion ? (mix >= 0.5 ? 1 : 0) : mix
+
+      if (pinkLayerRef.current) {
+        pinkLayerRef.current.style.backgroundColor = mixToBackground(
+          snapped,
+          PINK_VAR,
+        )
+      }
+      if (greenLayerRef.current) {
+        greenLayerRef.current.style.backgroundColor = mixToBackground(
+          snapped,
+          GREEN_VAR,
+        )
+      }
+    }
+
+    refreshThreshold()
+    applyScrollColors()
+
+    const onScroll = () => applyScrollColors()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', refreshThreshold, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+
+    const lenis = getLenis()
+    lenis?.on('scroll', onScroll)
 
     const hero = document.getElementById('home-hero')
     let ro = null
     if (hero && typeof ResizeObserver !== 'undefined') {
-      ro = new ResizeObserver(update)
+      ro = new ResizeObserver(() => {
+        refreshThreshold()
+        onScroll()
+      })
       ro.observe(hero)
     }
 
     return () => {
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', refreshThreshold)
+      window.removeEventListener('resize', onScroll)
+      lenis?.off('scroll', onScroll)
       ro?.disconnect()
     }
   }, [])
@@ -48,12 +100,20 @@ export function HomePageScrollBackdrop() {
   return (
     <div
       aria-hidden
-      className={
-        `pointer-events-none fixed inset-0 z-0 ` +
-        `transition-colors [transition-duration:var(--page-background-color-transition-time,0.8s)] ` +
-        `ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none ` +
-        (scrolled ? 'bg-portfolio-bg' : 'bg-portfolio-pink')
-      }
-    />
+      className="pointer-events-none fixed inset-0 z-0"
+    >
+      <div
+        ref={pinkLayerRef}
+        className={`absolute inset-0 bg-portfolio-pink ${heroFlavorTransitionClass} ${
+          flavor === 'pink' ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+      <div
+        ref={greenLayerRef}
+        className={`absolute inset-0 bg-portfolio-lime ${heroFlavorTransitionClass} ${
+          flavor === 'green' ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+    </div>
   )
 }

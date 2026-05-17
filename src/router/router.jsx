@@ -10,7 +10,8 @@ export default function Router() {
     <Routes>
       <Route element={<RootLayout />}>
         <Route path="/" element={<HomeView />} />
-        <Route path="/overview" element={<OverviewView />} />
+        <Route path="/overview" element={<Navigate to="/overview/web-stuff" replace />} />
+        <Route path="/overview/:category" element={<OverviewView />} />
         <Route path="/project/:slug" element={<ProjectDetailView />} />
         <Route path="/contact" element={<ContactView />} />
         <Route path="*" element={<Navigate to="/" replace />} />

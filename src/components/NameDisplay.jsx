@@ -484,11 +484,11 @@ export default function NameDisplay({
           }
 
           .name-text--hero .char {
-            font-size: clamp(0.98rem, 1.95vw, 2.35rem);
+            font-size: clamp(0.85rem, 1.8vw, 2rem);
           }
 
           .name-text--hero-headline .char {
-            font-size: clamp(0.72rem, min(2.05vw + 0.1rem, 3.4svh), 1.82rem);
+            font-size: clamp(0.72rem, min(1.9vw, 3.2svh), 1.6rem);
           }
 
           .name-text--screensaver .char {
@@ -515,28 +515,34 @@ export default function NameDisplay({
 
         .name-text--hero-headline .hero-headline-line {
           display: inline-flex;
-          flex-wrap: nowrap;
+          flex-wrap: wrap;
           justify-content: center;
           align-items: baseline;
           max-width: 100%;
         }
 
+        @media (min-width: 64rem) {
+          .name-text--hero-headline .hero-headline-line {
+            flex-wrap: nowrap;
+          }
+        }
+
         .name-text--hero-headline .char {
           color: #000000;
-          font-size: clamp(0.82rem, min(2.65vw + 0.2rem, 4.5svh), 2.35rem);
+          font-size: clamp(1.6rem, 7.5vw, 2.8rem);
           letter-spacing: -0.02em;
           line-height: 0.92;
         }
 
         @media (min-width: 64rem) {
           .name-text--hero-headline .char {
-            font-size: clamp(2.1rem, 6.75vw, 6.25rem);
+            font-size: clamp(1.8rem, 5.5vw, 5.5rem);
           }
         }
 
         @media (min-width: 80rem) {
           .name-text--hero-headline .char {
-            font-size: clamp(2.5rem, 7.25vw, 7.5rem);
+            font-size: clamp(2.5rem, 6.5vw, 7rem);
           }
         }
 
