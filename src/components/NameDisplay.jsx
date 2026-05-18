@@ -639,7 +639,11 @@ export default function NameDisplay({
 
     const pinnedStyle = pin
       ? {
-          ['--nft-color']: pin.color,
+          ['--nft-color']: resolvedAccent === 'pink' 
+            ? '#FF5FC6' 
+            : resolvedAccent === 'green' 
+              ? '#4EF967' 
+              : pin.color,
           ['--nft-feat']: `"${pin.ss}" 1`,
         }
       : undefined

@@ -27,9 +27,9 @@ function galleryPinScrollDistanceScale() {
 
 const ST_ID = 'home-gallery-horizontal'
 const GALLERY_SLIDE_FRAME_CLASS =
-  'relative flex h-[min(38svh,280px)] w-[min(85vw,380px)] max-w-[94vw] shrink-0 items-center justify-center overflow-hidden p-0 ' +
-  'sm:h-[min(45svh,380px)] sm:w-[min(85vw,480px)] ' +
-  'md:h-[min(45svh,400px)] md:w-[min(80vw,520px)] ' +
+  'relative flex h-[clamp(340px,58svh,460px)] w-[clamp(240px,42vw,320px)] shrink-0 items-center justify-center overflow-hidden p-0 ' +
+  'sm:h-[clamp(380px,60svh,520px)] sm:w-[clamp(270px,45vw,380px)] ' +
+  'md:h-[clamp(420px,60svh,580px)] md:w-[clamp(300px,45vw,420px)] ' +
   'lg:h-[clamp(340px,min(74svh,82vh),860px)] lg:w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] lg:max-w-[min(94vw,calc(min(74svh,82vh)*0.85))]'
 
 const DEFAULT_GALLERY_INTRO_TEXT = 'a taste of my work →'
@@ -239,7 +239,7 @@ export function HomeInteractiveGallerySection({
       >
         <div
           ref={wrapRef}
-          className="relative z-[1] flex h-svh w-full items-center overflow-hidden lg:h-[100svh] lg:items-center"
+          className="relative z-[1] flex h-svh w-full items-center overflow-hidden lg:h-[100svh]"
         >
           <div
             ref={trackRef}
@@ -282,9 +282,9 @@ export function HomeInteractiveGallerySection({
                         'relative cursor-pointer overflow-hidden shadow-[inset_0_0_0_0.5px_rgba(240,237,228,0.1)] ' +
                         'after:pointer-events-none after:absolute after:inset-0 after:border after:border-solid after:border-[rgba(240,237,228,0.1)] ' +
                         'after:transition-colors after:duration-300 hover:after:border-[rgba(240,237,228,0.35)] ' +
-                        'h-[min(38svh,280px)] w-[min(85vw,380px)] max-w-[94vw] ' +
-                        'sm:h-[min(45svh,380px)] sm:w-[min(85vw,480px)] ' +
-                        'md:h-[min(45svh,400px)] md:w-[min(80vw,520px)] ' +
+                        'h-[clamp(340px,58svh,460px)] w-[clamp(240px,42vw,320px)] ' +
+                        'sm:h-[clamp(380px,60svh,520px)] sm:w-[clamp(270px,45vw,380px)] ' +
+                        'md:h-[clamp(420px,60svh,580px)] md:w-[clamp(300px,45vw,420px)] ' +
                         'lg:h-[clamp(340px,min(74svh,82vh),860px)] lg:w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] lg:max-w-[min(94vw,calc(min(74svh,82vh)*0.85))]'
                       }
                     >

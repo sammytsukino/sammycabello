@@ -126,7 +126,7 @@ function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef, initia
         draggable={false}
         className={
           `block h-auto object-cover ` +
-          `w-[clamp(140px,min(55vw,38vh),500px)] max-w-[min(50vw,320px)] ` +
+          `w-[clamp(90px,min(30vw,20vh),180px)] max-w-[min(32vw,140px)] ` +
           `md:w-[clamp(130px,min(50vw,36vh),440px)] md:max-w-[min(44vw,280px)] ` +
           `lg:w-[clamp(180px,min(70vw,50vh),680px)] lg:max-w-[min(72vw,680px)]`
         }
@@ -198,7 +198,7 @@ function DvdStaticLinksColumn({ items }) {
       className="pointer-events-none absolute inset-0 z-[35] flex flex-col items-center justify-center px-site-x py-[max(1rem,env(safe-area-inset-bottom))]"
       aria-label="Enlaces del portfolio"
     >
-      <ul className="pointer-events-auto m-0 flex list-none flex-col items-center gap-[clamp(2rem,7svh,4rem)] p-0">
+      <ul className="pointer-events-auto m-0 flex list-none flex-col items-center gap-[clamp(2.5rem,7svh,4rem)] p-0">
         {items.map((item) => {
           const key = item.sectionId ?? item.to
           return (
@@ -367,7 +367,10 @@ export function HomeDvdScreensaverSection() {
       aria-label="Enlaces del portfolio"
       onMouseMove={handleSectionMouseMove}
       onMouseLeave={handleSectionMouseLeave}
-      className="relative isolate h-[60svh] w-full bg-transparent lg:h-[100svh]"
+      className={
+        `relative isolate h-[75svh] w-full bg-transparent lg:h-[100svh] ` +
+        `mt-[clamp(2rem,6svh,4rem)] lg:mt-[clamp(4rem,14svh,10rem)]`
+      }
     >
       {lgUp && finePointer && cursorPt != null ? (
         <div

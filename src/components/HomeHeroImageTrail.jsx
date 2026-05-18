@@ -14,18 +14,15 @@ function useTrailEnabled() {
 
   useEffect(() => {
     const motionMq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const pointerMq = window.matchMedia('(pointer: fine)')
 
     const apply = () => {
-      setEnabled(!motionMq.matches && pointerMq.matches)
+      setEnabled(!motionMq.matches)
     }
 
     apply()
     motionMq.addEventListener('change', apply)
-    pointerMq.addEventListener('change', apply)
     return () => {
       motionMq.removeEventListener('change', apply)
-      pointerMq.removeEventListener('change', apply)
     }
   }, [])
 
@@ -88,6 +85,10 @@ export function HomeHeroImageTrail({
   const enabled = useTrailEnabled()
   const imageCount = images.length
 
+  const lastMouseMoveTimeRef = useRef(0)
+  const autoTimeRef = useRef(0)
+  const lastAutoSpawnTimeRef = useRef(0)
+
   const mouseInfo = useRef({
     now: { x: 0, y: 0 },
     prev: { x: 0, y: 0 },
@@ -95,7 +96,8 @@ export function HomeHeroImageTrail({
   }).current
 
   const imagePositions = useRef([])
-  const [index, setIndex] = useState(0)
+  const indexRef = useRef(0)
+  const [, forceUpdate] = useState(0)
 
   const updateMouseFromEvent = useCallback(
     (clientX, clientY) => {
@@ -106,6 +108,7 @@ export function HomeHeroImageTrail({
         x: clientX - rect.left,
         y: clientY - rect.top,
       }
+      lastMouseMoveTimeRef.current = Date.now()
     },
     [containerRef, mouseInfo],
   )
@@ -123,36 +126,87 @@ export function HomeHeroImageTrail({
   const onFrame = useCallback(() => {
     if (!enabled || imageCount === 0) return
 
-    const mouseDistance = distance(mouseInfo.now, mouseInfo.prevImage)
+    const isIdle = Date.now() - lastMouseMoveTimeRef.current > 1000
 
-    mouseInfo.prev = {
-      x: mix(mouseInfo.prev.x || mouseInfo.now.x, mouseInfo.now.x, 0.1),
-      y: mix(mouseInfo.prev.y || mouseInfo.now.y, mouseInfo.now.y, 0.1),
-    }
+    if (isIdle) {
+      const root = containerRef.current
+      if (root) {
+        const rect = root.getBoundingClientRect()
+        const w = rect.width || 390
+        const h = rect.height || 844
 
-    if (mouseDistance > distanceThreshold) {
-      const newIndex = index + 1
-      const imageIndex = wrap(0, imageCount - 1, newIndex)
+        autoTimeRef.current += 0.05
 
-      imagePositions.current[imageIndex] = {
-        xOrigin: mouseInfo.prev.x,
-        yOrigin: mouseInfo.prev.y,
-        x: mouseInfo.now.x,
-        y: mouseInfo.now.y,
-        style: {
-          ...generateTrailImageSize(),
-          zIndex: imageIndex,
-        },
+        const t = autoTimeRef.current
+        const cx = w / 2
+        const cy = h / 2
+        const rx = w * 0.35
+        const ry = h * 0.28
+
+        const x = cx + Math.sin(t * 1.8) * rx
+        const y = cy + Math.cos(t * 1.8) * ry
+
+        mouseInfo.now = { x, y }
+
+        if (mouseInfo.prevImage.x === 0 && mouseInfo.prevImage.y === 0) {
+          mouseInfo.prevImage = { x, y }
+          mouseInfo.prev = { x, y }
+        }
+
+        if (Date.now() - lastAutoSpawnTimeRef.current > 380) {
+          lastAutoSpawnTimeRef.current = Date.now()
+
+          indexRef.current += 1
+          const imageIndex = wrap(0, imageCount - 1, indexRef.current)
+
+          imagePositions.current[imageIndex] = {
+            xOrigin: mouseInfo.prev.x || x,
+            yOrigin: mouseInfo.prev.y || y,
+            x: x,
+            y: y,
+            style: {
+              ...generateTrailImageSize(),
+              zIndex: imageIndex,
+            },
+          }
+
+          mouseInfo.prevImage = { x, y }
+          mouseInfo.prev = { x, y }
+          forceUpdate((prev) => prev + 1)
+        }
+      }
+    } else {
+      const mouseDistance = distance(mouseInfo.now, mouseInfo.prevImage)
+
+      mouseInfo.prev = {
+        x: mix(mouseInfo.prev.x || mouseInfo.now.x, mouseInfo.now.x, 0.1),
+        y: mix(mouseInfo.prev.y || mouseInfo.now.y, mouseInfo.now.y, 0.1),
       }
 
-      mouseInfo.prevImage = mouseInfo.now
-      setIndex(newIndex)
+      if (mouseDistance > distanceThreshold) {
+        indexRef.current += 1
+        const imageIndex = wrap(0, imageCount - 1, indexRef.current)
+
+        imagePositions.current[imageIndex] = {
+          xOrigin: mouseInfo.prev.x,
+          yOrigin: mouseInfo.prev.y,
+          x: mouseInfo.now.x,
+          y: mouseInfo.now.y,
+          style: {
+            ...generateTrailImageSize(),
+            zIndex: imageIndex,
+          },
+        }
+
+        mouseInfo.prevImage = mouseInfo.now
+        forceUpdate((prev) => prev + 1)
+      }
     }
   }, [
+    containerRef,
     distanceThreshold,
     enabled,
     imageCount,
-    index,
     mouseInfo,
   ])
 

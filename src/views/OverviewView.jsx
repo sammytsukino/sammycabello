@@ -92,8 +92,15 @@ export function OverviewView() {
     return assignments
   }, [filteredItems])
 
+  const gradientClass = useMemo(() => {
+    const isPink = Math.random() < 0.5
+    return isPink 
+      ? 'bg-gradient-to-b from-portfolio-bg to-portfolio-pink' 
+      : 'bg-gradient-to-b from-portfolio-bg to-portfolio-lime'
+  }, [])
+
   return (
-    <main className="min-h-svh w-full overflow-x-hidden bg-portfolio-bg text-black md:h-svh md:overflow-hidden">
+    <main className={`min-h-svh w-full overflow-x-hidden ${gradientClass} text-black md:h-svh md:overflow-hidden`}>
       <section className="flex h-[5vh] min-h-11 items-center border-b border-black/35 px-site-x lg:px-10">
         <Link 
           to="/" 

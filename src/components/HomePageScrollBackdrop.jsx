@@ -47,11 +47,30 @@ export function HomePageScrollBackdrop() {
     }
 
     const applyScrollColors = () => {
-      const mix = computeGrayMix(getScrollY(), thresholdRef.current)
+      const scrollY = getScrollY()
+      const docHeight = document.documentElement.scrollHeight
+      const winHeight = window.innerHeight
+      const maxScroll = Math.max(1, docHeight - winHeight)
+      const scrollFromBottom = Math.max(0, maxScroll - scrollY)
+
+      // 1. Hero blend (0 at top, goes to 1 as we scroll past hero)
+      const mix = computeGrayMix(scrollY, thresholdRef.current)
+
+      // 2. Footer blend (starts at 0, goes to 1 at the very bottom, over the exact same range as the top)
+      const bottomBlendRange = COLOR_BLEND_RANGE_PX
+      let bottomMix = 0
+      if (scrollFromBottom < bottomBlendRange) {
+        bottomMix = 1 - (scrollFromBottom / bottomBlendRange)
+      }
+
+      // 3. Final flavor factor (1 = flavor color, 0 = gray)
+      const finalFlavorFactor = Math.max(1 - mix, bottomMix)
+      const finalGrayMix = 1 - finalFlavorFactor
+
       const reducedMotion = window.matchMedia(
         '(prefers-reduced-motion: reduce)',
       ).matches
-      const snapped = reducedMotion ? (mix >= 0.5 ? 1 : 0) : mix
+      const snapped = reducedMotion ? (finalGrayMix >= 0.5 ? 1 : 0) : finalGrayMix
 
       if (pinkLayerRef.current) {
         pinkLayerRef.current.style.backgroundColor = mixToBackground(

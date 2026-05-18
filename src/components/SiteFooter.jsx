@@ -15,15 +15,12 @@ const GITHUB_LABEL = 'github.com/sammytsukino'
 export default function SiteFooter() {
   const { flavor } = useHomeHeroFlavor()
   const iconAccent = `${postHeroIconAccentClass(flavor)} ${heroFlavorColorTransitionClass}`
-  const linkClass =
-    `flex items-center gap-2 text-inherit no-underline ` +
-    `${flavorLinkHoverClass(flavor)} ` +
-    `transition-transform duration-300 ease-out hover:translate-x-1 will-change-transform`
+  const linkClass = 'flex items-center gap-2 text-inherit no-underline hover:underline'
 
   return (
     <footer
       className={
-        `relative z-20 flex w-full min-w-0 shrink-0 flex-col overflow-x-clip bg-portfolio-bg ` +
+        `relative z-20 flex w-full min-w-0 shrink-0 flex-col overflow-x-clip bg-transparent ` +
         `text-black min-h-0 max-lg:mt-[clamp(1rem,3.5svh,2rem)] max-lg:overflow-y-visible ` +
         `lg:mt-[clamp(4rem,14svh,10rem)] lg:min-h-[100svh] lg:overflow-y-clip`
       }
@@ -33,7 +30,7 @@ export default function SiteFooter() {
         id="footer-contact"
         className={
           `relative z-10 mx-auto w-full max-w-[90rem] shrink-0 scroll-mt-[var(--hero-frame-inset)] ` +
-          `bg-portfolio-bg px-[var(--hero-frame-inset)] text-black ` +
+          `bg-transparent px-[var(--hero-frame-inset)] text-black ` +
           `max-lg:mb-[clamp(-2.5rem,-8vw,-1.25rem)] max-lg:pb-2 max-lg:pt-3 ` +
           `lg:mb-0 lg:pb-[clamp(2rem,min(8vw),3.5rem)] ` +
           `lg:pt-[clamp(4rem,min(24svh,14rem),18rem)]`
@@ -126,7 +123,7 @@ export default function SiteFooter() {
           }
           style={{ transform: 'translateX(-2rem)' }}
         >
-          <NameDisplay variant="footer" />
+          <NameDisplay variant="footer" accent={flavor === 'pink' ? 'green' : 'pink'} />
         </div>
       </div>
     </footer>

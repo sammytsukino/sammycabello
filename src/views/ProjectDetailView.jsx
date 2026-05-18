@@ -36,6 +36,7 @@ const CORNER_ICON_SIZE =
   `size-[2.5rem] md:size-[3rem] lg:size-[3.5rem] shrink-0`
 
 const GALLERY_VARIANTS = [
+  // 1. Spora
   [
     "h-[60vh] self-center z-10",
     "h-[30vh] self-start mt-[10vh] -ml-[10vw] z-20 shadow-2xl",
@@ -46,6 +47,7 @@ const GALLERY_VARIANTS = [
     "h-[25vh] self-end mb-[15vh] -ml-[5vw] z-20 shadow-2xl",
     "h-[50vh] self-center z-10"
   ],
+  // 2. Choreomania
   [
     "h-[50vh] self-start mt-[5vh] z-10",
     "h-[40vh] self-end mb-[10vh] -ml-[15vw] z-20 shadow-2xl",
@@ -56,6 +58,7 @@ const GALLERY_VARIANTS = [
     "h-[60vh] self-start mt-[10vh] z-10",
     "h-[35vh] self-center -ml-[8vw] z-20 shadow-2xl"
   ],
+  // 3. Sas-Scii
   [
     "h-[40vh] self-end mb-[10vh] z-10",
     "h-[60vh] self-center -ml-[10vw] z-20 shadow-2xl",
@@ -65,6 +68,61 @@ const GALLERY_VARIANTS = [
     "h-[50vh] self-start mt-[5vh] z-10",
     "h-[45vh] self-center -ml-[10vw] z-20 shadow-2xl",
     "h-[65vh] self-end mb-[5vh] z-10"
+  ],
+  // 4. Puella Database
+  [
+    "h-[55vh] self-center z-10",
+    "h-[45vh] self-start mt-[5vh] -ml-[6vw] z-20 shadow-2xl",
+    "h-[30vh] self-end mb-[12vh] -ml-[4vw] z-10",
+    "h-[65vh] self-center z-10",
+    "h-[35vh] self-center -ml-[10vw] z-30 shadow-2xl",
+    "h-[50vh] self-end mb-[8vh] z-10",
+    "h-[40vh] self-start mt-[15vh] -ml-[8vw] z-20 shadow-2xl",
+    "h-[60vh] self-center z-10"
+  ],
+  // 5. Crap-Book
+  [
+    "h-[35vh] self-start mt-[12vh] z-10",
+    "h-[65vh] self-center -ml-[8vw] z-20 shadow-2xl",
+    "h-[45vh] self-end mb-[5vh] z-10",
+    "h-[55vh] self-start mt-[8vh] -ml-[12vw] z-30 shadow-2xl",
+    "h-[30vh] self-center -ml-[4vw] z-10",
+    "h-[70vh] self-end mb-[10vh] z-20 shadow-2xl",
+    "h-[40vh] self-center -ml-[6vw] z-10",
+    "h-[50vh] self-start mt-[15vh] z-30 shadow-2xl"
+  ],
+  // 6. Mt Holly
+  [
+    "h-[65vh] self-end mb-[8vh] z-10",
+    "h-[35vh] self-start mt-[15vh] -ml-[12vw] z-30 shadow-2xl",
+    "h-[55vh] self-center z-10",
+    "h-[45vh] self-center -ml-[8vw] z-20 shadow-2xl",
+    "h-[60vh] self-start mt-[5vh] z-10",
+    "h-[30vh] self-end mb-[10vh] -ml-[10vw] z-30 shadow-2xl",
+    "h-[50vh] self-center z-10",
+    "h-[40vh] self-end mb-[5vh] -ml-[6vw] z-20 shadow-2xl"
+  ],
+  // 7. Charisma
+  [
+    "h-[45vh] self-center z-10",
+    "h-[55vh] self-start mt-[10vh] -ml-[5vw] z-20 shadow-2xl",
+    "h-[65vh] self-end mb-[12vh] -ml-[10vw] z-30 shadow-2xl",
+    "h-[30vh] self-center z-10",
+    "h-[50vh] self-start mt-[5vh] -ml-[8vw] z-20",
+    "h-[40vh] self-end mb-[5vh] z-10",
+    "h-[60vh] self-center -ml-[6vw] z-30 shadow-2xl",
+    "h-[35vh] self-start mt-[15vh] z-10"
+  ],
+  // 8. Xplorer
+  [
+    "h-[70vh] self-center z-10",
+    "h-[30vh] self-end mb-[15vh] -ml-[10vw] z-20 shadow-2xl",
+    "h-[50vh] self-start mt-[10vh] z-10",
+    "h-[40vh] self-center -ml-[8vw] z-30 shadow-2xl",
+    "h-[65vh] self-end mb-[5vh] z-10",
+    "h-[35vh] self-start mt-[5vh] -ml-[6vw] z-20 shadow-2xl",
+    "h-[55vh] self-center z-10",
+    "h-[45vh] self-center -ml-[10vw] z-20 shadow-2xl"
   ]
 ]
 
@@ -121,8 +179,8 @@ export function ProjectDetailView() {
     }
   }
 
-  const slugHash = slug ? slug.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0
-  const layoutVariant = GALLERY_VARIANTS[slugHash % GALLERY_VARIANTS.length]
+  const projectIndex = HOME_GALLERY_ITEMS.findIndex((p) => p.slug === slug)
+  const layoutVariant = GALLERY_VARIANTS[projectIndex >= 0 ? projectIndex % GALLERY_VARIANTS.length : 0]
 
   const paragraphs = project?.paragraphs || [
     "Este proyecto nace de la necesidad de explorar nuevas interacciones usando CSS moderno y React. Mezcla animaciones de alto rendimiento con una estética minimalista y limpia.",
