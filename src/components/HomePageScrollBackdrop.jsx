@@ -6,7 +6,7 @@ import {
 import { getLenis } from '../lib/initLenis.js'
 
 const HERO_SCROLL_RATIO = 0.5
-const COLOR_BLEND_RANGE_PX = 140
+const COLOR_BLEND_RANGE_PX = 250
 const PINK_VAR = 'var(--color-portfolio-pink)'
 const GREEN_VAR = 'var(--color-portfolio-lime)'
 

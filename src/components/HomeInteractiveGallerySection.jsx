@@ -293,7 +293,7 @@ export function HomeInteractiveGallerySection({
                         src={item.src}
                         alt=""
                         draggable={false}
-                        className="size-full object-cover [filter:saturate(0.9)_contrast(1.02)]"
+                        className="size-full object-contain lg:object-cover [filter:saturate(0.9)_contrast(1.02)]"
                       />
                     </div>
                   </Link>

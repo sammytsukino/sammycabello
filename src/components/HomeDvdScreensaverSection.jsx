@@ -126,7 +126,7 @@ function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef, initia
         draggable={false}
         className={
           `block h-auto object-cover ` +
-          `w-[clamp(90px,min(30vw,20vh),180px)] max-w-[min(32vw,140px)] ` +
+          `w-[clamp(90px,min(30vw,20vh),180px)] max-w-[min(32vw,250px)] ` +
           `md:w-[clamp(130px,min(50vw,36vh),440px)] md:max-w-[min(44vw,280px)] ` +
           `lg:w-[clamp(180px,min(70vw,50vh),680px)] lg:max-w-[min(72vw,680px)]`
         }
