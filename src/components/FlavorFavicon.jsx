@@ -8,9 +8,6 @@ const FAVICON_SVG_BY_FLAVOR = Object.freeze({
     'https://res.cloudinary.com/dsy30p7gf/image/upload/v1779271682/Recurso_23colored-star2_tfkjpa.svg',
 })
 
-/**
- * Sincroniza el favicon de la pestaña con el modo sweet (pink) / healthy (green).
- */
 export function FlavorFavicon() {
   const { flavor } = useHomeHeroFlavor()
 

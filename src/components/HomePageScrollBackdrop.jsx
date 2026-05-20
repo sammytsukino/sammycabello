@@ -53,17 +53,14 @@ export function HomePageScrollBackdrop() {
       const maxScroll = Math.max(1, docHeight - winHeight)
       const scrollFromBottom = Math.max(0, maxScroll - scrollY)
 
-      // 1. Hero blend (0 at top, goes to 1 as we scroll past hero)
       const mix = computeGrayMix(scrollY, thresholdRef.current)
 
-      // 2. Footer blend (starts at 0, goes to 1 at the very bottom, over the exact same range as the top)
       const bottomBlendRange = COLOR_BLEND_RANGE_PX
       let bottomMix = 0
       if (scrollFromBottom < bottomBlendRange) {
         bottomMix = 1 - (scrollFromBottom / bottomBlendRange)
       }
 
-      // 3. Final flavor factor (1 = flavor color, 0 = gray)
       const finalFlavorFactor = Math.max(1 - mix, bottomMix)
       const finalGrayMix = 1 - finalFlavorFactor
 

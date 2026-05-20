@@ -41,7 +41,6 @@ const CORNER_ICON_SIZE =
   `desktop-std:lg:size-[2.75rem]`
 
 const GALLERY_VARIANTS = [
-  // 1. Spora
   [
     "h-[60vh] self-center z-10",
     "h-[30vh] self-start mt-[10vh] -ml-[10vw] z-20 shadow-2xl",
@@ -52,7 +51,6 @@ const GALLERY_VARIANTS = [
     "h-[25vh] self-end mb-[15vh] -ml-[5vw] z-20 shadow-2xl",
     "h-[50vh] self-center z-10"
   ],
-  // 2. Choreomania
   [
     "h-[50vh] self-start mt-[5vh] z-10",
     "h-[40vh] self-end mb-[10vh] -ml-[15vw] z-20 shadow-2xl",
@@ -63,7 +61,6 @@ const GALLERY_VARIANTS = [
     "h-[60vh] self-start mt-[10vh] z-10",
     "h-[35vh] self-center -ml-[8vw] z-20 shadow-2xl"
   ],
-  // 3. Sas-Scii
   [
     "h-[40vh] self-end mb-[10vh] z-10",
     "h-[60vh] self-center -ml-[10vw] z-20 shadow-2xl",
@@ -74,7 +71,6 @@ const GALLERY_VARIANTS = [
     "h-[45vh] self-center -ml-[10vw] z-20 shadow-2xl",
     "h-[65vh] self-end mb-[5vh] z-10"
   ],
-  // 4. Puella Database
   [
     "h-[55vh] self-center z-10",
     "h-[45vh] self-start mt-[5vh] -ml-[6vw] z-20 shadow-2xl",
@@ -85,7 +81,6 @@ const GALLERY_VARIANTS = [
     "h-[40vh] self-start mt-[15vh] -ml-[8vw] z-20 shadow-2xl",
     "h-[60vh] self-center z-10"
   ],
-  // 5. Crap-Book
   [
     "h-[35vh] self-start mt-[12vh] z-10",
     "h-[65vh] self-center -ml-[8vw] z-20 shadow-2xl",
@@ -96,7 +91,6 @@ const GALLERY_VARIANTS = [
     "h-[40vh] self-center -ml-[6vw] z-10",
     "h-[50vh] self-start mt-[15vh] z-30 shadow-2xl"
   ],
-  // 6. Mt Holly
   [
     "h-[65vh] self-end mb-[8vh] z-10",
     "h-[35vh] self-start mt-[15vh] -ml-[12vw] z-30 shadow-2xl",
@@ -107,7 +101,6 @@ const GALLERY_VARIANTS = [
     "h-[50vh] self-center z-10",
     "h-[40vh] self-end mb-[5vh] -ml-[6vw] z-20 shadow-2xl"
   ],
-  // 7. Charisma
   [
     "h-[45vh] self-center z-10",
     "h-[55vh] self-start mt-[10vh] -ml-[5vw] z-20 shadow-2xl",
@@ -118,7 +111,6 @@ const GALLERY_VARIANTS = [
     "h-[60vh] self-center -ml-[6vw] z-30 shadow-2xl",
     "h-[35vh] self-start mt-[15vh] z-10"
   ],
-  // 8. Xplorer
   [
     "h-[70vh] self-center z-10",
     "h-[30vh] self-end mb-[15vh] -ml-[10vw] z-20 shadow-2xl",

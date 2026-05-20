@@ -33,7 +33,6 @@ export function generateTrailImageSize({ compact } = {}) {
   }
 }
 
-/** Trail automático solo en touch / sin ratón (no en desktop con hover). */
 export function shouldAutoAnimateTrail() {
   if (typeof window === 'undefined') return false
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
