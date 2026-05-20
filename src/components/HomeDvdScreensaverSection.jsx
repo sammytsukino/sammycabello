@@ -49,12 +49,36 @@ function useLgUp() {
   )
 }
 
+const comingSoonLinkClass =
+  `line-through decoration-black/70 [text-decoration-thickness:1px] ` +
+  `cursor-not-allowed opacity-55 saturate-75 transition-[filter,opacity] duration-200 ease-out ` +
+  `hover:grayscale hover:opacity-100`
+
 const DvdPortfolioLink = forwardRef(function DvdPortfolioLink(
   { item, className, style, children, onPointerEnter, onPointerLeave },
   ref,
 ) {
   const loc = useLocation()
   const navigate = useNavigate()
+
+  const mergedClassName = item.comingSoon
+    ? `${className ?? ''} ${comingSoonLinkClass}`.trim()
+    : className
+
+  if (item.comingSoon) {
+    return (
+      <span
+        ref={ref}
+        className={mergedClassName}
+        style={style}
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
+        aria-disabled="true"
+      >
+        {children}
+      </span>
+    )
+  }
 
   if (item.sectionId) {
     return (
@@ -179,7 +203,9 @@ function BouncingScreensaverLink({
       }}
       className={
         `${linkZClass} text-inherit no-underline ` +
-        `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950/35`
+        (item.comingSoon
+          ? ''
+          : `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950/35`)
       }
     >
       <NameDisplay
@@ -201,15 +227,16 @@ function DvdStaticLinksColumn({ items }) {
       <ul className="pointer-events-auto m-0 flex list-none flex-col items-center gap-[clamp(2.5rem,7svh,4rem)] p-0">
         {items.map((item) => {
           const key = item.sectionId ?? item.to
+          const interactiveClass = item.comingSoon
+            ? `text-inherit no-underline`
+            : `text-inherit no-underline transition-opacity duration-200 ` +
+              `hover:opacity-[0.88] ` +
+              `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950/35`
           return (
             <li key={key} className="flex w-full max-w-[min(100%,42rem)] justify-center">
               <DvdPortfolioLink
                 item={item}
-                className={
-                  `text-inherit no-underline transition-opacity duration-200 ` +
-                  `hover:opacity-[0.88] ` +
-                  `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950/35`
-                }
+                className={interactiveClass}
               >
                 <NameDisplay
                   variant="screensaverColumn"
@@ -382,7 +409,18 @@ export function HomeDvdScreensaverSection() {
           }}
           aria-hidden
         >
-          <PortfolioPill>GRAB A BITE FROM TODAY&apos;S MENU</PortfolioPill>
+          <PortfolioPill>
+            {(() => {
+              if (frozenLinkKey == null) {
+                return "GRAB A BITE FROM TODAY'S MENU"
+              }
+              const hovered = HOME_DVD_SCREENSAVER_LINKS.find(
+                (l) => (l.sectionId ?? l.to) === frozenLinkKey,
+              )
+              if (hovered?.comingSoon) return 'STILL COOKING :('
+              return 'NICE CHOICE!'
+            })()}
+          </PortfolioPill>
         </div>
       ) : null}
       <div

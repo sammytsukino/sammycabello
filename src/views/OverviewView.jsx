@@ -3,34 +3,20 @@ import { Link, useParams } from 'react-router-dom'
 import NameDisplay from '../components/NameDisplay.jsx'
 import { HOME_GALLERY_ITEMS } from '../data/homeGalleryItems.js'
 
+const OVERVIEW_STAR_OUTLINE_SRC =
+  'https://res.cloudinary.com/dsy30p7gf/image/upload/v1778581291/Recurso_11estrellarellena_aoc12t.svg'
+
 const CATEGORY_DETAILS = {
   'web-stuff': {
     title: 'Web Stuff',
-    subtitle: '1.1 Direct',
+    subtitle: '1.1 WEB STUFF',
     version: 'v1.1',
-    footerText: '"CREATIVE DEVELOPMENTS & FULL-STACK FUNCTIONALITY"',
-    filter: (item) =>
-      item.stack.some((tech) =>
-        [
-          'react',
-          'typescript',
-          'vitejs',
-          'tailwindcss',
-          'nodejs',
-          'expressjs',
-          'mongodb',
-          'html5',
-          'css3',
-          'js',
-          'django',
-          'python',
-          'sqlite',
-        ].includes(tech),
-      ),
+    footerText: '"DELICIOUS VISUALS, ROBUST RECIPES"',
+    filter: () => true,
   },
   'art-design': {
     title: 'Art & Design',
-    subtitle: '2.2 Visual',
+    subtitle: '2.2 ART & DESIGN',
     version: 'v2.2',
     footerText: '"EDITORIAL GRAPHIC DESIGN & INTERACTIVE ARTWORK"',
     filter: (item) =>
@@ -48,7 +34,7 @@ const CATEGORY_DETAILS = {
   },
   'comms-pr': {
     title: 'Comms & PR',
-    subtitle: '3.3 Dialogue',
+    subtitle: '3.3 COMMUNICATION & PR',
     version: 'v3.3',
     footerText: '"COMMUNICATION STRATEGY & NARRATIVE EXPERIENCES"',
     filter: (item) =>
@@ -112,9 +98,9 @@ export function OverviewView() {
           </div>
         </Link>
         <div className="ml-2 hidden text-[0.56rem] uppercase tracking-[0.12em] sm:block md:ml-4 md:text-[0.65rem] md:tracking-[0.14em]">
-          Design
+          PORTFOLIO
           <br />
-          Report
+          OVERVIEW
         </div>
         <div className="ml-3 text-[0.56rem] uppercase tracking-[0.12em] md:ml-8 md:text-[0.65rem] md:tracking-[0.14em]">
           {activeCategory.version}
@@ -124,7 +110,17 @@ export function OverviewView() {
         <div className="ml-auto text-[0.62rem] uppercase tracking-[0.12em] sm:text-[0.72rem] md:text-[0.8rem] md:tracking-[0.14em]">
           {activeCategory.subtitle}
         </div>
-        <div className="ml-3 text-[0.72rem] sm:ml-5 md:ml-8 md:text-[0.9rem]">04</div>
+        <div className="ml-3 flex shrink-0 items-center sm:ml-5 md:ml-8">
+          <img
+            src={OVERVIEW_STAR_OUTLINE_SRC}
+            alt=""
+            width={18}
+            height={18}
+            draggable={false}
+            className="size-[0.72rem] object-contain sm:size-[0.8rem] md:size-[0.9rem]"
+            aria-hidden
+          />
+        </div>
       </section>
 
       <section className="min-h-[108vh] px-site-x pb-4 pt-3 md:h-[75vh] md:min-h-0 lg:px-10">

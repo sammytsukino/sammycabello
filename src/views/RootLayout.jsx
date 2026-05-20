@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 
+import { FlavorFavicon } from '../components/FlavorFavicon.jsx'
 import SiteFooter from '../components/SiteFooter.jsx'
 import { HomeHeroFlavorProvider } from '../context/HomeHeroFlavorContext.jsx'
 
@@ -11,6 +12,7 @@ export function RootLayout() {
 
   return (
     <HomeHeroFlavorProvider>
+      <FlavorFavicon />
       <div
         className={
           `flex min-h-svh w-full max-w-none flex-col overflow-x-clip ` +

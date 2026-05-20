@@ -272,8 +272,9 @@ export function HomeInteractiveGallerySection({
                 >
                   <Link
                     to={`/project/${item.slug}`}
-                    viewTransition
-                    aria-label={`Ver proyecto ${item.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Ver proyecto ${item.slug} (se abre en una nueva pestaña)`}
                     className="block cursor-pointer border-0 bg-transparent p-0 outline-none ring-0 hover:scale-[1.02] transition-transform duration-300 ease-out"
                     onDragStart={(e) => e.preventDefault()}
                   >

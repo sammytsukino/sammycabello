@@ -123,7 +123,7 @@ const TOP_CHROME_SLOT =
   `md:size-[clamp(2.75rem,7.35vw,3.2rem)] ` +
   `lg:size-[clamp(3.1rem,8.75vw,3.75rem)]`
 
-const INSTAGRAM_HANDLE = 'sammycabello'
+const INSTAGRAM_HANDLE = 'sammy.cabello'
 const HERO_HEADLINE_TEXT =
   'BITE SIZED WHIMSY.\n' + 'FULL-COURSE FUNCTIONALITY.'
 const HERO_HEADLINE_ARIA =
