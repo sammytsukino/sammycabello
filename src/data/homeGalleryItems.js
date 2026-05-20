@@ -43,23 +43,23 @@ export const HOME_GALLERY_ITEMS = [
       "Deployed on Vercel as a playable demo, the project outlines expansions (leaderboards, customization, localization) and serves as a polished group showcase of front-end game design and audio storytelling."
     ],
     gallery: [
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926978/Captura_de_pantalla_2026-05-16_122252_m6v8qf.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926794/Captura_de_pantalla_2026-05-16_121938_cp7lmp.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1776937681/example1_ye6cd9.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926874/Captura_de_pantalla_2026-05-16_122105_ltfzi2.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926925/Captura_de_pantalla_2026-05-16_122158_bb134e.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778927502/Captura_de_pantalla_2026-05-16_123129_cd2qxf.png"
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779266473/Captura_de_pantalla_2026-05-20_100507_n5v1nw.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779266480/Captura_de_pantalla_2026-05-20_100339_rejxmd.png",
+      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1779269974/CHOREOMANIA__The_last_ascent_-_Google_Chrome_2026-05-20_10-00-30_ao4hih.mov",
+
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779266477/Captura_de_pantalla_2026-05-20_100402_xt117c.png",
+      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1779269973/CHOREOMANIA__The_last_ascent_-_Google_Chrome_2026-05-20_10-01-18_mppggf.mov",
+
     ],
     liveUrl: "https://choreomania.vercel.app/main/welcome.html",
     githubUrl: "https://github.com/sammytsukino/Choreomania",
     stack: ["html5", "css3", "js", "jest", "figma", "vercel"]
   },
-  
 
 
 
-    {
+
+  {
     slug: 'sasscii',
     src: 'https://res.cloudinary.com/dsy30p7gf/image/upload/v1779013884/cover_tsv99j.png',
     pal: [
@@ -75,13 +75,11 @@ export const HOME_GALLERY_ITEMS = [
       "Built with modern technologies, SAS-SCII combines React for the interface, Three.js for 3D rendering, and specialized media processing tools to deliver an accessible and powerful ASCII art generation platform."
     ],
     gallery: [
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926978/Captura_de_pantalla_2026-05-16_122252_m6v8qf.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926794/Captura_de_pantalla_2026-05-16_121938_cp7lmp.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1776937681/example1_ye6cd9.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926874/Captura_de_pantalla_2026-05-16_122105_ltfzi2.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926925/Captura_de_pantalla_2026-05-16_122158_bb134e.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778927502/Captura_de_pantalla_2026-05-16_123129_cd2qxf.png"
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267166/Captura_de_pantalla_2026-05-20_105240_ovc44t.png",
+      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1779270013/SAS-SCII_-_Google_Chrome_2026-05-20_10-46-14_tzbtim.mov",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267213/Captura_de_pantalla_2026-05-20_105328_fjojkc.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779266986/Captura_de_pantalla_2026-05-20_104928_nvl3nv.png",
+      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1779270018/SAS-SCII_-_Google_Chrome_2026-05-20_10-47-18_qmikwn.mov",
     ],
     liveUrl: "https://sas-scii.vercel.app/",
     githubUrl: "https://github.com/sammytsukino/SAS-SCII",
@@ -90,7 +88,7 @@ export const HOME_GALLERY_ITEMS = [
 
 
 
-      {
+  {
     slug: 'puelladatabase',
     src: 'https://res.cloudinary.com/dsy30p7gf/image/upload/v1779014473/cover_eq1xua.png',
     pal: [
@@ -106,13 +104,13 @@ export const HOME_GALLERY_ITEMS = [
       "Installation is simple: clone the repository, set up a Python virtual environment, install dependencies from requirements.txt, run migrations, and start the development server."
     ],
     gallery: [
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926978/Captura_de_pantalla_2026-05-16_122252_m6v8qf.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926794/Captura_de_pantalla_2026-05-16_121938_cp7lmp.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1776937681/example1_ye6cd9.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926874/Captura_de_pantalla_2026-05-16_122105_ltfzi2.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926925/Captura_de_pantalla_2026-05-16_122158_bb134e.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778927502/Captura_de_pantalla_2026-05-16_123129_cd2qxf.png"
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779014708/Captura_de_pantalla_2026-05-17_124321_yzcynq.png",
+      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1779263740/puella_2_tb9nw8.mp4",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779014691/Captura_de_pantalla_2026-05-17_124336_nvghup.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779014880/Captura_de_pantalla_2026-05-17_124422_pfymbx.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779014880/Captura_de_pantalla_2026-05-17_124410_fvtpxx.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779263278/Captura_de_pantalla_2026-05-20_094734_w1mdpl.png"
+
     ],
     githubUrl: "https://github.com/sammytsukino/madoka-app-django",
     stack: ["django", "python", "sqlite"]
@@ -122,7 +120,7 @@ export const HOME_GALLERY_ITEMS = [
 
 
 
-      {
+  {
     slug: 'crap-book',
     src: 'https://res.cloudinary.com/dsy30p7gf/image/upload/v1779015131/cover_o7tnbi.png',
     pal: [
@@ -138,13 +136,12 @@ export const HOME_GALLERY_ITEMS = [
       "The project is lightweight and fully client-side, with persistent local storage and no account required. It works on desktop and mobile, including touch interactions."
     ],
     gallery: [
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926978/Captura_de_pantalla_2026-05-16_122252_m6v8qf.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926794/Captura_de_pantalla_2026-05-16_121938_cp7lmp.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1776937681/example1_ye6cd9.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926874/Captura_de_pantalla_2026-05-16_122105_ltfzi2.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926925/Captura_de_pantalla_2026-05-16_122158_bb134e.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778927502/Captura_de_pantalla_2026-05-16_123129_cd2qxf.png"
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267425/Captura_de_pantalla_2026-05-20_105521_tmiltq.png",
+      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1779270001/CRAP-BOOK_-_Google_Chrome_2026-05-20_10-56-12_km0h0l.mov",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267427/Captura_de_pantalla_2026-05-20_105527_kc2ail.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267430/Captura_de_pantalla_2026-05-20_105549_gr2g3m.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267500/Captura_de_pantalla_2026-05-20_105815_gzb5iw.png"
+
     ],
     liveUrl: "https://crap-book.vercel.app/",
     githubUrl: "https://github.com/sammytsukino/CRAP-BOOK",
@@ -152,11 +149,7 @@ export const HOME_GALLERY_ITEMS = [
   },
 
 
-
-
-
-
-      {
+  {
     slug: 'mtholly',
     src: 'https://res.cloudinary.com/dsy30p7gf/image/upload/v1779015593/cover_deywz4.png',
     pal: [
@@ -172,13 +165,12 @@ export const HOME_GALLERY_ITEMS = [
       "The experience is presented through a custom UI that mixes a blueprint aesthetic with a retro terminal interface. It includes a home screen, an interactive game view, status feedback, and accessibility-focused structure for keyboard and screen reader support."
     ],
     gallery: [
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926978/Captura_de_pantalla_2026-05-16_122252_m6v8qf.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926794/Captura_de_pantalla_2026-05-16_121938_cp7lmp.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1776937681/example1_ye6cd9.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926874/Captura_de_pantalla_2026-05-16_122105_ltfzi2.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926925/Captura_de_pantalla_2026-05-16_122158_bb134e.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778927502/Captura_de_pantalla_2026-05-16_123129_cd2qxf.png"
+      
+      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1779270598/The_Mount_Holly_Estate_-_A_Blueprint_Adventure_-_Google_Chrome_2026-05-20_11-02-00_ogs5bs.mov",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267762/Captura_de_pantalla_2026-05-20_105925_prjwbq.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267797/Captura_de_pantalla_2026-05-20_105947_xuh1oy.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267801/Captura_de_pantalla_2026-05-20_105930_gu3b21.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779267804/Captura_de_pantalla_2026-05-20_110029_fsmlck.png",
     ],
     liveUrl: "https://the-mount-holly-estate.vercel.app/",
     githubUrl: "https://github.com/sammytsukino/the-mount-holly-estate",
@@ -187,7 +179,7 @@ export const HOME_GALLERY_ITEMS = [
 
 
 
-      {
+  {
     slug: 'charisma',
     src: 'https://res.cloudinary.com/dsy30p7gf/image/upload/v1779015974/cover_cfwcl7.png',
     pal: [
@@ -202,13 +194,10 @@ export const HOME_GALLERY_ITEMS = [
       "Built with vanilla JavaScript, HTML5 Canvas, and CSS, it demonstrates how powerful creative tools can be constructed using standard web technologies.",
     ],
     gallery: [
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926978/Captura_de_pantalla_2026-05-16_122252_m6v8qf.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926794/Captura_de_pantalla_2026-05-16_121938_cp7lmp.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1776937681/example1_ye6cd9.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926874/Captura_de_pantalla_2026-05-16_122105_ltfzi2.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926925/Captura_de_pantalla_2026-05-16_122158_bb134e.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778927502/Captura_de_pantalla_2026-05-16_123129_cd2qxf.png"
+      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1779270066/CHAR_ISMA_-_Google_Chrome_2026-05-20_11-10-49_qkffya.mov",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779268429/Captura_de_pantalla_2026-05-20_111324_oofyah.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779270216/Captura_de_pantalla_2026-05-20_114329_viymn5.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779270339/Captura_de_pantalla_2026-05-20_114534_hqerfv.png",
     ],
     liveUrl: "https://char-isma.vercel.app/",
     githubUrl: "https://github.com/sammytsukino/char-isma",
@@ -216,7 +205,7 @@ export const HOME_GALLERY_ITEMS = [
   },
 
 
-      {
+  {
     slug: 'xplorer',
     src: 'https://res.cloudinary.com/dsy30p7gf/image/upload/v1779016142/img-6_mbjqnu.png',
     pal: [
@@ -232,13 +221,11 @@ export const HOME_GALLERY_ITEMS = [
       "As a pure UI/UX exercise built entirely in Figma, this case study focuses on visual hierarchy, immersive branding, and intuitive user flows. Through compelling imagery and structured layouts, the design successfully sells the illusion of a futuristic, fully functional travel app."
     ],
     gallery: [
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926978/Captura_de_pantalla_2026-05-16_122252_m6v8qf.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1769447110/FLORA-SCAN_kgj7ht.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926794/Captura_de_pantalla_2026-05-16_121938_cp7lmp.png",
-      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1776937681/example1_ye6cd9.mp4",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926874/Captura_de_pantalla_2026-05-16_122105_ltfzi2.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926925/Captura_de_pantalla_2026-05-16_122158_bb134e.png",
-      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1778927502/Captura_de_pantalla_2026-05-16_123129_cd2qxf.png"
+      "https://res.cloudinary.com/dsy30p7gf/video/upload/v1779270038/XPLORER_-_Entrega_final_-_Mockup_Web_Ver._-_Google_Chrome_2025-03-03_17-54-40_f6w5oz.mov",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779268708/Captura_de_pantalla_2026-05-20_111702_postqo.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779268714/Captura_de_pantalla_2026-05-20_111727_ukvvdo.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779268595/Rectangle_1_tasbrb.png",
+      "https://res.cloudinary.com/dsy30p7gf/image/upload/v1779268718/Captura_de_pantalla_2026-05-20_111815_hkt9do.png",
     ],
     liveUrl: "https://www.figma.com/proto/TAP0cyNz8kO9AsdBAqP77K/XPLORER-Entrega-final?node-id=1-2&p=f&t=IkngQ3nsHx7qs1bk-0&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A52961",
     stack: ["figma", "adobeillustrator", "adobeaftereffects"]
