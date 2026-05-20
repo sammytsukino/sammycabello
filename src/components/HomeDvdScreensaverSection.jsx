@@ -154,8 +154,8 @@ function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef, initia
           `block h-auto object-cover ` +
           `w-[clamp(90px,min(30vw,20vh),180px)] max-w-[min(32vw,250px)] ` +
           `md:w-[clamp(130px,min(50vw,36vh),440px)] md:max-w-[min(44vw,280px)] ` +
-          `lg:w-[clamp(180px,min(70vw,50vh),680px)] lg:max-w-[min(72vw,680px)] ` +
-          `desktop-std:lg:w-[clamp(150px,min(58vw,42vh),520px)] desktop-std:lg:max-w-[min(58vw,520px)]`
+          `lg:w-[clamp(165px,min(62vw,46vh),580px)] lg:max-w-[min(62vw,580px)] ` +
+          `desktop-std:lg:w-[clamp(145px,min(54vw,40vh),480px)] desktop-std:lg:max-w-[min(54vw,480px)]`
         }
       />
     </div>
