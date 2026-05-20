@@ -13,6 +13,7 @@ const pillBaseClass =
   `text-[clamp(0.58rem,2.2vw,0.72rem)] font-medium leading-tight tracking-normal ` +
   `text-black text-balance transition-colors duration-200 ease-out ` +
   `md:text-[clamp(0.52rem,1.55vw,0.64rem)] lg:text-[clamp(0.6rem,1.85vw,0.76rem)] ` +
+  `desktop-std:lg:text-[clamp(0.54rem,1.6vw,0.68rem)] ` +
   `focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ` +
   `focus-visible:outline-neutral-950/45`
 

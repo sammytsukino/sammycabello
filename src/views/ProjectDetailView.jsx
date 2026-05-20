@@ -37,7 +37,8 @@ function MediaRenderer({ src, alt, className, onMediaLoad, controls = false }) {
 }
 
 const CORNER_ICON_SIZE =
-  `size-[2.5rem] md:size-[3rem] lg:size-[3.5rem] shrink-0`
+  `size-[2.2rem] md:size-[2.65rem] lg:size-[3.1rem] shrink-0 ` +
+  `desktop-std:lg:size-[2.75rem]`
 
 const GALLERY_VARIANTS = [
   // 1. Spora
@@ -421,7 +422,7 @@ export function ProjectDetailView() {
                       : 'opacity-0 translate-x-12 pointer-events-none duration-300'
                 }`}
               >
-                <p className="text-[clamp(0.875rem,1.8vw,1.25rem)] font-editorial-new leading-relaxed m-0 select-none pb-2">
+                <p className="text-[clamp(0.875rem,1.8vw,1.25rem)] font-editorial-new leading-relaxed m-0 select-none pb-2 desktop-std:text-[clamp(0.8rem,1.55vw,1.1rem)]">
                   {p}
                 </p>
               </div>

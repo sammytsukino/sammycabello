@@ -31,7 +31,8 @@ const GALLERY_SLIDE_FRAME_CLASS =
   'relative flex h-[clamp(340px,58svh,460px)] w-[clamp(240px,42vw,320px)] shrink-0 items-center justify-center overflow-hidden p-0 ' +
   'sm:h-[clamp(380px,60svh,520px)] sm:w-[clamp(270px,45vw,380px)] ' +
   'md:h-[clamp(420px,60svh,580px)] md:w-[clamp(300px,45vw,420px)] ' +
-  'lg:h-[clamp(340px,min(74svh,82vh),860px)] lg:w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] lg:max-w-[min(94vw,calc(min(74svh,82vh)*0.85))]'
+  'lg:h-[clamp(340px,min(74svh,82vh),860px)] lg:w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] lg:max-w-[min(94vw,calc(min(74svh,82vh)*0.85))] ' +
+  'desktop-std:lg:h-[clamp(300px,min(64svh,72vh),720px)] desktop-std:lg:w-[clamp(220px,min(72vw,calc(min(64svh,72vh)*0.75)),560px)] desktop-std:lg:max-w-[min(88vw,calc(min(64svh,72vh)*0.85))]'
 
 const DEFAULT_GALLERY_INTRO_TEXT = 'a taste of my work →'
 const DEFAULT_GALLERY_OUTRO_TEXT = 'hungry for more? ↴'
@@ -44,6 +45,7 @@ function GalleryTextPill({ children, className = '' }) {
         `text-center font-editorial text-[clamp(2rem,9.5vw,3.75rem)] font-medium lowercase ` +
         `sm:text-[clamp(2.75rem,8.5vw,5.5rem)] md:text-[clamp(2.2rem,6.75vw,4.15rem)] ` +
         `lg:text-[clamp(6.05rem,10.6vw,7.65rem)] ` +
+        `desktop-std:lg:text-[clamp(5.2rem,9vw,6.5rem)] ` +
         `leading-[1.08] tracking-normal text-black [text-wrap:balance] ` +
         className
       }
@@ -287,7 +289,8 @@ export function HomeInteractiveGallerySection({
                         'h-[clamp(340px,58svh,460px)] w-[clamp(240px,42vw,320px)] ' +
                         'sm:h-[clamp(380px,60svh,520px)] sm:w-[clamp(270px,45vw,380px)] ' +
                         'md:h-[clamp(420px,60svh,580px)] md:w-[clamp(300px,45vw,420px)] ' +
-                        'lg:h-[clamp(340px,min(74svh,82vh),860px)] lg:w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] lg:max-w-[min(94vw,calc(min(74svh,82vh)*0.85))]'
+                        'lg:h-[clamp(340px,min(74svh,82vh),860px)] lg:w-[clamp(246px,min(82vw,calc(min(74svh,82vh)*0.75)),640px)] lg:max-w-[min(94vw,calc(min(74svh,82vh)*0.85))] ' +
+  'desktop-std:lg:h-[clamp(300px,min(64svh,72vh),720px)] desktop-std:lg:w-[clamp(220px,min(72vw,calc(min(64svh,72vh)*0.75)),560px)] desktop-std:lg:max-w-[min(88vw,calc(min(64svh,72vh)*0.85))]'
                       }
                     >
                       <img

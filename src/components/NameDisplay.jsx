@@ -546,6 +546,28 @@ export default function NameDisplay({
           }
         }
 
+        @media (min-width: 64rem) and (max-width: 125rem) {
+          .name-text--navbar .char {
+            font-size: clamp(1.45rem, 4.2vw, 2.75rem);
+          }
+
+          .name-text--hero-headline .char {
+            font-size: clamp(1.45rem, 4.5vw, 4.25rem);
+          }
+
+          .name-text--screensaver .char {
+            font-size: clamp(4.5rem, 8.5vw, 7rem);
+          }
+
+          .name-text--screensaver-column .char {
+            font-size: clamp(3.5rem, 5.5vw, 6.5rem);
+          }
+
+          .name-text--footer .char {
+            font-size: clamp(3.25rem, min(28vw, 36vh), 22rem);
+          }
+        }
+
         .name-text--screensaver {
           display: inline-flex;
           align-items: center;

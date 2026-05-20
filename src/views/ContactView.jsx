@@ -11,7 +11,7 @@ export function ContactView() {
       id="main-content"
       className="min-h-svh bg-portfolio-bg px-[var(--hero-frame-inset)] py-[clamp(3rem,12svh,6rem)] text-black"
     >
-      <h1 className="m-0 font-editorial text-[clamp(2rem,8vw,4rem)] leading-tight tracking-[-0.02em]">
+      <h1 className="m-0 font-editorial text-[clamp(2rem,8vw,4rem)] leading-tight tracking-[-0.02em] desktop-std:text-[clamp(1.75rem,5.5vw,3.25rem)]">
         Contacto
       </h1>
       <p className="mt-6 max-w-[42ch] font-sans text-[clamp(0.95rem,2.5vw,1.125rem)] leading-relaxed">

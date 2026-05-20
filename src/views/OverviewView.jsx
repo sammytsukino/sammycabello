@@ -118,7 +118,7 @@ export function OverviewView() {
           <br />
           2026
         </div>
-        <h1 className="m-0 ml-auto text-[0.62rem] uppercase tracking-[0.12em] sm:text-[0.72rem] md:text-[0.8rem] md:tracking-[0.14em]">
+        <h1 className="m-0 ml-auto text-[0.62rem] uppercase tracking-[0.12em] sm:text-[0.72rem] md:text-[0.8rem] md:tracking-[0.14em] desktop-std:md:text-[0.72rem]">
           {activeCategory.subtitle}
         </h1>
         <div className="ml-3 flex shrink-0 items-center sm:ml-5 md:ml-8">
@@ -128,7 +128,7 @@ export function OverviewView() {
             width={18}
             height={18}
             draggable={false}
-            className="size-[0.72rem] object-contain sm:size-[0.8rem] md:size-[0.9rem]"
+            className="size-[0.64rem] object-contain sm:size-[0.72rem] md:size-[0.8rem]"
             aria-hidden
           />
         </div>
@@ -174,7 +174,7 @@ export function OverviewView() {
       </section>
 
       <footer className="flex h-[20vh] min-h-24 items-end justify-center px-site-x pb-3 lg:px-10 lg:pb-6">
-        <p className="max-w-[24ch] text-center font-editorial text-[clamp(1.4rem,7.2vw,3rem)] uppercase leading-[0.95] tracking-[0.02em] md:max-w-none md:whitespace-nowrap md:text-[4.3rem]">
+        <p className="max-w-[24ch] text-center font-editorial text-[clamp(1.4rem,7.2vw,3rem)] uppercase leading-[0.95] tracking-[0.02em] md:max-w-none md:whitespace-nowrap md:text-[4.3rem] desktop-std:md:text-[3.5rem]">
           {activeCategory.footerText}
         </p>
       </footer>

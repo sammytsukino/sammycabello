@@ -154,7 +154,8 @@ function BouncingDvdImage({ currentImgIdx, onImpact, speed, containerRef, initia
           `block h-auto object-cover ` +
           `w-[clamp(90px,min(30vw,20vh),180px)] max-w-[min(32vw,250px)] ` +
           `md:w-[clamp(130px,min(50vw,36vh),440px)] md:max-w-[min(44vw,280px)] ` +
-          `lg:w-[clamp(180px,min(70vw,50vh),680px)] lg:max-w-[min(72vw,680px)]`
+          `lg:w-[clamp(180px,min(70vw,50vh),680px)] lg:max-w-[min(72vw,680px)] ` +
+          `desktop-std:lg:w-[clamp(150px,min(58vw,42vh),520px)] desktop-std:lg:max-w-[min(58vw,520px)]`
         }
       />
     </div>
@@ -226,7 +227,7 @@ function DvdStaticLinksColumn({ items }) {
       className="pointer-events-none absolute inset-0 z-[35] flex flex-col items-center justify-center px-site-x py-[max(1rem,env(safe-area-inset-bottom))]"
       aria-label="Enlaces del portfolio"
     >
-      <ul className="pointer-events-auto m-0 flex list-none flex-col items-center gap-[clamp(2.5rem,7svh,4rem)] p-0">
+      <ul className="pointer-events-auto m-0 flex list-none flex-col items-center gap-[clamp(2.5rem,7svh,4rem)] p-0 desktop-std:gap-[clamp(2rem,6svh,3.25rem)]">
         {items.map((item) => {
           const key = item.sectionId ?? item.to
           const interactiveClass = item.comingSoon

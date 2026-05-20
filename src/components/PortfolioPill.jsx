@@ -6,6 +6,7 @@ const pillClass =
   `sm:text-[clamp(0.82rem,2.75vw,1.1rem)] ` +
   `md:text-[clamp(0.7rem,2.05vw,0.92rem)] ` +
   `lg:text-[clamp(0.88rem,2.5vw,1.2rem)] ` +
+  `desktop-std:lg:text-[clamp(0.78rem,2.15vw,1.05rem)] ` +
   `leading-tight tracking-normal text-black text-balance`
 
 export function PortfolioPill({ as: Component = 'span', className = '', ...props }) {

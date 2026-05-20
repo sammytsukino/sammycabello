@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
+@custom-variant desktop-std {
+  @media (min-width: 64rem) and (max-width: 125rem) {
+    @slot;
+  }
+}
+
 @font-face {
   font-family: LocomotiveNew;
   src: url('./assets/LocomotiveNew_n0o5vm.ttf') format('truetype');
@@ -38,7 +44,8 @@
   --breakpoint-lg: 64rem;
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 96rem;
-
+  /* Desktop estándar (~1080p–2K): escala reducida; ultrawide (>2000px) mantiene tamaño grande */
+  --breakpoint-desktop-std-max: 125rem;
 
   --spacing-site-x: clamp(1rem, 4.5vw, 2.5rem);
   --spacing-site-y-tight: clamp(1.5rem, 5svh, 4.25rem);
@@ -56,6 +63,20 @@
     font-size: clamp(0.875rem, 0.8rem + 0.26vw, 1.125rem);
     scroll-behavior: smooth;
     background-color: var(--color-portfolio-bg);
+  }
+
+  /* Pantallas ~1080p–2K: tipografía y márgenes un ~10% más compactos que en ultrawide */
+  @media (min-width: 64rem) and (max-width: 125rem) {
+    html {
+      font-size: clamp(0.8125rem, 0.72rem + 0.2vw, 1rem);
+    }
+
+    :root {
+      --hero-frame-inset: clamp(0.95rem, 3.6vw, 2.15rem);
+      --spacing-site-x: clamp(0.85rem, 3.6vw, 2rem);
+      --spacing-site-y-tight: clamp(1.2rem, 4.2svh, 3.5rem);
+      --spacing-site-y-loose: clamp(1.65rem, 6.5svh, 6.5rem);
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {

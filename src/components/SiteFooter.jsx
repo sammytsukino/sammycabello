@@ -22,7 +22,8 @@ export default function SiteFooter() {
       className={
         `relative z-20 flex w-full min-w-0 shrink-0 flex-col overflow-x-clip bg-transparent ` +
         `text-black min-h-0 max-lg:mt-[clamp(1rem,3.5svh,2rem)] max-lg:overflow-y-visible ` +
-        `lg:mt-[clamp(4rem,14svh,10rem)] lg:min-h-[100svh] lg:overflow-y-clip`
+        `lg:mt-[clamp(4rem,14svh,10rem)] lg:min-h-[100svh] lg:overflow-y-clip ` +
+        `desktop-std:lg:mt-[clamp(3rem,12svh,8rem)] desktop-std:lg:min-h-[92svh]`
       }
       aria-label="Pie de página"
     >
@@ -42,7 +43,8 @@ export default function SiteFooter() {
               `m-0 w-full max-w-none font-editorial font-normal leading-[1.08] ` +
               `tracking-[-0.02em] text-black ` +
               `text-[clamp(1.35rem,3.6vw,3.35rem)] md:text-[clamp(1.2rem,3.05vw,2.75rem)] ` +
-              `lg:max-w-[min(100%,22ch)] lg:text-[clamp(1.65rem,4vw,3.35rem)]`
+              `lg:max-w-[min(100%,22ch)] lg:text-[clamp(1.65rem,4vw,3.35rem)] ` +
+              `desktop-std:lg:text-[clamp(1.45rem,3.5vw,2.75rem)]`
             }
           >
             Craving a chat? Let’s cook something up together{' '}
@@ -52,7 +54,7 @@ export default function SiteFooter() {
           </p>
 
           <nav className="font-editorial" aria-label="Contacto y redes">
-            <ul className="m-0 flex list-none flex-col gap-y-2.5 p-0 text-left text-black text-[clamp(0.78rem,2.8vw,1rem)] leading-snug tracking-[0.01em] md:text-[clamp(0.72rem,2.35vw,0.9rem)] lg:items-end lg:gap-y-3 lg:text-[clamp(0.8rem,1.85vw,1rem)] lg:text-right">
+            <ul className="m-0 flex list-none flex-col gap-y-2.5 p-0 text-left text-black text-[clamp(0.78rem,2.8vw,1rem)] leading-snug tracking-[0.01em] md:text-[clamp(0.72rem,2.35vw,0.9rem)] lg:items-end lg:gap-y-3 lg:text-[clamp(0.8rem,1.85vw,1rem)] lg:text-right desktop-std:lg:text-[clamp(0.72rem,1.6vw,0.9rem)]">
               <li>
                 <a href={`mailto:${MAIL}`} className={linkClass}>
                   <svg

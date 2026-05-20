@@ -12,17 +12,19 @@ const HAMBURGER_FILLED_SRC =
 
 const navBtnClass =
   `group relative flex shrink-0 cursor-pointer ` +
-  `size-[clamp(3.35rem,9.1vw,4.05rem)] ` +
-  `md:size-[clamp(2.95rem,7.85vw,3.45rem)] ` +
-  `lg:size-[clamp(3.5rem,9.5vw,4.25rem)] ` +
+  `size-[clamp(2.95rem,8.1vw,3.6rem)] ` +
+  `md:size-[clamp(2.6rem,7vw,3.05rem)] ` +
+  `lg:size-[clamp(3.1rem,8.4vw,3.75rem)] ` +
+  `desktop-std:lg:size-[clamp(2.75rem,7.4vw,3.35rem)] ` +
   `items-start justify-center rounded-full border-0 bg-transparent p-0 text-black ` +
   `focus-visible:outline focus-visible:outline-2 ` +
   `focus-visible:outline-offset-4 focus-visible:outline-neutral-950/50`
 
 const swapIconWrapClass =
-  `relative block size-[clamp(2.65rem,7.35vw,3.35rem)] ` +
-  `md:size-[clamp(2.35rem,6.35vw,2.95rem)] ` +
-  `lg:size-[clamp(2.8rem,7.75vw,3.5rem)]`
+  `relative block size-[clamp(2.35rem,6.5vw,2.95rem)] ` +
+  `md:size-[clamp(2.1rem,5.65vw,2.6rem)] ` +
+  `lg:size-[clamp(2.5rem,6.85vw,3.1rem)] ` +
+  `desktop-std:lg:size-[clamp(2.2rem,6vw,2.75rem)]`
 
 const swapImgBase =
   `absolute inset-0 size-full object-contain transition-opacity duration-200 ease-out`
