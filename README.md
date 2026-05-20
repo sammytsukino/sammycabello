@@ -1,4 +1,7 @@
-![Portfolio cover](https://res.cloudinary.com/dsy30p7gf/image/upload/v1779275349/Recurso_24outlinewhite_xftqec.svg)
+
+
+<img src="https://res.cloudinary.com/dsy30p7gf/image/upload/v1779275349/Recurso_24outlinewhite_xftqec.svg" alt="portfolio-cover" width="200">
+
 
 # sammycabello
 
