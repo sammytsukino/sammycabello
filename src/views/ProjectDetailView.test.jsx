@@ -42,7 +42,7 @@ describe('ProjectDetailView', () => {
   it('cycles paragraphs via dots and wheel', () => {
     renderProject('spora')
 
-    const dots = screen.getAllByRole('button', { name: /Ir al párrafo/i })
+    const dots = screen.getAllByRole('tab', { name: /Ir al párrafo/i })
     fireEvent.click(dots[1])
 
     const textBlock = document.querySelector('[data-lenis-prevent="true"]')
@@ -60,7 +60,7 @@ describe('ProjectDetailView', () => {
   it('opens and closes lightbox', async () => {
     renderProject('spora')
 
-    const tile = document.querySelector('section .cursor-pointer')
+    const tile = document.querySelector('section button[type="button"]')
     if (tile) fireEvent.click(tile)
 
     await waitFor(() => {
@@ -73,7 +73,11 @@ describe('ProjectDetailView', () => {
 
   it('renders figma live link for xplorer', () => {
     renderProject('xplorer')
-    expect(screen.getByLabelText('Ver Live Preview')).toBeInTheDocument()
-    expect(screen.queryByLabelText('Ver en Github')).not.toBeInTheDocument()
+    expect(
+      screen.getByLabelText('Ver demo en vivo (se abre en una nueva pestaña)'),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByLabelText('Ver repositorio en GitHub (se abre en una nueva pestaña)'),
+    ).not.toBeInTheDocument()
   })
 })

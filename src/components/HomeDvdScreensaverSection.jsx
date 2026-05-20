@@ -74,6 +74,8 @@ const DvdPortfolioLink = forwardRef(function DvdPortfolioLink(
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
         aria-disabled="true"
+        aria-label={`${item.label} (próximamente)`}
+        role="link"
       >
         {children}
       </span>

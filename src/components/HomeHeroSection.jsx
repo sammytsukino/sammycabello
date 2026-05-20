@@ -137,6 +137,8 @@ export function HomeHeroSection() {
     <div
       ref={heroRef}
       id="home-hero"
+      role="region"
+      aria-label="Inicio y presentación"
       data-hero-flavor={flavor}
       className={
         `relative isolate grid min-h-svh h-svh w-full shrink-0 grid-rows-[auto_1fr_auto] ` +
@@ -186,7 +188,8 @@ export function HomeHeroSection() {
             href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
             target="_blank"
             rel="noreferrer"
-            className="font-sans text-[clamp(0.54rem,1.22vw,0.64rem)] font-medium uppercase tracking-[0.14em] text-inherit no-underline transition-opacity hover:opacity-70 md:text-[clamp(0.5rem,1.05vw,0.58rem)] lg:text-[clamp(0.56rem,1.35vw,0.6875rem)]"
+            aria-label={`Instagram @${INSTAGRAM_HANDLE} (se abre en una nueva pestaña)`}
+            className="font-sans text-[clamp(0.54rem,1.22vw,0.64rem)] font-medium uppercase tracking-[0.14em] text-inherit no-underline transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950/45 md:text-[clamp(0.5rem,1.05vw,0.58rem)] lg:text-[clamp(0.56rem,1.35vw,0.6875rem)]"
           >
             @{INSTAGRAM_HANDLE.toUpperCase()}
           </a>

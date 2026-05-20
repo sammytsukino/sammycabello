@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import NameDisplay from '../components/NameDisplay.jsx'
 import { HOME_GALLERY_ITEMS } from '../data/homeGalleryItems.js'
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js'
+import { getProjectTitle } from '../lib/projectLabels.js'
 
 const OVERVIEW_STAR_OUTLINE_SRC =
   'https://res.cloudinary.com/dsy30p7gf/image/upload/v1778581291/Recurso_11estrellarellena_aoc12t.svg'
@@ -56,6 +58,8 @@ export function OverviewView() {
   const { category = 'web-stuff' } = useParams()
   const activeCategory = CATEGORY_DETAILS[category] || CATEGORY_DETAILS['web-stuff']
 
+  useDocumentTitle(`Overview · ${activeCategory.title}`)
+
   const filteredItems = useMemo(() => {
     return HOME_GALLERY_ITEMS.filter(activeCategory.filter)
   }, [activeCategory])
@@ -86,12 +90,19 @@ export function OverviewView() {
   }, [])
 
   return (
-    <main className={`min-h-svh w-full overflow-x-hidden ${gradientClass} text-black md:h-svh md:overflow-hidden`}>
-      <section className="flex h-[5vh] min-h-11 items-center border-b border-black/35 px-site-x lg:px-10">
-        <Link 
-          to="/" 
-          viewTransition 
-          className="relative h-9 w-[11.9rem] flex-none overflow-visible sm:w-[12rem] md:h-6 md:w-[24rem] block"
+    <main
+      id="main-content"
+      className={`min-h-svh w-full overflow-x-hidden ${gradientClass} text-black md:h-svh md:overflow-hidden`}
+    >
+      <section
+        aria-label="Cabecera del overview"
+        className="flex h-[5vh] min-h-11 items-center border-b border-black/35 px-site-x lg:px-10"
+      >
+        <Link
+          to="/"
+          viewTransition
+          aria-label="Volver al inicio"
+          className="relative h-9 w-[11.9rem] flex-none overflow-visible sm:w-[12rem] md:h-6 md:w-[24rem] block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950/45"
         >
           <div className="absolute left-0 top-1/2 origin-left -translate-y-1/2 scale-[0.64] sm:scale-[0.46] md:scale-[0.56]">
             <NameDisplay trigger="auto" autoIntervalMs={800} />
@@ -107,9 +118,9 @@ export function OverviewView() {
           <br />
           2026
         </div>
-        <div className="ml-auto text-[0.62rem] uppercase tracking-[0.12em] sm:text-[0.72rem] md:text-[0.8rem] md:tracking-[0.14em]">
+        <h1 className="m-0 ml-auto text-[0.62rem] uppercase tracking-[0.12em] sm:text-[0.72rem] md:text-[0.8rem] md:tracking-[0.14em]">
           {activeCategory.subtitle}
-        </div>
+        </h1>
         <div className="ml-3 flex shrink-0 items-center sm:ml-5 md:ml-8">
           <img
             src={OVERVIEW_STAR_OUTLINE_SRC}
@@ -123,7 +134,10 @@ export function OverviewView() {
         </div>
       </section>
 
-      <section className="min-h-[108vh] px-site-x pb-4 pt-3 md:h-[75vh] md:min-h-0 lg:px-10">
+      <section
+        aria-label={`Proyectos de ${activeCategory.title}`}
+        className="min-h-[108vh] px-site-x pb-4 pt-3 md:h-[75vh] md:min-h-0 lg:px-10"
+      >
         <div className="grid grid-cols-3 grid-rows-[repeat(10,minmax(6.2rem,auto))] gap-x-2 gap-y-4 sm:gap-x-3 sm:gap-y-6 md:h-full md:grid-cols-10 md:grid-rows-3 md:gap-y-8">
           {Array.from({ length: 30 }, (_, idx) => {
             const slotId = idx + 1
@@ -138,17 +152,18 @@ export function OverviewView() {
                   <Link
                     to={`/project/${item.slug}`}
                     viewTransition
-                    className="block overflow-hidden"
+                    aria-label={`Ver proyecto ${getProjectTitle(item.slug)}`}
+                    className="block overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-950/45"
                     style={{
                       width: 'min(100%, 7.5rem)',
                       height: 'clamp(2.4rem, 6.8vw, 6rem)',
                     }}
                   >
-                    <img 
-                      src={item.src} 
-                      alt={`Project ${item.slug}`} 
-                      className="size-full object-cover [filter:saturate(0.9)_contrast(1.02)]" 
-                      draggable={false} 
+                    <img
+                      src={item.src}
+                      alt=""
+                      className="size-full object-cover [filter:saturate(0.9)_contrast(1.02)]"
+                      draggable={false}
                     />
                   </Link>
                 ) : null}

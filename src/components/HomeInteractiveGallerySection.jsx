@@ -1,6 +1,7 @@
 import {
   HOME_GALLERY_ITEMS,
 } from '../data/homeGalleryItems.js'
+import { getProjectTitle } from '../lib/projectLabels.js'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -274,7 +275,7 @@ export function HomeInteractiveGallerySection({
                     to={`/project/${item.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Ver proyecto ${item.slug} (se abre en una nueva pestaña)`}
+                    aria-label={`Ver proyecto ${getProjectTitle(item.slug)} (se abre en una nueva pestaña)`}
                     className="block cursor-pointer border-0 bg-transparent p-0 outline-none ring-0 hover:scale-[1.02] transition-transform duration-300 ease-out"
                     onDragStart={(e) => e.preventDefault()}
                   >
@@ -319,6 +320,22 @@ export function HomeInteractiveGallerySection({
           </div>
         </div>
       </section>
+
+      <nav aria-label="Lista de proyectos (acceso directo)" className="sr-only">
+        <ul>
+          {HOME_GALLERY_ITEMS.map((item) => (
+            <li key={item.slug}>
+              <Link
+                to={`/project/${item.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {getProjectTitle(item.slug)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </>
   )
 }

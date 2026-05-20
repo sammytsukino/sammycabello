@@ -7,9 +7,12 @@ import { HomeLandingFixedNav } from '../components/HomeLandingFixedNav.jsx'
 import { HomePageScrollBackdrop } from '../components/HomePageScrollBackdrop.jsx'
 import { PostHeroSection } from '../components/PostHeroSection.jsx'
 import { scrollToIdWithTransition } from '../lib/scrollWithViewTransition.js'
+import { useDocumentTitle } from '../hooks/useDocumentTitle.js'
 
 export function HomeView() {
   const { pathname, hash } = useLocation()
+
+  useDocumentTitle('Portfolio')
 
   useEffect(() => {
     if (pathname !== '/') return
@@ -23,7 +26,10 @@ export function HomeView() {
     <>
       <HomePageScrollBackdrop />
       {pathname === '/' ? <HomeLandingFixedNav /> : null}
-      <main className="relative z-10 min-h-svh min-w-0 bg-transparent">
+      <main
+        id="main-content"
+        className="relative z-10 min-h-svh min-w-0 bg-transparent"
+      >
         <HomeHeroSection />
         <PostHeroSection />
         <HomeInteractiveGallerySection />

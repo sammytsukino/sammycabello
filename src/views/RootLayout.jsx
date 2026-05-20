@@ -12,6 +12,9 @@ export function RootLayout() {
 
   return (
     <HomeHeroFlavorProvider>
+      <a href="#main-content" className="skip-link">
+        Saltar al contenido principal
+      </a>
       <FlavorFavicon />
       <div
         className={

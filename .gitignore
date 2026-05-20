@@ -1,5 +1,34 @@
+# Dependencies
+node_modules/
+
+# Production build (Vite)
+dist/
+dist-ssr/
+build/
+
+# Tests & coverage (generado con npm run test:coverage)
+coverage/
+*.lcov
+test-results/
+playwright-report/
+blob-report/
+
+# Vite / tooling cache
+.vite/
+.cache/
+.eslintcache
+*.tsbuildinfo
+
+# Variables de entorno (secretos)
+.env
+.env.*
+!.env.example
+
+# Vercel (config local del CLI)
+.vercel/
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,18 +36,27 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Archivos locales / overrides de Vite
 *.local
 
-# Editor directories and files
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Editores e IDEs
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*~
+*.swp
+*.swo
+
+# Cursor (metadatos del proyecto en el IDE)
+.cursor/

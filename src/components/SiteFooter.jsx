@@ -70,6 +70,7 @@ export default function SiteFooter() {
                   href={LINKEDIN_HREF}
                   target="_blank"
                   rel="noreferrer"
+                  aria-label="LinkedIn de Sammy Cabello (se abre en una nueva pestaña)"
                   className={linkClass}
                 >
                   <svg
@@ -87,6 +88,7 @@ export default function SiteFooter() {
                   href={GITHUB_HREF}
                   target="_blank"
                   rel="noreferrer"
+                  aria-label="GitHub de Sammy Cabello (se abre en una nueva pestaña)"
                   className={linkClass}
                 >
                   <svg

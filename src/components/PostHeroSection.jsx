@@ -46,6 +46,7 @@ function PostHeroVideo() {
         ref={videoRef}
         src={POST_HERO_VIDEO_SRC}
         poster={POST_HERO_VIDEO_POSTER}
+        aria-label="Vídeo decorativo de presentación"
         className="absolute inset-0 block h-full w-full object-cover"
         autoPlay
         loop
@@ -64,17 +65,17 @@ export function PostHeroSection() {
   return (
     <section
       id="post-hero"
-      aria-label="Contenido principal"
+      aria-label="Presentación editorial"
       className="relative min-h-0 bg-transparent px-site-x py-site-y-tight [view-transition-name:post-hero] lg:min-h-[min(120vh,1400px)] lg:py-site-y-loose"
     >
       <div className="mx-auto flex min-h-0 w-full max-w-[120rem] flex-col items-center justify-center gap-[clamp(3.25rem,8svh,7rem)] lg:min-h-[calc(120vh-clamp(8rem,28vh,16rem))]">
         <p className="m-0 max-w-[100rem] text-center font-editorial text-pretty leading-[1.12] tracking-[-0.01em] text-black text-[clamp(1.45rem,5.2vw,2.35rem)] max-lg:max-w-[min(100%,46rem)] md:text-[clamp(1.6rem,3.8vw,2.8rem)] lg:text-[clamp(1.8rem,3.2vw,4.5rem)] lg:leading-[1.1] lg:max-w-none">
-          Currently cooking <span className={iconAccent}>🏠︎</span> at the
+          Currently cooking <span className={iconAccent} aria-hidden>🏠︎</span> at the
           intersection of art, technology{' '}
-          <span className={iconAccent}>🙵</span> communication. Focused{' '}
-          <span className={iconAccent}>𖦏</span> on creating delicious
+          <span className={iconAccent} aria-hidden>🙵</span> communication. Focused{' '}
+          <span className={iconAccent} aria-hidden>𖦏</span> on creating delicious
           experiences for both brands and consumers{' '}
-          <span className={iconAccent}>✌︎</span>.
+          <span className={iconAccent} aria-hidden>✌︎</span>.
         </p>
 
         <div className="mt-[clamp(2.25rem,5.5svh,4.5rem)] grid w-full max-w-[100rem] grid-cols-1 items-center gap-y-[clamp(1rem,3vw,2rem)] max-lg:max-w-[min(100%,42rem)] lg:mt-[clamp(3rem,6.5svh,5.25rem)] lg:grid-cols-[1.2fr_2.5fr_1.2fr] lg:gap-x-[clamp(1.5rem,4vw,4rem)] lg:gap-y-0">
