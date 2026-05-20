@@ -54,7 +54,16 @@ export default function SiteFooter() {
           </p>
 
           <nav className="font-editorial" aria-label="Contacto y redes">
-            <ul className="m-0 flex list-none flex-col gap-y-2.5 p-0 text-left text-black text-[clamp(0.78rem,2.8vw,1rem)] leading-snug tracking-[0.01em] md:text-[clamp(0.72rem,2.35vw,0.9rem)] lg:items-end lg:gap-y-3 lg:text-[clamp(0.8rem,1.85vw,1rem)] lg:text-right desktop-std:lg:text-[clamp(0.72rem,1.6vw,0.9rem)]">
+            <ul
+              className={
+                `m-0 flex list-none flex-col gap-y-2.5 p-0 text-left text-black ` +
+                `text-[clamp(0.78rem,2.8vw,1rem)] leading-snug tracking-[0.01em] ` +
+                `md:text-[clamp(0.72rem,2.35vw,0.9rem)] ` +
+                `lg:items-end lg:gap-y-[clamp(0.85rem,2.2vw,1.35rem)] lg:text-right ` +
+                `lg:text-[clamp(1.05rem,2.15vw,1.55rem)] lg:leading-[1.2] ` +
+                `desktop-std:lg:text-[clamp(0.95rem,1.9vw,1.35rem)]`
+              }
+            >
               <li>
                 <a href={`mailto:${MAIL}`} className={linkClass}>
                   <svg
