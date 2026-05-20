@@ -79,6 +79,8 @@ Then open the URL Vite prints (default `http://localhost:5173`).
 | `npm run build` | Production build → `dist/` |
 | `npm run preview` | Preview production build |
 | `npm run lint` | Run ESLint |
+| `npm run test` | Run unit tests (Vitest) |
+| `npm run test:coverage` | Tests + coverage report (≥70% threshold) |
 
 ## License
 
