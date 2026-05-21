@@ -6,8 +6,6 @@ import { formatStackLabel, getProjectTitle } from '../lib/projectLabels.js'
 import StackIcon from 'tech-stack-icons'
 import Lenis from 'lenis'
 
-const LOGO_OUTLINE_SRC =
-  'https://res.cloudinary.com/dsy30p7gf/image/upload/v1778581336/Recurso_12estrellarellena_matdlv.svg'
 const LOGO_FILLED_SRC =
   'https://res.cloudinary.com/dsy30p7gf/image/upload/v1778581291/Recurso_11estrellarellena_aoc12t.svg'
 
@@ -414,7 +412,7 @@ export function ProjectDetailView() {
                       : 'opacity-0 translate-x-12 pointer-events-none duration-300'
                 }`}
               >
-                <p className="text-[clamp(0.875rem,1.8vw,1.25rem)] font-editorial-new leading-relaxed m-0 select-none pb-2 desktop-std:text-[clamp(0.8rem,1.55vw,1.1rem)]">
+                <p className="text-[clamp(0.875rem,1.8vw,1.25rem)] font-editorial leading-relaxed m-0 select-none pb-2 desktop-std:text-[clamp(0.8rem,1.55vw,1.1rem)]">
                   {p}
                 </p>
               </div>

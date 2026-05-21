@@ -1,6 +1,5 @@
 import { useHomeHeroFlavor } from '../context/HomeHeroFlavorContext.jsx'
 import {
-  flavorLinkHoverClass,
   heroFlavorColorTransitionClass,
   postHeroIconAccentClass,
 } from '../lib/homeHeroFlavor.js'

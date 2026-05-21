@@ -6,7 +6,7 @@ import {
 } from '../lib/homeHeroFlavor.js'
 
 const POST_HERO_VIDEO_SRC =
-  'https://res.cloudinary.com/dsy30p7gf/video/upload/q_auto,f_mp4/v1779272918/lumenbn3_glzije.mp4'
+  'https://res.cloudinary.com/dsy30p7gf/video/upload/v1779347245/lumenbn2_1_spiba3.mp4'
 const POST_HERO_VIDEO_POSTER =
   'https://res.cloudinary.com/dsy30p7gf/video/upload/so_0,q_auto,f_jpg/v1779272918/lumenbn3_glzije.jpg'
 

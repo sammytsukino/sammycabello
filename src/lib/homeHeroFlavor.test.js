@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import {
   HERO_FLAVOR_TRANSITION_MS,
-  flavorLinkHoverClass,
   heroFlavorColorTransitionClass,
   heroFlavorTransitionClass,
   postHeroIconAccentClass,
@@ -28,8 +27,4 @@ describe('homeHeroFlavor', () => {
     expect(postHeroIconAccentClass('pink')).toBe('text-portfolio-lime')
   })
 
-  it('flavorLinkHoverClass switches by flavor', () => {
-    expect(flavorLinkHoverClass('green')).toBe('hover:text-portfolio-pink')
-    expect(flavorLinkHoverClass('pink')).toBe('hover:text-portfolio-lime')
-  })
 })

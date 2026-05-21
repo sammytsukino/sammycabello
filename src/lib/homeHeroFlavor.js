@@ -15,7 +15,3 @@ export const heroFlavorColorTransitionClass =
 export function postHeroIconAccentClass(flavor) {
   return flavor === 'green' ? 'text-portfolio-pink' : 'text-portfolio-lime'
 }
-
-export function flavorLinkHoverClass(flavor) {
-  return flavor === 'green' ? 'hover:text-portfolio-pink' : 'hover:text-portfolio-lime'
-}
