@@ -7,6 +7,7 @@ import {
   NAV_GESTURE_CLICK_DELAY_MS,
   scrollToPageSectionById,
 } from '../lib/initLenis.js'
+import { playContactBellSound } from '../lib/playUiSound.js'
 
 const BELL_DEFAULT_SRC =
   'https://res.cloudinary.com/dsy30p7gf/image/upload/v1779036061/Recurso_19bell_p5cujx.svg'
@@ -91,6 +92,8 @@ function ContactBellButton() {
   }, [])
 
   const handleContactNav = useCallback(() => {
+    playContactBellSound()
+
     const reducedMotion =
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches

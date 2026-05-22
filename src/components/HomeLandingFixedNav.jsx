@@ -1,4 +1,5 @@
 import { scrollToPageSectionById, scrollToPageTop } from '../lib/initLenis.js'
+import { playChompSound, playTwinkleSound } from '../lib/playUiSound.js'
 
 const LOGO_OUTLINE_SRC =
   'https://res.cloudinary.com/dsy30p7gf/image/upload/v1778581336/Recurso_12estrellarellena_matdlv.svg'
@@ -73,7 +74,10 @@ export function HomeLandingFixedNav() {
           type="button"
           className={navBtnClass}
           aria-label="Ir al inicio de la página"
-          onClick={() => scrollToPageTop()}
+          onClick={() => {
+            playTwinkleSound()
+            scrollToPageTop()
+          }}
         >
           <SwappableNavIcon
             outlineSrc={LOGO_OUTLINE_SRC}
@@ -86,7 +90,10 @@ export function HomeLandingFixedNav() {
           type="button"
           className={navBtnClass}
           aria-label="Ir a la sección menú DVD"
-          onClick={() => scrollToPageSectionById('home-dvd-screensaver')}
+          onClick={() => {
+            playChompSound()
+            scrollToPageSectionById('home-dvd-screensaver')
+          }}
         >
           <SwappableNavIcon
             outlineSrc={HAMBURGER_OUTLINE_SRC}
