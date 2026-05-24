@@ -7,9 +7,33 @@ import { renderWithRouter } from '../test/testUtils.jsx'
 vi.mock('lenis', () => {
   class LenisMock {
     constructor() {
+      this.scroll = 0
+      this.limit = 900
+      this.listeners = new Map()
       this.raf = vi.fn()
       this.resize = vi.fn()
       this.destroy = vi.fn()
+    }
+
+    on(event, callback) {
+      if (!this.listeners.has(event)) this.listeners.set(event, [])
+      this.listeners.get(event).push(callback)
+      return () => this.off(event, callback)
+    }
+
+    off(event, callback) {
+      const list = this.listeners.get(event)
+      if (!list) return
+      this.listeners.set(
+        event,
+        list.filter((cb) => cb !== callback),
+      )
+    }
+
+    scrollTo(target, options = {}) {
+      this.scroll = target
+      this.listeners.get('scroll')?.forEach((cb) => cb(this))
+      options.onComplete?.()
     }
   }
   return { default: LenisMock }

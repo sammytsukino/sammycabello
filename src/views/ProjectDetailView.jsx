@@ -1,8 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { HOME_GALLERY_ITEMS } from '../data/homeGalleryItems'
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js'
 import { formatStackLabel, getProjectTitle } from '../lib/projectLabels.js'
+import {
+  clampParagraphIndex,
+  galleryScrollFromParagraphIndex,
+  paragraphIndexFromGalleryProgress,
+} from '../lib/projectDetailCarouselSync.js'
 import { PacManParagraphCounter, isParagraphArrowKey, stepParagraphIndex } from '../components/PacManParagraphCounter.jsx'
 import StackIcon from 'tech-stack-icons'
 import Lenis from 'lenis'
@@ -134,86 +139,13 @@ export function ProjectDetailView() {
   const lenisRef = useRef(null)
   const closeButtonRef = useRef(null)
   const lightboxTriggerRef = useRef(null)
+  const syncingFromTextRef = useRef(false)
+  const activeParaRef = useRef(0)
+  const paragraphCountRef = useRef(1)
+  const goToParagraphRef = useRef(null)
 
   const [activePara, setActivePara] = useState(0)
   const wheelTimeout = useRef(null)
-
-  useEffect(() => {
-    const gallery = galleryRef.current
-    if (!gallery) return
-
-    const lenis = new Lenis({
-      wrapper: gallery,
-      content: gallery.firstElementChild,
-      orientation: 'horizontal',
-      gestureOrientation: 'both',
-      smoothWheel: true,
-      wheelMultiplier: 1.2
-    })
-    
-    lenisRef.current = lenis
-
-    const ro = new ResizeObserver(() => {
-      lenis.resize()
-    })
-    if (gallery.firstElementChild) {
-      ro.observe(gallery.firstElementChild)
-    }
-
-    let rafId
-    function raf(time) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
-    }
-    rafId = requestAnimationFrame(raf)
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      ro.disconnect()
-      lenis.destroy()
-      lenisRef.current = null
-    }
-  }, [])
-
-  useEffect(() => {
-    const GALLERY_ARROW_STEP = 240
-
-    const handleProjectArrowKeys = (e) => {
-      if (!isParagraphArrowKey(e.key)) return
-
-      const textRoot = textControlsRef.current
-      const gallery = galleryRef.current
-      const active = document.activeElement
-
-      if (textRoot?.contains(active)) {
-        e.preventDefault()
-        return
-      }
-
-      if (gallery?.contains(active)) {
-        e.preventDefault()
-        e.stopPropagation()
-        const lenis = lenisRef.current
-        const delta =
-          e.key === 'ArrowRight' || e.key === 'ArrowDown' ? GALLERY_ARROW_STEP : -GALLERY_ARROW_STEP
-        if (lenis) {
-          lenis.scrollTo(lenis.scroll + delta, { duration: 0.45 })
-        }
-        return
-      }
-
-      e.preventDefault()
-    }
-
-    window.addEventListener('keydown', handleProjectArrowKeys, true)
-    return () => window.removeEventListener('keydown', handleProjectArrowKeys, true)
-  }, [])
-
-  const handleMediaLoad = () => {
-    if (lenisRef.current) {
-      lenisRef.current.resize()
-    }
-  }
 
   const projectIndex = HOME_GALLERY_ITEMS.findIndex((p) => p.slug === slug)
   const layoutVariant = GALLERY_VARIANTS[projectIndex >= 0 ? projectIndex % GALLERY_VARIANTS.length : 0]
@@ -238,17 +170,158 @@ export function ProjectDetailView() {
 
   const stackLogos = project?.stack || []
 
+  paragraphCountRef.current = paragraphs.length
+
+  const scrollGalleryToParagraph = useCallback((paraIndex, { immediate = false } = {}) => {
+    const lenis = lenisRef.current
+    const count = paragraphCountRef.current
+    if (!lenis || count <= 1) return
+
+    const clamped = clampParagraphIndex(paraIndex, count)
+    const target = galleryScrollFromParagraphIndex(clamped, count, lenis.limit)
+
+    syncingFromTextRef.current = true
+    lenis.scrollTo(target, {
+      duration: immediate ? 0 : 0.55,
+      programmatic: true,
+      onComplete: () => {
+        syncingFromTextRef.current = false
+      },
+    })
+  }, [])
+
+  const goToParagraph = useCallback((indexOrUpdater) => {
+    const count = paragraphCountRef.current
+    const raw =
+      typeof indexOrUpdater === 'function'
+        ? indexOrUpdater(activeParaRef.current)
+        : indexOrUpdater
+    const clamped = clampParagraphIndex(raw, count)
+
+    if (clamped !== activeParaRef.current) {
+      activeParaRef.current = clamped
+      setActivePara(clamped)
+    }
+    scrollGalleryToParagraph(clamped)
+  }, [scrollGalleryToParagraph])
+
+  goToParagraphRef.current = goToParagraph
+
+  useEffect(() => {
+    activeParaRef.current = activePara
+  }, [activePara])
+
+  useEffect(() => {
+    activeParaRef.current = 0
+    setActivePara(0)
+  }, [slug])
+
+  useEffect(() => {
+    const gallery = galleryRef.current
+    if (!gallery) return
+
+    const lenis = new Lenis({
+      wrapper: gallery,
+      content: gallery.firstElementChild,
+      orientation: 'horizontal',
+      gestureOrientation: 'both',
+      smoothWheel: true,
+      wheelMultiplier: 1.2,
+    })
+
+    lenisRef.current = lenis
+
+    const onLenisScroll = (instance) => {
+      if (syncingFromTextRef.current) return
+
+      const count = paragraphCountRef.current
+      if (count <= 1) return
+
+      const nextPara = paragraphIndexFromGalleryProgress(
+        instance.scroll,
+        instance.limit,
+        count,
+      )
+
+      if (nextPara !== activeParaRef.current) {
+        activeParaRef.current = nextPara
+        setActivePara(nextPara)
+      }
+    }
+
+    const offScroll = lenis.on('scroll', onLenisScroll)
+
+    const ro = new ResizeObserver(() => {
+      lenis.resize()
+    })
+    if (gallery.firstElementChild) {
+      ro.observe(gallery.firstElementChild)
+    }
+
+    let rafId
+    function raf(time) {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
+    rafId = requestAnimationFrame(raf)
+
+    return () => {
+      offScroll()
+      cancelAnimationFrame(rafId)
+      ro.disconnect()
+      lenis.destroy()
+      lenisRef.current = null
+    }
+  }, [slug])
+
+  useEffect(() => {
+    const handleProjectArrowKeys = (e) => {
+      if (!isParagraphArrowKey(e.key)) return
+
+      const textRoot = textControlsRef.current
+      const gallery = galleryRef.current
+      const active = document.activeElement
+
+      if (textRoot?.contains(active)) {
+        e.preventDefault()
+        return
+      }
+
+      if (gallery?.contains(active)) {
+        e.preventDefault()
+        e.stopPropagation()
+        const count = paragraphCountRef.current
+        const next = stepParagraphIndex(e.key, activeParaRef.current, count)
+        if (next !== activeParaRef.current) {
+          goToParagraphRef.current?.(next)
+        }
+        return
+      }
+
+      e.preventDefault()
+    }
+
+    window.addEventListener('keydown', handleProjectArrowKeys, true)
+    return () => window.removeEventListener('keydown', handleProjectArrowKeys, true)
+  }, [])
+
+  const handleMediaLoad = () => {
+    if (lenisRef.current) {
+      lenisRef.current.resize()
+    }
+  }
+
   const handleTextWheel = (e) => {
     if (wheelTimeout.current) return
-    
+
     const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
-    
+
     if (delta > 0) {
-      setActivePara((prev) => Math.min(prev + 1, paragraphs.length - 1))
+      goToParagraph((prev) => Math.min(prev + 1, paragraphs.length - 1))
     } else if (delta < 0) {
-      setActivePara((prev) => Math.max(prev - 1, 0))
+      goToParagraph((prev) => Math.max(prev - 1, 0))
     }
-    
+
     wheelTimeout.current = setTimeout(() => {
       wheelTimeout.current = null
     }, 600)
@@ -303,12 +376,12 @@ export function ProjectDetailView() {
       e.preventDefault()
       e.stopPropagation()
       const next = stepParagraphIndex(e.key, activePara, paragraphs.length)
-      if (next !== activePara) setActivePara(next)
+      if (next !== activePara) goToParagraph(next)
       return
     }
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      setActivePara((prev) => (prev + 1) % paragraphs.length)
+      goToParagraph((prev) => (prev + 1) % paragraphs.length)
     }
   }
 
@@ -443,7 +516,7 @@ export function ProjectDetailView() {
             aria-atomic="true"
             tabIndex={0}
             className="relative w-full h-[calc(100%-2.75rem)] pr-0 md:pr-8 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-portfolio-lime"
-            onClick={() => setActivePara((prev) => (prev + 1) % paragraphs.length)}
+            onClick={() => goToParagraph((prev) => (prev + 1) % paragraphs.length)}
             onKeyDown={handleParagraphKeyDown}
           >
             {paragraphs.map((p, i) => (
@@ -467,7 +540,7 @@ export function ProjectDetailView() {
           <PacManParagraphCounter
             count={paragraphs.length}
             activeIndex={activePara}
-            onSelect={setActivePara}
+            onSelect={goToParagraph}
           />
         </div>
 

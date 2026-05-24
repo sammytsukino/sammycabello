@@ -12,7 +12,7 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle.js'
 export function HomeView() {
   const { pathname, hash } = useLocation()
 
-  useDocumentTitle('Portfolio')
+  useDocumentTitle()
 
   useEffect(() => {
     if (pathname !== '/') return
