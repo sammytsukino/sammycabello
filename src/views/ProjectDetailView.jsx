@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import { HOME_GALLERY_ITEMS } from '../data/homeGalleryItems'
 import { useDocumentTitle } from '../hooks/useDocumentTitle.js'
 import { formatStackLabel, getProjectTitle } from '../lib/projectLabels.js'
+import { PacManParagraphCounter, isParagraphArrowKey, stepParagraphIndex } from '../components/PacManParagraphCounter.jsx'
 import StackIcon from 'tech-stack-icons'
 import Lenis from 'lenis'
 
@@ -129,6 +130,7 @@ export function ProjectDetailView() {
   useDocumentTitle(projectTitle)
 
   const galleryRef = useRef(null)
+  const textControlsRef = useRef(null)
   const lenisRef = useRef(null)
   const closeButtonRef = useRef(null)
   const lightboxTriggerRef = useRef(null)
@@ -171,6 +173,40 @@ export function ProjectDetailView() {
       lenis.destroy()
       lenisRef.current = null
     }
+  }, [])
+
+  useEffect(() => {
+    const GALLERY_ARROW_STEP = 240
+
+    const handleProjectArrowKeys = (e) => {
+      if (!isParagraphArrowKey(e.key)) return
+
+      const textRoot = textControlsRef.current
+      const gallery = galleryRef.current
+      const active = document.activeElement
+
+      if (textRoot?.contains(active)) {
+        e.preventDefault()
+        return
+      }
+
+      if (gallery?.contains(active)) {
+        e.preventDefault()
+        e.stopPropagation()
+        const lenis = lenisRef.current
+        const delta =
+          e.key === 'ArrowRight' || e.key === 'ArrowDown' ? GALLERY_ARROW_STEP : -GALLERY_ARROW_STEP
+        if (lenis) {
+          lenis.scrollTo(lenis.scroll + delta, { duration: 0.45 })
+        }
+        return
+      }
+
+      e.preventDefault()
+    }
+
+    window.addEventListener('keydown', handleProjectArrowKeys, true)
+    return () => window.removeEventListener('keydown', handleProjectArrowKeys, true)
   }, [])
 
   const handleMediaLoad = () => {
@@ -263,6 +299,13 @@ export function ProjectDetailView() {
   }, [lightbox.src])
 
   const handleParagraphKeyDown = (e) => {
+    if (isParagraphArrowKey(e.key)) {
+      e.preventDefault()
+      e.stopPropagation()
+      const next = stepParagraphIndex(e.key, activePara, paragraphs.length)
+      if (next !== activePara) setActivePara(next)
+      return
+    }
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
       setActivePara((prev) => (prev + 1) % paragraphs.length)
@@ -343,8 +386,9 @@ export function ProjectDetailView() {
 
       <section
         ref={galleryRef}
+        tabIndex={0}
         aria-label={`Galería de medios de ${projectTitle}`}
-        className="h-[60svh] md:h-[80svh] shrink-0 w-full overflow-x-auto overflow-y-hidden bg-[#111] text-white"
+        className="h-[60svh] md:h-[80svh] shrink-0 w-full overflow-x-auto overflow-y-hidden bg-[#111] text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-portfolio-lime"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         <style dangerouslySetInnerHTML={{__html: `
@@ -387,6 +431,7 @@ export function ProjectDetailView() {
         className="h-[40svh] md:h-[20svh] shrink-0 w-full flex flex-col md:flex-row bg-[var(--color-portfolio-bg)] px-[var(--hero-frame-inset)] pb-[calc(var(--hero-frame-inset)+env(safe-area-inset-bottom,0px))] gap-4 md:gap-0 pt-4 md:pt-0"
       >
         <div
+          ref={textControlsRef}
           className="w-full md:w-2/3 h-full flex flex-col justify-end relative overflow-hidden"
           onWheel={handleTextWheel}
           data-lenis-prevent="true"
@@ -397,7 +442,7 @@ export function ProjectDetailView() {
             aria-live="polite"
             aria-atomic="true"
             tabIndex={0}
-            className="relative w-full h-[calc(100%-1.5rem)] pr-0 md:pr-8 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-portfolio-lime"
+            className="relative w-full h-[calc(100%-2.75rem)] pr-0 md:pr-8 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-portfolio-lime"
             onClick={() => setActivePara((prev) => (prev + 1) % paragraphs.length)}
             onKeyDown={handleParagraphKeyDown}
           >
@@ -419,26 +464,11 @@ export function ProjectDetailView() {
             ))}
           </div>
 
-          <div
-            className="flex gap-2 items-center h-4 shrink-0 mt-1"
-            role="tablist"
-            aria-label="Párrafos del proyecto"
-          >
-            {paragraphs.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                role="tab"
-                aria-label={`Ir al párrafo ${i + 1}`}
-                aria-selected={activePara === i}
-                aria-current={activePara === i ? 'true' : undefined}
-                onClick={() => setActivePara(i)}
-                className={`h-[4px] rounded-full transition-all duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-portfolio-lime ${
-                  activePara === i ? 'w-6 bg-portfolio-lime' : 'w-1.5 bg-black hover:bg-black/40'
-                }`}
-              />
-            ))}
-          </div>
+          <PacManParagraphCounter
+            count={paragraphs.length}
+            activeIndex={activePara}
+            onSelect={setActivePara}
+          />
         </div>
 
         <div className="w-full md:w-1/3 flex-none md:h-full flex flex-col justify-end items-start md:items-end mt-4 md:mt-0">
