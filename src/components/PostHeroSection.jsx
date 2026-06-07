@@ -4,11 +4,14 @@ import {
   heroFlavorColorTransitionClass,
   postHeroIconAccentClass,
 } from '../lib/homeHeroFlavor.js'
+import { cldVideo, cldVideoPoster } from '../lib/cloudinaryUrl.js'
 
-const POST_HERO_VIDEO_SRC =
+const POST_HERO_VIDEO_SRC = cldVideo(
   'https://res.cloudinary.com/dsy30p7gf/video/upload/v1779347245/lumenbn2_1_spiba3.mp4'
-const POST_HERO_VIDEO_POSTER =
+)
+const POST_HERO_VIDEO_POSTER = cldVideoPoster(
   'https://res.cloudinary.com/dsy30p7gf/video/upload/so_0,q_auto,f_jpg/v1779272918/lumenbn3_glzije.jpg'
+)
 
 function PostHeroVideo() {
   const wrapRef = useRef(null)

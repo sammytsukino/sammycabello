@@ -1,4 +1,6 @@
-export const HOME_GALLERY_ITEMS = [
+import { cldImage, cldVideo } from '../lib/cloudinaryUrl.js'
+
+const HOME_GALLERY_ITEMS_RAW = [
   {
     slug: 'spora',
     src: 'https://res.cloudinary.com/dsy30p7gf/image/upload/v1778926540/cover_yginat.png',
@@ -233,6 +235,16 @@ export const HOME_GALLERY_ITEMS = [
 
 
 ]
+
+function optimizeGalleryMediaUrl(url) {
+  return url.includes('/video/upload/') ? cldVideo(url) : cldImage(url, 'galleryMedia')
+}
+
+export const HOME_GALLERY_ITEMS = HOME_GALLERY_ITEMS_RAW.map((item) => ({
+  ...item,
+  src: cldImage(item.src, 'galleryCover'),
+  gallery: item.gallery.map(optimizeGalleryMediaUrl),
+}))
 
 export function paletteToRgbCss(pal) {
   return pal.map(([r, g, b]) => {
